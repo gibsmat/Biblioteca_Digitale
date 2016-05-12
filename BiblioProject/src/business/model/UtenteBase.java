@@ -2,6 +2,10 @@ package business.model;
 
 import javax.swing.JPasswordField;
 
+import business.implementation.OperaManagement;
+
+import java.util.*;
+
 public class UtenteBase implements Utente {
 	String nome,cognome,userId;
 	JPasswordField password;
@@ -78,6 +82,7 @@ public class UtenteBase implements Utente {
 	}
 	
 	public void viewTitles(){
+		List<String> listaTitoli = new OperaManagement().getTitles();
 		/* aprire finestra con elenco titoli */
 	}
 

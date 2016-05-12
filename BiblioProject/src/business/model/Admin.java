@@ -1,5 +1,6 @@
 package business.model;
 
+import business.implementation.*;
 import javax.swing.JPasswordField;
 
 public class Admin {
@@ -27,8 +28,14 @@ public class Admin {
 	protected boolean getStatus(){
 		return this.loginStatus;
 	}
+	
 	protected void clearOpera(Opera o){
-		// Cancellazione opera
+		Opera o1=findOpera(o.getIdOpera());
+		new OperaManagement().deleteOpera(o1);
+	}
+	protected Opera findOpera(int id){
+		//ricerca e restituzione opera per id
+		//La query con variabili java si fa usando PreparedStatement
 	}
 	protected void clearUtente(UtenteBase ub){
 		// Cancellazione utenteBase

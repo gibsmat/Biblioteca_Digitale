@@ -1,5 +1,6 @@
 package business.implementation;
 
+import business.model.*;
 import java.sql.*;
 
 public class UserManagement

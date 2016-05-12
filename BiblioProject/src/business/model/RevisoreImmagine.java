@@ -6,7 +6,7 @@ import java.awt.*;
 public class RevisoreImmagine implements Utente {
 	String userId;
 	String nome, cognome;
-	JPasswordField password= new JPasswordField(6);
+	JPasswordField password= null;
 	boolean loginStatus;
 
 	public RevisoreImmagine(String nome, String cognome, String userId, String password) {
@@ -73,7 +73,10 @@ public class RevisoreImmagine implements Utente {
 	}
 	
 	public void revisionaIm(Image image){
-		//aprire immagine
+		//aprire immagine		
+	}
+	public void acceptIm(){
+		// aggiunta immagine al database
 	}
 	public void commenta(String testo,Image image){
 		Commento commento=new Commento(image.toString()/*titolo immagine*/,this.userId,testo);
