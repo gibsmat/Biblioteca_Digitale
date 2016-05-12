@@ -44,6 +44,8 @@ public class Opera {
 	public SortedMap<String,Image> getImmagini() {
 		return immagini;
 	}
+	
+	// cancellazione immagine
 	public void deleteImmagine(String name) {
 		for (Iterator<String> i=this.immagini.keySet().iterator(); i.hasNext();) {
 			if(i.equals(name)){
@@ -51,9 +53,12 @@ public class Opera {
 			}
 			}
 	}
+	
+	//aggiunta nuova immagine
 	public void addImmagine(String name,Image imm){
 		immagini.put(name, imm);
 	}
+	
 	public void pubblica(){
 		/* pubblicazione dell'opera */
 	}
