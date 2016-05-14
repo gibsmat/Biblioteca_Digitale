@@ -1,40 +1,44 @@
 package business.implementation;
 
 import business.model.*;
+import presentation.*;
 import java.sql.*;
 
-public class UserManagement
-{
-  public static void main(String args[])
-  { 
-    Connection c = null;
-    Statement stmt = null;
+public class UserManagement{
+	
+	public void UserManagement(){
+	}
+	
+	public void nuovoUtenteBase(Connection c, String id,String nome,String cognome,String psw){
+		PreparedStatement pstm = null;
+		try{
+		
+		} catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      System.exit(0);
+		    } 
+	}
+	public void nuovoUtenteBase(Connection c,String id,String psw){
+		
+	} 
     
-    try {
-      Class.forName("org.sqlite.JDBC");  //caricamento driver sqlite
-      c = DriverManager.getConnection("jdbc:sqlite:test.db");  //connessione con db "test"
-      System.out.println("Opened database successfully");      
-      stmt = c.createStatement();
-    
-      //CREAZIONE TABELLA
-      
-      String sql = "CREATE TABLE UTENTEBASE " +
-              "(USERID 		   TEXT PRIMARY KEY     NOT NULL," +
-    		  " PASSWORD	   CHAR(32) NOT NULL" +	
-              " NOME           TEXT " + 
-              " COGNOME        TEXT)" ; 
-	 stmt.executeUpdate(sql);
-	 
-	 stmt.close();
-	 c.close();
-    
-    } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      System.exit(0);
-    }
-    
-    System.out.println("Table created successfully");
-  }
+       
+}
+
+  /*
+   * CREAZIONE TABELLA
+   
+   Statement stmt = null;
+   stmt = c.createStatement();
+  
+  String sql = "CREATE TABLE UTENTEBASE " +
+          "(USERID 		   TEXT PRIMARY KEY     NOT NULL," +
+		  " PASSWORD	   CHAR(32) NOT NULL" +	
+          " NOME           TEXT " + 
+          " COGNOME        TEXT)" ; 
+ stmt.executeUpdate(sql);
+ 
+ stmt.close();  */
 
 /* QUERY
  *  String query = "select NOME" + "from" + "test.db" + ".UTENTEBASE";
@@ -46,4 +50,3 @@ public class UserManagement
 
 
 
-}

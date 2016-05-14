@@ -1,6 +1,8 @@
 package business.model;
 
+import business.implementation.*;
 import javax.swing.JPasswordField;
+import java.sql.*;
 
 import business.implementation.OperaManagement;
 
@@ -11,18 +13,20 @@ public class UtenteBase implements Utente {
 	JPasswordField password;
 	boolean loginStatus;
 	
-	public UtenteBase(String nome, String cognome, String userId, String password) {
+	public UtenteBase(Connection c,String nome, String cognome, String userId, String password) {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.userId = userId;
 		this.password = new JPasswordField(password);
 		this.loginStatus=false;
+		new UserManagement().nuovoUtenteBase(c,userId, nome, cognome, password);
 	}
 
-	public UtenteBase(String userId, String password) {
+	public UtenteBase(Connection c,String userId, String password) {
 		this.userId = userId;
 		this.password = new JPasswordField(password);
 		this.loginStatus=false;
+		new UserManagement().nuovoUtenteBase(c,userId,password);
 	}
 
 	@Override
