@@ -19,14 +19,15 @@ public class UtenteBase implements Utente {
 		this.userId = userId;
 		this.password = new JPasswordField(password);
 		this.loginStatus=false;
-		new UserManagement().nuovoUtenteBase(c,userId, nome, cognome, password);
+		new UserManagement(c, userId, nome, cognome, password);
 	}
-
-	public UtenteBase(Connection c,String userId, String password) {
+	public UtenteBase(Connection c,String nome, String cognome, String userId, String password,char t) {
+		this.nome = nome;
+		this.cognome = cognome;
 		this.userId = userId;
 		this.password = new JPasswordField(password);
 		this.loginStatus=false;
-		new UserManagement().nuovoUtenteBase(c,userId,password);
+		new UserManagement(c, userId, nome, cognome, password,t);
 	}
 
 	@Override

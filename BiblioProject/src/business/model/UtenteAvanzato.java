@@ -1,14 +1,14 @@
 package business.model;
+
 import business.implementation.*;
 import java.util.*;
+import java.sql.*;
 
 public class UtenteAvanzato extends UtenteBase {
+	final static char type='a';
 
-	public UtenteAvanzato(String nome, String cognome, String userId, String password) {
-		super(nome,cognome,userId,password);
-	}
-	public UtenteAvanzato(String userId, String password) {
-		super(userId,password);
+	public UtenteAvanzato(Connection c,String nome, String cognome, String userId, String password) {
+		super(c,nome,cognome,userId,password,type);
 	}
 	
 	public void viewOpera(String stringa){

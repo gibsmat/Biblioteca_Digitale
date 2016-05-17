@@ -1,45 +1,55 @@
 package business.implementation;
 
-import business.model.*;
-import presentation.*;
 import java.sql.*;
+
+import javax.swing.JOptionPane;
 
 public class UserManagement{
 	
-	public void UserManagement(){
+	public UserManagement(Connection c, String id, String nome, String cognome, String psw){
+		nuovoUtente(c,id,nome,cognome,psw);
+	}
+	public UserManagement(Connection c, String id, String nome, String cognome, String psw,char t){
+		nuovoUtente(c,id,nome,cognome,psw,t);
 	}
 	
-	public void nuovoUtenteBase(Connection c, String id,String nome,String cognome,String psw){
-		PreparedStatement pstm = null;
+	public void nuovoUtente(Connection c, String id,String nome,String cognome,String psw){
 		try{
-		
-		} catch ( Exception e ) {
-		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-		      System.exit(0);
-		    } 
+			String query="INSERT INTO UTENTEBASE(username,password,nome,cognome) VALUES (?,?,?,?)";
+			PreparedStatement pst=c.prepareStatement(query);
+			pst.setString(1,id);
+			pst.setString(2,psw);
+			pst.setString(3,nome);
+			pst.setString(4,cognome);
+
+			pst.execute();
+			pst.close(); 
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e);
+				}
 	}
-	public void nuovoUtenteBase(Connection c,String id,String psw){
-		
-	} 
-    
-       
+	public void nuovoUtente(Connection c, String id,String nome,String cognome,String psw,char t){
+		try{
+			String query="INSERT INTO UtenteAvanzato(username,password,nome,cognome) VALUES (?,?,?,?)";
+			PreparedStatement pst=c.prepareStatement(query);
+			pst.setString(1,id);
+			pst.setString(2,psw);
+			pst.setString(3,nome);
+			pst.setString(4,cognome);
+
+			pst.execute();
+			pst.close(); 
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e);
+				}
+	}
 }
 
-  /*
-   * CREAZIONE TABELLA
-   
-   Statement stmt = null;
-   stmt = c.createStatement();
   
-  String sql = "CREATE TABLE UTENTEBASE " +
-          "(USERID 		   TEXT PRIMARY KEY     NOT NULL," +
-		  " PASSWORD	   CHAR(32) NOT NULL" +	
-          " NOME           TEXT " + 
-          " COGNOME        TEXT)" ; 
- stmt.executeUpdate(sql);
- 
- stmt.close();  */
-
 /* QUERY
  *  String query = "select NOME" + "from" + "test.db" + ".UTENTEBASE";
 	 ResultSet rs = stmt.executeQuery(query);
