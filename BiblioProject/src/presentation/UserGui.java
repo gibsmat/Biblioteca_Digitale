@@ -49,6 +49,7 @@ public class UserGui {
 		btnPaginaPer.setForeground(new Color(255, 255, 255));
 		btnPaginaPer.setBackground(new Color(0, 0, 255));
 		
+		//Bottone pagina personale
 		btnPaginaPer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				close();
@@ -64,13 +65,14 @@ public class UserGui {
 		Ricerca.setForeground(new Color(0, 0, 255));
 		Ricerca.setBackground(new Color(255, 255, 255));
 		Ricerca.setBounds(504, 347, 228, 59);
+		
+		//Bottone ricerca
 		Ricerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				close();
 				new Ricerca(c);
 			}
 		});
-		
 		
 		frame.getContentPane().add(Ricerca);
 		

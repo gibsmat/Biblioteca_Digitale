@@ -2,6 +2,8 @@ package presentation;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import javax.swing.*;
 
@@ -50,6 +52,14 @@ public class Ricerca {
 		RicercaButtton.setBounds(751, 228, 97, 25);
 		RicercaButtton.setForeground(Color.WHITE);
 		RicercaButtton.setBackground(Color.DARK_GRAY);
+		
+		//Bottone di ricerca
+		RicercaButtton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+				close();
+			}
+		});
+		
 		frame.getContentPane().add(RicercaButtton);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -58,4 +68,8 @@ public class Ricerca {
 	
 		this.frame.setVisible(true);
 	}
+	
+	public void close(){		
+		this.frame.dispose();
+	}	
 }
