@@ -1,24 +1,21 @@
 package business.model;
 
-import business.implementation.*;
 import javax.swing.JPasswordField;
-
+import java.sql.*;
 import business.implementation.OperaManagement;
-
-import java.awt.*;
 
 public class Acquisitore implements Utente {
 	String userId;
 	String nome, cognome;
 	JPasswordField password= null;
-	boolean loginStatus;
+	boolean loginStatus=false;
 	
-	public Acquisitore(String userId, String nome, String cognome,String psw) {
+	public Acquisitore(String userId, String nome, String cognome,String psw,boolean status) {
 		this.userId = userId;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.password=new JPasswordField(psw);
-		this.loginStatus=false;
+		this.loginStatus=status;
 	}
 	
 
@@ -71,13 +68,17 @@ public class Acquisitore implements Utente {
 	public void changeStatus() {
 		loginStatus=!loginStatus;
 	}
-	
-	public void addOpera(int id,int anno,String titolo,String autore,String isbn){
-		Opera opera = new Opera(id,anno,titolo,autore,isbn);
-		new OperaManagement().insertOpera(opera);
+
+	@Override	
+	public String getDataI(){
+		return null;
 	}
-	public void addImmagine(Opera opera,String nome,Image imm){
-		opera.addImmagine(nome, imm);
+	
+	public Opera addOpera(Connection c,int anno,String titolo,String autore,String isbn,String editore){
+		return new OperaManagement(c).insertOpera(anno,titolo,autore,isbn,editore);
+	}
+	public void deleteImmagine(Connection c,Opera opera,String path){
+		new OperaManagement(c).deleteImmagine(opera,path);
 	}
 
 }

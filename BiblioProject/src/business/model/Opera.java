@@ -2,27 +2,23 @@ package business.model;
 
 import java.awt.*;
 import java.util.*;
+import java.sql.*;
+
+import business.implementation.OperaManagement;
 
 public class Opera {
-	int idOpera,anno;
-	String titolo,autore,isbn;
+	int anno;
+	String titolo,autore,isbn,Editore;
 	SortedMap <String,Image> immagini;
 	//file TEI
 	
-	public Opera(int id, int anno,String titolo, String autore,String isbn){
-		this.idOpera=id;
+	public Opera(int anno,String titolo, String autore,String isbn,String editore){
 		this.anno=anno;
 		this.titolo=titolo;
 		this.autore=autore;
 		this.isbn=isbn;
+		this.Editore=editore;
 		this.immagini=new TreeMap<String,Image>();
-	}
-	
-	public int getIdOpera() {
-		return idOpera;
-	}
-	public void setIdOpera(int idOpera) {
-		this.idOpera = idOpera;
 	}
 	public int getAnno() {
 		return anno;
@@ -45,7 +41,6 @@ public class Opera {
 	public String getIsbn() {
 		return isbn;
 	}
-
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
@@ -54,6 +49,11 @@ public class Opera {
 		return immagini;
 	}
 	
+	//aggiunta nuova immagine
+	public void addImmagine(Connection c,String path,String titolo,Image imm){
+		this.immagini.put(titolo, imm);
+		new OperaManagement(c).addImmagine(this,path);
+	}	
 	// cancellazione immagine
 	public void deleteImmagine(String name) {
 		for (Iterator<String> i=this.immagini.keySet().iterator(); i.hasNext();) {
@@ -61,11 +61,6 @@ public class Opera {
 				i.remove();
 			}
 			}
-	}
-	
-	//aggiunta nuova immagine
-	public void addImmagine(String name,Image imm){
-		immagini.put(name, imm);
 	}
 	
 	public void pubblica(){

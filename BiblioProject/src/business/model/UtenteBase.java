@@ -1,33 +1,31 @@
 package business.model;
 
-import business.implementation.*;
 import javax.swing.JPasswordField;
 import java.sql.*;
-
 import business.implementation.OperaManagement;
 
 import java.util.*;
 
 public class UtenteBase implements Utente {
-	String nome,cognome,userId;
-	JPasswordField password;
-	boolean loginStatus;
+	String nome,cognome,userId,dataI;
+	JPasswordField password;	
+	boolean loginStatus=false;
 	
-	public UtenteBase(Connection c,String nome, String cognome, String userId, String password) {
-		this.nome = nome;
-		this.cognome = cognome;
-		this.userId = userId;
-		this.password = new JPasswordField(password);
-		this.loginStatus=false;
-		new UserManagement(c, userId, nome, cognome, password);
+	public UtenteBase(String nome,String cognome,String userId,String password,String dataI,boolean status){
+		this.nome=nome;
+		this.cognome=cognome;
+		this.userId=userId;
+		this.password=new JPasswordField(password);
+		this.dataI=dataI;
+		this.loginStatus=status;
 	}
-	public UtenteBase(Connection c,String nome, String cognome, String userId, String password,char t) {
-		this.nome = nome;
-		this.cognome = cognome;
-		this.userId = userId;
-		this.password = new JPasswordField(password);
-		this.loginStatus=false;
-		new UserManagement(c, userId, nome, cognome, password,t);
+	public UtenteBase(String nome,String cognome,String userId,String password,String dataI,char t,boolean status){
+		this.nome=nome;
+		this.cognome=cognome;
+		this.userId=userId;
+		this.password=new JPasswordField(password);
+		this.dataI=dataI;
+		this.loginStatus=status;
 	}
 
 	@Override
@@ -78,12 +76,9 @@ public class UtenteBase implements Utente {
 	public void changeStatus() {
 		this.loginStatus= !(loginStatus);
 	}
-
-	public void login(){
-		/* aprire finestra di login */
-	}
-	public void registrazione(){
-		/* aprire finestra di registrazione */
+	@Override
+	public String getDataI(){
+		return this.dataI;
 	}
 	
 	public void viewTitles(){

@@ -24,4 +24,6 @@ public boolean getStatus();
 
 public void changeStatus();
 
+public String getDataI();
+
 }

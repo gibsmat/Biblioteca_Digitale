@@ -1,59 +1,120 @@
 package business.model;
 
 import business.implementation.*;
+import java.sql.*;
+import java.util.*;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 public class Admin {
 	String adminId;
 	JPasswordField password= null;
 	boolean loginStatus;
+	Connection c=null;
 	
-	protected Admin(String adminId,String psw){
+	public Admin(Connection c){		
+		this.c=c;
+	}	
+	public Admin(Connection c,String adminId,String psw){
 		this.adminId=adminId;
 		this.password=new JPasswordField(psw);
 		this.loginStatus=false;
 	}
-	protected String getAdminId() {
+	public String getAdminId() {
 		return adminId;
 	}
-	protected void setAdminId(String adminId) {
+	public void setAdminId(String adminId) {
 		this.adminId = adminId;
 	}
-	protected JPasswordField getPassword() {
+	public JPasswordField getPassword() {
 		return password;
 	}
-	protected void setPassword(String psw){
+	public void setPassword(String psw){
 		this.password=new JPasswordField(psw);
 	}
-	protected boolean getStatus(){
+	public boolean getStatus(){
 		return this.loginStatus;
 	}
 	
-	protected void clearOpera(Opera o){
+	/*public void clearOpera(Opera o){
 		Opera o1=findOpera(o.getIdOpera());
 		new OperaManagement().deleteOpera(o1);
-	}
-	protected Opera findOpera(int id){
+	} */
+	/*	public Opera findOpera(int id){
 		//ricerca e restituzione opera per id
-		//La query con variabili java si fa usando PreparedStatement
+	} */
+	
+	public void clearUtente(String user){
+		if(new UserManagement(c).deleteUtente(user)){
+			JOptionPane.showMessageDialog(null, "Utente eliminato.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'utente.");
+		}
 	}
-	protected void clearUtente(UtenteBase ub){
-		// Cancellazione utenteBase
+	
+	public void addTrascrittore(String username,String psw,String nome,String cognome){
+		if(new UserManagement(c).nuovoTrascrittore(username, nome, cognome, psw)){
+			JOptionPane.showMessageDialog(null, "Trascrittore aggiunto correttamente.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente trascrittore.");
+		}
 	}
-	protected void clearUtente(UtenteAvanzato ua){
-		// Cancellazione utenteAvanzato
+	
+	public void clearTrascrittore(String trascrittore){
+		if(new UserManagement(c).deleteTrascrittore(trascrittore)){
+			JOptionPane.showMessageDialog(null, "Trascrittore eliminato.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del trascrittore.");
+		}
 	}
-	protected void addTrascrittore(Trascrittore t){
-		// Aggiunta trascrittore
+	
+	public void addAcquisitore(String username,String nome,String cognome,String psw){
+		if(new UserManagement(c).nuovoAcquisitore(username, nome, cognome, psw)){
+			JOptionPane.showMessageDialog(null, "acquisitore aggiunto correttamente.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente acquisitore.");
+		}
 	}
-	protected void addAcquisitore(Acquisitore a){
-		// aggiunta acquisitore
+	
+	public void clearAcquisitore(String acquisitore){
+		if(new UserManagement(c).deleteAcquisitore(acquisitore)){
+			JOptionPane.showMessageDialog(null, "Acquisitore eliminato.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'acquisitore.");
+		}
 	}
-	protected void addRevisoreImm(RevisoreImmagine rI){
-		// aggiunta revisoreImmagini
+	
+	public void addRevisoreImm(String username,String nome,String cognome,String psw){
+		if(new UserManagement(c).nuovoRevisoreImm(username, nome, cognome, psw)){
+			JOptionPane.showMessageDialog(null, "revisore immagini aggiunto correttamente.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente revisore immagini.");
+		}
 	}
-	protected void addRevisoreTr(RevisoreTrascrizioni rT){
-		// aggiunta revisoreTrascrizioni
+	
+	public void clearRevisoreImm(String revisore){
+		if(new UserManagement(c).deleteRevisoreI(revisore)){
+			JOptionPane.showMessageDialog(null, "Revisore immagini eliminato.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del revisore immagini.");
+		}
 	}
-
+	
+	public void addRevisoreTr(String username,String nome,String cognome,String psw){
+		if(new UserManagement(c).nuovoRevisoreT(username, nome, cognome, psw)){
+			JOptionPane.showMessageDialog(null, "revisore trascrizioni aggiunto correttamente.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente revisore trascrizioni.");
+		}
+	}
+	
+	public void clearRevisoreTr(String revisore){
+		if(new UserManagement(c).deleteRevisoreT(revisore)){
+			JOptionPane.showMessageDialog(null, "Revisore trascrizioni eliminato.");
+		}else{
+			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del revisore trascrizioni.");
+		}
+	}
+	
 }

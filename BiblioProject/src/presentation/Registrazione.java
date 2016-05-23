@@ -1,27 +1,18 @@
 package presentation;
 
-import business.implementation.*;
 import business.model.*;
+import business.implementation.*;
 import java.awt.EventQueue;
 import java.awt.Window;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenuItem;
-import javax.swing.JMenuBar;
 import java.awt.Component;
 import java.awt.Choice;
-import javax.swing.JSeparator;
 import java.awt.List;
 import java.sql.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.regex.*;
 
 public class Registrazione {
 		private JFrame frame;
@@ -31,7 +22,6 @@ public class Registrazione {
 		private JPasswordField passwordField;
 		private JLabel lblCognome;
 		private JButton btnRegistrati;
-
 
 		/**
 		 * Create the application.
@@ -84,9 +74,10 @@ public class Registrazione {
 			lblUsername.setBounds(113, 282, 216, 35);
 			frame.getContentPane().add(lblUsername);
 			
-			JLabel lblPassword = new JLabel("Password");
+			JLabel lblPassword = new JLabel("Password\r\n");
+			lblPassword.setToolTipText("");
 			lblPassword.setFont(new Font("Roboto Black", Font.PLAIN, 20));
-			lblPassword.setBounds(113, 355, 178, 35);
+			lblPassword.setBounds(113, 344, 178, 49);
 			frame.getContentPane().add(lblPassword);
 			
 			passwordField = new JPasswordField();
@@ -116,18 +107,64 @@ public class Registrazione {
 			btnRegistrati.addActionListener(new ActionListener() {
 				
 				public void actionPerformed(ActionEvent arg0) {	
-					if(comboBox.getSelectedItem().toString().equals("Utente Base")){
-						new UtenteBase(c,txtNome.getText(),txtCognome.getText(),txtUsername.getText(),passwordField.toString());
+					if(txtUsername.getText().equals("") || passwordField.getPassword().length == 0){
+						JOptionPane.showMessageDialog(null, "I campi username e password sono obbligatori!");
+						close();	
+						new Registrazione(c);
 					}
-					else{
-						new UtenteAvanzato(c,txtNome.getText(),txtCognome.getText(),txtUsername.getText(),passwordField.toString());
+					else if(passwordField.getText().length() < 5){
+						JOptionPane.showMessageDialog(null, "La password deve contenere almeno 5 caratteri.");
+						close(); 
+						new Registrazione(c);
+					}
+					else if(txtUsername.getText().equals("ADMIN")){
+						JOptionPane.showMessageDialog(null, "Username non disponibile.");
+						close(); 
+						new Registrazione(c);
+					}
+					else{											
+						if(comboBox.getSelectedItem().toString().equals("Utente Base")){	
+							//creazione utente base
+							if(new UserManagement(c).nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText()))
+							{
+								JOptionPane.showMessageDialog(null, "Registrazione effettuata.");
+								close();
+								new Login(c);
+							}
+							else{
+								close();
+								new Registrazione(c);
+							}
+						}
+						else{	//creazione utente avanzato
+							if(new UserManagement(c).nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText(),'a'))
+							{
+							JOptionPane.showMessageDialog(null, "Registrazione effettuata.");
+							close();
+							new Login(c);
+							}
+							else{
+								close();
+								new Registrazione(c);
+							}
+						}
 					}
 				}
 			});
 			btnRegistrati.setBounds(119, 515, 275, 35);
 			frame.getContentPane().add(btnRegistrati);
+			
+			JLabel lblalmenoCaratteri = new JLabel("(almeno 5 caratteri)");
+			lblalmenoCaratteri.setToolTipText("");
+			lblalmenoCaratteri.setFont(new Font("Dialog", Font.PLAIN, 13));
+			lblalmenoCaratteri.setBounds(101, 365, 178, 49);
+			frame.getContentPane().add(lblalmenoCaratteri);
 					
 			this.frame.setVisible(true);
 		}
-	}
+
+		public void close(){
+			this.frame.dispose();
+		}
+}
 

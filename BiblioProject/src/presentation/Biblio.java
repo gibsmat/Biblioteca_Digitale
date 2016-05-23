@@ -11,13 +11,10 @@ public class Biblio{
 		
 	}
 
-	public static void main(String[] args) {				
+	public static void main(String[] args) {
 		avvio(new DbConnection().dbConnector());		
 	}
 }
 
 
-/* CURRENT TIME
- * String time;
-CURRENT TIME :  Timestamp currentTimestamp = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime());
-time=currentTimestamp.toString();*/
+

@@ -5,8 +5,16 @@ import javax.swing.JPasswordField;
 public class Trascrittore implements Utente {
 	String userId;
 	String nome, cognome;
-	JPasswordField password= new JPasswordField(6);
-	boolean loginStatus;
+	JPasswordField password= null;
+	boolean loginStatus=false;
+	
+	public Trascrittore(String userId, String nome, String cognome, String password,boolean status) {
+		this.userId = userId;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.password = new JPasswordField(password);
+		this.loginStatus=status;
+	}
 
 	@Override
 	public String getUserId() {
@@ -56,6 +64,10 @@ public class Trascrittore implements Utente {
 	@Override
 	public void changeStatus() {
 		loginStatus=!loginStatus;
+	}
+	@Override
+	public String getDataI(){
+		return null;
 	}
 
 }

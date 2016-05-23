@@ -1,19 +1,18 @@
 package presentation;
 
 import business.implementation.*;
-import java.awt.EventQueue;
+import business.model.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.SystemColor;
 
 public class Login{
 		public JFrame frame=new JFrame();
-		private JTextField textField;
-		private JPasswordField pwdPassword;	
+		private JTextField txtUsername;
+		private JPasswordField passwordField;	
 		
 		public Login(Connection c) {
 			initialize(c);
@@ -28,14 +27,14 @@ public class Login{
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.getContentPane().setLayout(null);
 			
-			textField = new JTextField();
-			textField.setBounds(277, 45, 204, 40);
-			frame.getContentPane().add(textField);
-			textField.setColumns(10);
+			txtUsername = new JTextField();
+			txtUsername.setBounds(277, 45, 204, 40);
+			frame.getContentPane().add(txtUsername);
+			txtUsername.setColumns(10);
 			
-			pwdPassword = new JPasswordField();
-			pwdPassword.setBounds(277, 164, 204, 40);
-			frame.getContentPane().add(pwdPassword);
+			passwordField = new JPasswordField();
+			passwordField.setBounds(277, 164, 204, 40);
+			frame.getContentPane().add(passwordField);
 			
 			JLabel lblUsername = new JLabel("Username");
 			lblUsername.setFont(new Font("Roboto Black", Font.PLAIN, 13));
@@ -50,52 +49,57 @@ public class Login{
 			JButton btnNewButton = new JButton("Login");
 			btnNewButton.setBackground(Color.LIGHT_GRAY);
 			btnNewButton.setFont(new Font("Roboto Black", Font.PLAIN, 13));
+			
+			// BOTTONE LOGIN
 			btnNewButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					
-					try{
-						
-						String query="select * from User where Password=? and Username=?";
-						PreparedStatement pst= c.prepareStatement(query);
-						pst.setString(1,pwdPassword.getText());
-						pst.setString(2,textField.getText() );
-						
-						
-						ResultSet rs=pst.executeQuery();
-						int count=0;
-						while(rs.next())
-						{
-							count= count+1;
+				
+				public void actionPerformed(ActionEvent arg0) {										
+					if(txtUsername.getText().equals("") || passwordField.getPassword().length == 0){					
+						JOptionPane.showMessageDialog(null, "Inserire password e username!");
+						close(); new Login(c); 
+					}
+					else if(txtUsername.getText().equals("ADMIN") && passwordField.getText().equals("ADMIN")){
+						//apire pagina admin  new AdminGui(c);
+					}
+					else{ 
+						Utente utente = new UserManagement(c).getUtente(txtUsername.getText(), passwordField);
+						if(utente instanceof UtenteAvanzato){
+							close();
+							new UserGui(c,(UtenteAvanzato)utente);
 						}
-						
-						if(count==1)
-						{
-							JOptionPane.showMessageDialog(null, "Password e Username sono corretti!!!");
-							
+						else if(utente instanceof UtenteBase){
+							close();
+							new UserGui(c,(UtenteBase)utente);
 						}
-						
-						else if(count > 1)
-						{
-							JOptionPane.showMessageDialog(null, "Ci sono Più persone con la stessa Password e Username!!");
+						else if(utente instanceof Trascrittore){
+							JOptionPane.showMessageDialog(null, "Trascrittore Loggato.");
+							close();
+							//apri home trascrittore
 						}
-						
-						else
-						{
-							JOptionPane.showMessageDialog(null, "Password o Username non sono corretti");
+						else if(utente instanceof Acquisitore){
+							JOptionPane.showMessageDialog(null, "Acquisitore Loggato.");
+							new AcquisitoreGui(c,utente);
+							//close();
+							//apri home acquisitore
 						}
-						
-						
-						rs.close();
-						pst.close();
-						
-						
-					}catch(Exception e){
-						JOptionPane.showMessageDialog(null, e);
-
-
+						else if(utente instanceof RevisoreTrascrizioni){
+							JOptionPane.showMessageDialog(null, "Revisore Trascrizioni loggato.");
+							close();
+						}
+						else if(utente instanceof RevisoreImmagine){
+							JOptionPane.showMessageDialog(null, "Revisore immagini loggato.");
+							close();
+						}
+						else{
+							JOptionPane.showMessageDialog(null, "Username e password non validi.");
+							close();
+							new Login(c);
+						}
 					}
 				}
-			});
+			});		
+
+			
 			btnNewButton.setBounds(153, 242, 176, 40);
 			frame.getContentPane().add(btnNewButton);
 			
@@ -104,6 +108,7 @@ public class Login{
 			lblNewLabel.setBounds(26, 0, 215, 229);
 			frame.getContentPane().add(lblNewLabel);
 			
+			//Registrati
 			JButton btnRegistrati = new JButton("Registrati");
 			btnRegistrati.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 			btnRegistrati.addActionListener(new ActionListener() {
@@ -124,6 +129,6 @@ public class Login{
 			this.frame.setVisible(true);
 		}
 		public void close(){
-			this.frame.setVisible(false);
+			this.frame.dispose();
 		}
 	}

@@ -7,19 +7,14 @@ public class RevisoreImmagine implements Utente {
 	String userId;
 	String nome, cognome;
 	JPasswordField password= null;
-	boolean loginStatus;
+	boolean loginStatus=false;
 
-	public RevisoreImmagine(String nome, String cognome, String userId, String password) {
+	public RevisoreImmagine(String nome, String cognome, String userId, String password,boolean status) {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.userId = userId;
 		this.password = new JPasswordField(password);
-		this.loginStatus=false;
-	}
-	public RevisoreImmagine(String userId, String password) {
-		this.userId = userId;
-		this.password = new JPasswordField(password);
-		this.loginStatus=false;
+		this.loginStatus=status;
 	}
 	
 	@Override
@@ -70,6 +65,11 @@ public class RevisoreImmagine implements Utente {
 	@Override
 	public void changeStatus() {
 		loginStatus=!loginStatus;
+	}
+	
+	@Override
+	public String getDataI(){
+		return null;
 	}
 	
 	public void revisionaIm(Image image){
