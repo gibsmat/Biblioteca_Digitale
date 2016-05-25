@@ -2,6 +2,9 @@ package business.model;
 
 import java.awt.*;
 import java.util.*;
+
+import javax.swing.ImageIcon;
+
 import java.sql.*;
 
 import business.implementation.OperaManagement;
@@ -9,7 +12,7 @@ import business.implementation.OperaManagement;
 public class Opera {
 	int anno;
 	String titolo,autore,isbn,Editore;
-	SortedMap <String,Image> immagini;
+	SortedMap <String,ImageIcon> immagini;
 	//file TEI
 	
 	public Opera(int anno,String titolo, String autore,String isbn,String editore){
@@ -18,7 +21,7 @@ public class Opera {
 		this.autore=autore;
 		this.isbn=isbn;
 		this.Editore=editore;
-		this.immagini=new TreeMap<String,Image>();
+		this.immagini=new TreeMap<String,ImageIcon>();
 	}
 	public int getAnno() {
 		return anno;
@@ -45,13 +48,13 @@ public class Opera {
 		this.isbn = isbn;
 	}
 
-	public SortedMap<String,Image> getImmagini() {
+	public SortedMap<String,ImageIcon> getImmagini() {
 		return immagini;
 	}
 	
 	//aggiunta nuova immagine
-	public void addImmagine(Connection c,String path,String titolo,Image imm){
-		this.immagini.put(titolo, imm);
+	public void addImmagine(Connection c,String path,ImageIcon imm){
+		this.immagini.put(this.getIsbn(), imm);
 		new OperaManagement(c).addImmagine(this,path);
 	}	
 	// cancellazione immagine

@@ -26,7 +26,7 @@ public class OperaManagement {
 			
 			pst.execute();
 			pst.close();
-			
+			JOptionPane.showMessageDialog(null, "Opera aggiunta correttamente.");
 			return new Opera(anno,titolo,autore,isbn,editore);
 			
 		}catch(Exception e){
@@ -35,8 +35,17 @@ public class OperaManagement {
 		}
 	}
 	
-	public void deleteOpera(Opera op){
-		// cancellazione opera dal DB
+	public boolean deleteOpera(String isbn){
+		try{
+		PreparedStatement pst=c.prepareStatement("DELETE FROM Opera WHERE isbn=?");
+		pst.setString(1, isbn);
+		pst.execute();
+		pst.close();
+		return true;
+		}catch(Exception e){
+			System.out.println(e);
+			return false;
+		}
 	}
 	
 	public void addImmagine(Opera o,String path){
@@ -57,19 +66,17 @@ public class OperaManagement {
 	public void deleteImmagine(Opera o,String path){
 		
 	}
-/*	public ArrayList<Opera> getOpera(String stringa){
+	
+	public ArrayList<Opera> getOpera(String stringa){
 		List<Opera>listaOpera = new ArrayList<Opera>();
 		//ricerca opera nel DB per titolo o isbn o autore
 		//return oggetto Opera trovato
+		return null;
 	}
-	public ArrayList<Opera> getOpera(int anno){
-		List<Opera>listaOpera = new ArrayList<Opera>();
-		//ricerca opera per anno
-		//return opera
-	}
-	public ArrayList<String> getTitles(){
+
+	public ArrayList<String> getTitle(String stringa){
 		List<String> listaTitoli = new ArrayList<String>();
 		//ricerca e restituzione dei titoli di tutte le opere nel DB
+		return null;
 	} 
-	*/
 }

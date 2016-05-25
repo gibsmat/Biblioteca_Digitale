@@ -59,7 +59,8 @@ public class Login{
 						close(); new Login(c); 
 					}
 					else if(txtUsername.getText().equals("ADMIN") && passwordField.getText().equals("ADMIN")){
-						//apire pagina admin  new AdminGui(c);
+						close();
+						new AdminGui(c,new Admin(c,"ADMIN","ADMIN"));
 					}
 					else{ 
 						Utente utente = new UserManagement(c).getUtente(txtUsername.getText(), passwordField);
@@ -78,9 +79,8 @@ public class Login{
 						}
 						else if(utente instanceof Acquisitore){
 							JOptionPane.showMessageDialog(null, "Acquisitore Loggato.");
+							close();
 							new AcquisitoreGui(c,utente);
-							//close();
-							//apri home acquisitore
 						}
 						else if(utente instanceof RevisoreTrascrizioni){
 							JOptionPane.showMessageDialog(null, "Revisore Trascrizioni loggato.");
@@ -128,7 +128,8 @@ public class Login{
 			
 			this.frame.setVisible(true);
 		}
-		public void close(){
-			this.frame.dispose();
-		}
+		
+public void close(){
+	this.frame.dispose();
+}
 	}

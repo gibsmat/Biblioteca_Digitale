@@ -70,7 +70,7 @@ public class UserGui {
 		Ricerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				close();
-				new Ricerca(c);
+				new Ricerca(c,utente);
 			}
 		});
 		

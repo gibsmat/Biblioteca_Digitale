@@ -13,7 +13,7 @@ import business.model.*;
  *
  */
 public class AcquisitoreGui extends JFrame{
-	final String path="log2.png";
+	final String path="img/hidan.jpg";
 	Connection c=null;
 	Acquisitore acquisitore=null;
 
@@ -26,10 +26,10 @@ public class AcquisitoreGui extends JFrame{
 	public void initialize(){
 		
 		//BOTTONE NUOVA OPERA
-		Opera newOpera=this.acquisitore.addOpera(c, 1695, "Buch2","Paolo","b-u-c-h-2","unknown");
+		Opera newOpera=this.acquisitore.addOpera(c, 1695, "Buch4","Paoletto","b-u-c-h-4","unknown");
 		//BOTTONE AGGIUNGI IMMAGINE
 		try{
-			newOpera.addImmagine(c, path, newOpera.getTitolo(),(new ImageIcon(path)).getImage());
+			newOpera.addImmagine(c, path,new ImageIcon(path));
 			JOptionPane.showMessageDialog(null, newOpera.getImmagini().values().toString());
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(null, e);

@@ -1,18 +1,11 @@
 package presentation;
 
-import business.model.*;
 import business.implementation.*;
-import java.awt.EventQueue;
-import java.awt.Window;
 import java.awt.Font;
-import java.awt.Component;
-import java.awt.Choice;
-import java.awt.List;
 import java.sql.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.regex.*;
 
 public class Registrazione {
 		private JFrame frame;
@@ -89,9 +82,9 @@ public class Registrazione {
 			lblCognome.setBounds(113, 205, 223, 35);
 			frame.getContentPane().add(lblCognome);
 			
-			JComboBox comboBox = new JComboBox();
+			JComboBox<String> comboBox = new JComboBox<String>();
 			comboBox.setToolTipText("");
-			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Utente Base", "Utente Avanzato"}));
+			comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato"}));
 			comboBox.setBounds(226, 441, 243, 19);
 			frame.getContentPane().add(comboBox);
 			//frame.getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblNewLabel, txtNome, txtCognome, txtUsername, lblNome, lblUsername, lblPassword, passwordField, lblCognome, btnRegistrati}));

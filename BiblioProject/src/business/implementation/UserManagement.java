@@ -97,8 +97,8 @@ public class UserManagement{
 	public boolean nuovoAcquisitore(String id,String nome,String cognome,String psw){
 		if(check(id)){
 			try{
-				String query="INSERT INTO Acquisitore(usernameAc,passwordAc,nomeAc,cognomeAc) VALUES (?,?,?,?)";
-				PreparedStatement pst=c.prepareStatement(query);
+				String queryAc="INSERT INTO Acquisitore(usernameAc,passwordAc,nomeAc,cognomeAc) VALUES (?,?,?,?)";
+				PreparedStatement pst=c.prepareStatement(queryAc);
 				pst.setString(1,id);
 				pst.setString(2,psw);
 				pst.setString(3,nome);
@@ -108,13 +108,11 @@ public class UserManagement{
 				pst.close(); 
 				return true;
 			}
-			catch(Exception e)
-			{
-				JOptionPane.showMessageDialog(null, "Errore. Registrazione non effettuata.");
+			catch(Exception e){
+				JOptionPane.showMessageDialog(null,e);
 				return false;
-					}
+			}
 		}else{
-			JOptionPane.showMessageDialog(null, "Username già presente.");
 			return false;
 		}
 	}
@@ -133,13 +131,10 @@ public class UserManagement{
 				pst.close(); 
 				return true;
 			}
-			catch(Exception e)
-			{
-				JOptionPane.showMessageDialog(null, "Errore. Registrazione non effettuata.");
+			catch(Exception e){
 				return false;
-					}
+			}
 		}else{
-			JOptionPane.showMessageDialog(null, "Username già presente.");
 			return false;
 		}
 	}
@@ -340,22 +335,24 @@ public class UserManagement{
 	}
 	
 	public boolean check(String username){
+		int i;
 		try{
-			String name;
-			String query="SELECT * FROM UTENTEBASE,UtenteAvanzato,Acquisitore,Trascrittore,RevisoreI,RevisoreT WHERE username=? OR usernameA=? OR usernameAc=? OR usernameT=? OR usernameI=? OR usernameTr=?";
-			PreparedStatement pst=c.prepareStatement(query);
-			for(int i=1;i<7;i++){
-				pst.setString(i,username);
-			}
-
-			ResultSet rs=pst.executeQuery();
+			String queryC="SELECT * FROM UTENTEBASE,UtenteAvanzato,Acquisitore,Trascrittore,RevisoreI,RevisoreT WHERE username=? OR usernameA=? OR usernameAc=? OR usernameT=? OR usernameI=? OR usernameTr=? ";
+			PreparedStatement pstC=c.prepareStatement(queryC);
+			for(i=1;i<7;i++){
+				pstC.setString(i,username);
+			}	
+			ResultSet rs=pstC.executeQuery();
 			if(rs.next()){			
-				pst.close();
+				pstC.close();
+				rs.close();
 				return false;
 			}
-			else 
-				return true;
+			pstC.close();
+			rs.close();	
+			return true; 
 		}catch(Exception e){
+			System.out.println(e);
 			return false;
 		}
 		
