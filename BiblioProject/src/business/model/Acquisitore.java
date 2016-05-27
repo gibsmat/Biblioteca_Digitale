@@ -75,10 +75,10 @@ public class Acquisitore implements Utente {
 	}
 	
 	public Opera addOpera(Connection c,int anno,String titolo,String autore,String isbn,String editore){
-		return new OperaManagement(c).insertOpera(anno,titolo,autore,isbn,editore);
+		return new OperaManagement().insertOpera(anno,titolo,autore,isbn,editore);
 	}
 	public void deleteImmagine(Connection c,Opera opera,String path){
-		new OperaManagement(c).deleteImmagine(opera,path);
+		new OperaManagement().deleteImmagine(opera,path);
 	}
 
 }

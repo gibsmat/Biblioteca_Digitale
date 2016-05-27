@@ -13,15 +13,17 @@ public class Login{
 		public JFrame frame=new JFrame();
 		private JTextField txtUsername;
 		private JPasswordField passwordField;	
+		Connection c;
 		
-		public Login(Connection c) {
-			initialize(c);
+		public Login() {
+			c= new DbConnection().dbConnector();
+			initialize();
 		}
 		/**
 		 * Initialize the contents of the frame.
 		 */
 		
-		private void initialize(Connection c) {
+		private void initialize() {
 
 			frame.setBounds(100, 100, 525, 398);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,31 +58,31 @@ public class Login{
 				public void actionPerformed(ActionEvent arg0) {										
 					if(txtUsername.getText().equals("") || passwordField.getPassword().length == 0){					
 						JOptionPane.showMessageDialog(null, "Inserire password e username!");
-						close(); new Login(c); 
+						close(); initialize(); 
 					}
 					else if(txtUsername.getText().equals("ADMIN") && passwordField.getText().equals("ADMIN")){
 						close();
-						new AdminGui(c,new Admin(c,"ADMIN","ADMIN"));
+						new AdminGui(new Admin("ADMIN","ADMIN"));
 					}
 					else{ 
-						Utente utente = new UserManagement(c).getUtente(txtUsername.getText(), passwordField);
+						Utente utente = new UserManagement().getUtente(txtUsername.getText(), passwordField);
 						if(utente instanceof UtenteAvanzato){
 							close();
-							new UserGui(c,(UtenteAvanzato)utente);
+							new UserGui((UtenteAvanzato)utente);
 						}
 						else if(utente instanceof UtenteBase){
 							close();
-							new UserGui(c,(UtenteBase)utente);
+							new UserGui((UtenteBase)utente);
 						}
 						else if(utente instanceof Trascrittore){
 							JOptionPane.showMessageDialog(null, "Trascrittore Loggato.");
 							close();
-							//apri home trascrittore
+							new TrascrittoreGui(utente);
 						}
 						else if(utente instanceof Acquisitore){
 							JOptionPane.showMessageDialog(null, "Acquisitore Loggato.");
 							close();
-							new AcquisitoreGui(c,utente);
+							new AcquisitoreGui(utente);
 						}
 						else if(utente instanceof RevisoreTrascrizioni){
 							JOptionPane.showMessageDialog(null, "Revisore Trascrizioni loggato.");
@@ -93,7 +95,7 @@ public class Login{
 						else{
 							JOptionPane.showMessageDialog(null, "Username e password non validi.");
 							close();
-							new Login(c);
+							initialize();
 						}
 					}
 				}
@@ -114,7 +116,7 @@ public class Login{
 			btnRegistrati.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {	
 					close();
-					new Registrazione(c);
+					new Registrazione();
 				}
 			});
 			btnRegistrati.setBackground(UIManager.getColor("Button.light"));

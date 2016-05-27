@@ -1,21 +1,32 @@
 package presentation;
 
 import java.sql.*;
-import java.util.*;
 import java.awt.Font;
+import java.awt.ScrollPane;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import business.implementation.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import net.miginfocom.swing.MigLayout;
+
+import business.implementation.DbConnection;
 import business.model.*;
 
 public class AdminGui {
 	JFrame frame,frame1,frame2;
-	Connection c=null;
+	Connection c=new DbConnection().dbConnector();;
 	Admin admin;
 	
-public AdminGui(Connection c,Admin admin){
-	this.c=c;
+public AdminGui(Admin admin){
 	this.admin=admin;
 	initialize();
 }
@@ -62,7 +73,7 @@ public void initialize(){
 	btnNewButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			close();
-			deleteUtente();
+			showUsers();
 		}
 	});
 	
@@ -107,8 +118,8 @@ public void addUtente(){
 	//Bottone Back
 	btnBack.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			close();
-			new AdminGui(c,admin);
+			frame1.dispose();
+			new AdminGui(admin);
 		}	
 	});
 	
@@ -190,107 +201,13 @@ public void addUtente(){
 					break;
 			}
 			frame1.dispose();
-			new AdminGui(c,admin);
+			new AdminGui(admin);
 		}
 	});	
 	this.frame1.setVisible(true);
 }
 
-public void deleteUtente(){
-	JTextField nome;
-	JTextField cognome;	
-	
-	frame2 = new JFrame();
-	frame2.setBounds(100, 100, 527, 613);
-	frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame2.getContentPane().setLayout(null);
-	
-	JLabel label = new JLabel("");
-	label.setIcon(new ImageIcon("img/log2.png"));
-	label.setBounds(140, 13, 207, 179);
-	frame2.getContentPane().add(label);
-	
-	JLabel label_1 = new JLabel("Nome :");
-	label_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	label_1.setBounds(62, 227, 160, 38);
-	frame2.getContentPane().add(label_1);
-	
-	JLabel label_2 = new JLabel("Cognome:");
-	label_2.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	label_2.setBounds(62, 297, 157, 43);
-	frame2.getContentPane().add(label_2);
-	
-	JComboBox<String> utenza = new JComboBox<String>();
-	utenza.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato ", "Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
-	utenza.setToolTipText("");
-	utenza.setFont(new Font("Roboto Black", Font.PLAIN, 15));
-	utenza.setBounds(234, 391, 211, 42);
-	frame2.getContentPane().add(utenza);
-	
-	JLabel label_4 = new JLabel("Utente");
-	label_4.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	label_4.setBounds(62, 378, 160, 57);
-	frame2.getContentPane().add(label_4);
-	
-	nome = new JTextField();
-	nome.setBounds(233, 227, 196, 43);
-	frame2.getContentPane().add(nome);
-	nome.setColumns(10);
-	
-	cognome = new JTextField();
-	cognome.setColumns(10);
-	cognome.setBounds(233, 297, 196, 43);
-	frame2.getContentPane().add(cognome);
-	
-	JButton btnRimuovi = new JButton("Rimuovi");
-	btnRimuovi.setFont(new Font("Roboto Black", Font.PLAIN, 15));
-	btnRimuovi.setBounds(179, 496, 148, 45);
-	frame2.getContentPane().add(btnRimuovi);
-	
-	//bottone rimuovi
-	btnRimuovi.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			switch (utenza.getSelectedItem().toString()) {
-				case "Utente Base":
-					admin.clearUtente(nome.getText());				
-					break;
-				case "Utente Avanzato":
-					admin.clearUtente(nome.getText());					
-					break;
-				case "Trascrittore":
-					admin.clearTrascrittore(nome.getText());			
-					break;
-				case "Acquisitore":
-					admin.clearAcquisitore(nome.getText());
-					break;
-				case "Revisore Immagini" :
-					admin.clearRevisoreImm(nome.getText());
-					break;
-				case "Revisore Trascrizioni" :
-					admin.clearRevisoreTr(nome.getText());
-					break;
-				default:
-					JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'utente");
-					break;
-			}
-		frame2.dispose();
-		new AdminGui(c,admin);			
-		}
-	});
-	
-	JButton button = new JButton("Back");
-	button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
-	button.setBounds(12, 25, 97, 25);
-	frame2.getContentPane().add(button);
-	button.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			frame2.dispose();
-			new AdminGui(c,admin);			
-		}
-	});
-	
-	this.frame2.setVisible(true);
-}
+
 
 public void deleteOpera(){
 	JFrame frame3;
@@ -310,7 +227,7 @@ public void deleteOpera(){
 	button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			frame3.dispose();
-			new AdminGui(c,admin);
+			new AdminGui(admin);
 		}
 	});
 	
@@ -359,36 +276,151 @@ public void deleteOpera(){
 		public void actionPerformed(ActionEvent arg0) {
 			admin.clearOpera(codice.getText());
 			frame3.dispose();
-			new AdminGui(c,admin);
+			new AdminGui(admin);
 		}
 	});
 	
 	frame3.setVisible(true);
 }
 
-	/* dentro al bottone cancella utente
-	* TreeSet<String> ss =new UserManagement(c).findUsers();
-	* showUsers(ss);
-	* click sul bottone cancella utente
-	*  new Admin(c).clearUtente("usern");  
-	*/
-	
-	/* bottone aggiungi trascrittore
-	 new Admin(c).addTrascrittore("trascrittore2","psw","nome","cognome");
-	*/
-	
-	/* bottone cancella trascrittore
-	  TreeSet<String> st=new UserManagement(c).findTr();
-	  for(String s : st){
-		  System.out.println(s);
-	  }
-	  showUsers(st);
-		BOTTONE CANCELLA TRASCRITTORE
-	  new Admin(c).clearTrascrittore("trascrittore");
-	 */
 
-public void showUsers(TreeSet<String> utenti){
-	//mostrare lista username degli utenti
+public void showUsers(){
+	JFrame frame4 = new JFrame();
+	JTable table;
+	
+	frame4.setBounds(100, 100, 920, 811);
+	frame4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame4.getContentPane().setLayout(new MigLayout("", "[343px][2px][480px]", "[57px][76px][496px][47px]"));
+	
+	JScrollPane scrollPane_1 = new JScrollPane();
+	frame4.getContentPane().add(scrollPane_1, "cell 0 2 3 1,grow");
+	
+	JScrollPane scrollPane = new JScrollPane();
+	scrollPane_1.setViewportView(scrollPane);
+	
+	table = new JTable();
+	table.setFont(new Font("Roboto Black", Font.PLAIN, 13));
+	scrollPane.setViewportView(table);
+	
+	JButton btnVisualizza = new JButton("visualizza");
+	btnVisualizza.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+		
+		}
+	});
+	
+	btnVisualizza.setFont(new Font("Roboto Black", Font.PLAIN, 24));
+	frame4.getContentPane().add(btnVisualizza, "cell 0 3 2 1,alignx center,growy");
+	
+	JLabel label = new JLabel("");
+	label.setIcon(new ImageIcon("img/log2.png"));
+	frame4.getContentPane().add(label, "cell 0 0 1 2,alignx center,aligny center");
+	
+	JComboBox<String> comboBox = new JComboBox<String>();
+	comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato ", "Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
+	comboBox.setToolTipText("");
+	frame4.getContentPane().add(comboBox, "cell 2 1,growx,aligny center");
+	
+	JButton btnRimuovi = new JButton("Rimuovi");
+	btnRimuovi.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			deleteUtente();
+		}
+	});
+	
+	btnRimuovi.setFont(new Font("Roboto Black", Font.PLAIN, 24));
+	frame4.getContentPane().add(btnRimuovi, "cell 2 3,alignx center,growy");
+	
+	JLabel lblSelezionaLaTabella = new JLabel("Seleziona la tabella da visualizzare ");
+	lblSelezionaLaTabella.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+	frame4.getContentPane().add(lblSelezionaLaTabella, "cell 1 0 2 1,alignx center,aligny bottom");
+	
+	frame4.setVisible(true);
+}
+
+public void deleteUtente(){
+	JTextField nome;
+	
+	frame2 = new JFrame();
+	frame2.setBounds(100, 100, 527, 613);
+	frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame2.getContentPane().setLayout(null);
+	
+	JLabel label = new JLabel("");
+	label.setIcon(new ImageIcon("img/log2.png"));
+	label.setBounds(140, 13, 207, 179);
+	frame2.getContentPane().add(label);
+	
+	JLabel lblUsername = new JLabel("Username :");
+	lblUsername.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+	lblUsername.setBounds(62, 227, 160, 38);
+	frame2.getContentPane().add(lblUsername);
+	
+	JComboBox<String> utenza = new JComboBox<String>();
+	utenza.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato ", "Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
+	utenza.setToolTipText("");
+	utenza.setFont(new Font("Roboto Black", Font.PLAIN, 15));
+	utenza.setBounds(228, 336, 211, 42);
+	frame2.getContentPane().add(utenza);
+	
+	JLabel label_3 = new JLabel("Utente");
+	label_3.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+	label_3.setBounds(62, 323, 160, 57);
+	frame2.getContentPane().add(label_3);
+	
+	nome = new JTextField();
+	nome.setBounds(233, 227, 196, 43);
+	frame2.getContentPane().add(nome);
+	nome.setColumns(10);
+	
+	JButton btnRimuovi = new JButton("Rimuovi");
+	btnRimuovi.setFont(new Font("Roboto Black", Font.PLAIN, 15));
+	btnRimuovi.setBounds(173, 438, 148, 45);
+	frame2.getContentPane().add(btnRimuovi);
+	
+	btnRimuovi.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {	
+			switch (utenza.getSelectedItem().toString()) {
+			case "Utente Base":
+				admin.clearUtente(nome.getText());				
+				break;
+			case "Utente Avanzato":
+				admin.clearUtente(nome.getText());					
+				break;
+			case "Trascrittore":
+				admin.clearTrascrittore(nome.getText());			
+				break;
+			case "Acquisitore":
+				admin.clearAcquisitore(nome.getText());
+				break;
+			case "Revisore Immagini" :
+				admin.clearRevisoreImm(nome.getText());
+				break;
+			case "Revisore Trascrizioni" :
+				admin.clearRevisoreTr(nome.getText());
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'utente");
+				break;
+		}
+	frame2.dispose();
+	new AdminGui(admin);
+		}
+	});
+
+	
+	JButton button = new JButton("Back");
+	button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+	button.setBounds(12, 25, 97, 25);
+	frame2.getContentPane().add(button);
+	button.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			frame2.dispose();
+			showUsers();			
+		}
+	});
+
+	this.frame2.setVisible(true);
 }
 
 public void close(){

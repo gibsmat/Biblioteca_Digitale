@@ -15,18 +15,19 @@ public class Registrazione {
 		private JPasswordField passwordField;
 		private JLabel lblCognome;
 		private JButton btnRegistrati;
+		Connection c=new DbConnection().dbConnector();
 
 		/**
 		 * Create the application.
 		 */
-		public Registrazione(Connection c) {
-			initialize(c);
+		public Registrazione(){
+			initialize();
 		}
 
 		/**
 		 * Initialize the contents of the frame.
 		 */
-		private void initialize(Connection c) {
+		private void initialize() {
 			frame = new JFrame();
 			frame.setBounds(100, 100, 562, 630);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,42 +104,42 @@ public class Registrazione {
 					if(txtUsername.getText().equals("") || passwordField.getPassword().length == 0){
 						JOptionPane.showMessageDialog(null, "I campi username e password sono obbligatori!");
 						close();	
-						new Registrazione(c);
+						new Registrazione();
 					}
 					else if(passwordField.getText().length() < 5){
 						JOptionPane.showMessageDialog(null, "La password deve contenere almeno 5 caratteri.");
 						close(); 
-						new Registrazione(c);
+						new Registrazione();
 					}
 					else if(txtUsername.getText().equals("ADMIN")){
 						JOptionPane.showMessageDialog(null, "Username non disponibile.");
 						close(); 
-						new Registrazione(c);
+						new Registrazione();
 					}
 					else{											
 						if(comboBox.getSelectedItem().toString().equals("Utente Base")){	
 							//creazione utente base
-							if(new UserManagement(c).nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText()))
+							if(new UserManagement().nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText()))
 							{
 								JOptionPane.showMessageDialog(null, "Registrazione effettuata.");
 								close();
-								new Login(c);
+								new Login();
 							}
 							else{
 								close();
-								new Registrazione(c);
+								new Registrazione();
 							}
 						}
 						else{	//creazione utente avanzato
-							if(new UserManagement(c).nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText(),'a'))
+							if(new UserManagement().nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText(),'a'))
 							{
 							JOptionPane.showMessageDialog(null, "Registrazione effettuata.");
 							close();
-							new Login(c);
+							new Login();
 							}
 							else{
 								close();
-								new Registrazione(c);
+								new Registrazione();
 							}
 						}
 					}

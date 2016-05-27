@@ -3,6 +3,7 @@
  */
 package presentation;
 
+import business.implementation.DbConnection;
 import business.model.*;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,11 +18,10 @@ import java.awt.event.ActionEvent;
  */
 public class UserGui {
 	JFrame frame;
-	Connection c=null;
+	Connection c=new DbConnection().dbConnector();;
 	UtenteBase utente;
 	
-	public UserGui(Connection c,UtenteBase utente){
-		this.c=c;
+	public UserGui(UtenteBase utente){
 		this.utente=utente;
 		initialize();
 	}
@@ -53,7 +53,7 @@ public class UserGui {
 		btnPaginaPer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				close();
-				new PersonalGui(c,utente);				
+				new PersonalGui(utente);				
 			}
 		});
 		
@@ -70,7 +70,7 @@ public class UserGui {
 		Ricerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				close();
-				new Ricerca(c,utente);
+				new Ricerca(utente);
 			}
 		});
 		

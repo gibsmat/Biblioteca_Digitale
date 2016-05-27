@@ -11,13 +11,11 @@ public class Admin {
 	String adminId;
 	JPasswordField password= null;
 	boolean loginStatus;
-	Connection c=null;
+	Connection c=new DbConnection().dbConnector();;
 	
-	public Admin(Connection c){		
-		this.c=c;
+	public Admin(){		
 	}	
-	public Admin(Connection c,String adminId,String psw){
-		this.c=c;
+	public Admin(String adminId,String psw){
 		this.adminId=adminId;
 		this.password=new JPasswordField(psw);
 		this.loginStatus=true;
@@ -39,7 +37,7 @@ public class Admin {
 	}
 	
 	public void clearOpera(String isbn){
-		if(new OperaManagement(this.c).deleteOpera(isbn)){
+		if(new OperaManagement().deleteOpera(isbn)){
 			JOptionPane.showMessageDialog(null, "Opera eliminata correttamente.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'opera.");
@@ -48,7 +46,7 @@ public class Admin {
 	} 
 	
 	public void clearUtente(String user){
-		if(new UserManagement(this.c).deleteUtente(user)){
+		if(new UserManagement().deleteUtente(user)){
 			JOptionPane.showMessageDialog(null, "Utente eliminato.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'utente.");
@@ -56,7 +54,7 @@ public class Admin {
 	}
 	
 	public void addTrascrittore(String username,String psw,String nome,String cognome){
-		if(new UserManagement(this.c).nuovoTrascrittore(username, nome, cognome, psw)){
+		if(new UserManagement().nuovoTrascrittore(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "Trascrittore aggiunto correttamente.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente trascrittore.");
@@ -64,7 +62,7 @@ public class Admin {
 	}
 	
 	public void clearTrascrittore(String trascrittore){
-		if(new UserManagement(this.c).deleteTrascrittore(trascrittore)){
+		if(new UserManagement().deleteTrascrittore(trascrittore)){
 			JOptionPane.showMessageDialog(null, "Trascrittore eliminato.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del trascrittore.");
@@ -72,7 +70,7 @@ public class Admin {
 	}
 	
 	public void addAcquisitore(String username,String nome,String cognome,String psw){
-		if(new UserManagement(this.c).nuovoAcquisitore(username, nome, cognome, psw)){
+		if(new UserManagement().nuovoAcquisitore(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "Acquisitore aggiunto correttamente.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente acquisitore.");
@@ -80,7 +78,7 @@ public class Admin {
 	}
 	
 	public void clearAcquisitore(String acquisitore){
-		if(new UserManagement(this.c).deleteAcquisitore(acquisitore)){
+		if(new UserManagement().deleteAcquisitore(acquisitore)){
 			JOptionPane.showMessageDialog(null, "Acquisitore eliminato.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'acquisitore.");
@@ -88,7 +86,7 @@ public class Admin {
 	}
 	
 	public void addRevisoreImm(String username,String nome,String cognome,String psw){
-		if(new UserManagement(this.c).nuovoRevisoreImm(username, nome, cognome, psw)){
+		if(new UserManagement().nuovoRevisoreImm(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "revisore immagini aggiunto correttamente.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente revisore immagini.");
@@ -96,7 +94,7 @@ public class Admin {
 	}
 	
 	public void clearRevisoreImm(String revisore){
-		if(new UserManagement(this.c).deleteRevisoreI(revisore)){
+		if(new UserManagement().deleteRevisoreI(revisore)){
 			JOptionPane.showMessageDialog(null, "Revisore immagini eliminato.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del revisore immagini.");
@@ -104,7 +102,7 @@ public class Admin {
 	}
 	
 	public void addRevisoreTr(String username,String nome,String cognome,String psw){
-		if(new UserManagement(this.c).nuovoRevisoreT(username, nome, cognome, psw)){
+		if(new UserManagement().nuovoRevisoreT(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "revisore trascrizioni aggiunto correttamente.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente revisore trascrizioni.");
@@ -112,7 +110,7 @@ public class Admin {
 	}
 	
 	public void clearRevisoreTr(String revisore){
-		if(new UserManagement(this.c).deleteRevisoreT(revisore)){
+		if(new UserManagement().deleteRevisoreT(revisore)){
 			JOptionPane.showMessageDialog(null, "Revisore trascrizioni eliminato.");
 		}else{
 			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del revisore trascrizioni.");

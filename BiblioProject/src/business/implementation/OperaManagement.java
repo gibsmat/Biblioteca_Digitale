@@ -7,10 +7,9 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 public class OperaManagement {
-	Connection c = null;
+	Connection c = new DbConnection().dbConnector();;
 	
-	public OperaManagement(Connection c){
-		this.c=c;
+	public OperaManagement(){
 	}
 	
 	public Opera insertOpera(int anno,String titolo,String autore,String isbn,String editore){

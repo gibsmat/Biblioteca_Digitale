@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import business.implementation.DbConnection;
 import business.model.*;
 
 /**
@@ -21,11 +23,10 @@ import business.model.*;
  */
 public class PersonalGui {
 	JFrame frame;
-	Connection c=null;
+	Connection c=new DbConnection().dbConnector();;
 	UtenteBase utentebase=null;
 	
-	public PersonalGui(Connection c,UtenteBase utente){
-		this.c=c;
+	public PersonalGui(UtenteBase utente){
 		this.utentebase=utente;
 		initialize();
 	}
@@ -81,6 +82,7 @@ public class PersonalGui {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				close();
+				new UserGui(utentebase);
 			}
 		});
 		btnBack.setBackground(Color.LIGHT_GRAY);

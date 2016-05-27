@@ -7,6 +7,7 @@ package presentation;
 import java.sql.*;
 import javax.swing.*;
 
+import business.implementation.DbConnection;
 import business.model.*;
 /**
  * @author antony
@@ -14,11 +15,10 @@ import business.model.*;
  */
 public class AcquisitoreGui extends JFrame{
 	final String path="img/hidan.jpg";
-	Connection c=null;
+	Connection c=new DbConnection().dbConnector();;
 	Acquisitore acquisitore=null;
 
-	public AcquisitoreGui(Connection c,Utente a){
-		this.c=c;
+	public AcquisitoreGui(Utente a){
 		this.acquisitore=(Acquisitore)a;
 		initialize();
 	}

@@ -14,12 +14,12 @@ import business.implementation.*;
 
 public class Ricerca implements MouseListener {
 	JFrame frame;
-	JTextField txtRicercaIlTuo;
-	Connection c=null;
+	JTextField Titolo;
+	JTable table;
+	Connection c=new DbConnection().dbConnector();;
 	UtenteBase utente=null;
 
-	public Ricerca(Connection c,UtenteBase utente) {
-		this.c=c;
+	public Ricerca(UtenteBase utente) {
 		this.utente=utente;
 		initialize();
 	}
@@ -28,8 +28,9 @@ public class Ricerca implements MouseListener {
 	 * Initialize the contents of the frame.
 	 */
 	public void initialize() {
+		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 931, 779);
+		frame.setBounds(100, 100, 931, 586);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -45,40 +46,42 @@ public class Ricerca implements MouseListener {
 		lblRicerca.setBackground(new Color(255, 0, 0));
 		frame.getContentPane().add(lblRicerca);
 		
-		txtRicercaIlTuo = new JTextField();
-		txtRicercaIlTuo.setBounds(23, 229, 682, 22);
-		txtRicercaIlTuo.setText("Ricerca per titolo o isbn....");
-		frame.getContentPane().add(txtRicercaIlTuo);
-		txtRicercaIlTuo.setColumns(10);
-		txtRicercaIlTuo.addMouseListener(this);
+		Titolo = new JTextField();
+		Titolo.setBounds(23, 229, 682, 22);
+		Titolo.setText("Ricerca per titolo o isbn....");
+		frame.getContentPane().add(Titolo);
+		Titolo.setColumns(10);
+		Titolo.addMouseListener(this);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(216, 196, 444, 2);
 		frame.getContentPane().add(separator);
 		
 		JButton RicercaButtton = new JButton("Ricerca");
-		RicercaButtton.setBounds(751, 228, 97, 25);
-		RicercaButtton.setForeground(Color.WHITE);
-		RicercaButtton.setBackground(Color.DARK_GRAY);
 		
-		//Bottone di ricerca
 		RicercaButtton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {	
-				OperaManagement opm=new OperaManagement(c);
+			public void actionPerformed(ActionEvent e) {
+				OperaManagement opm=new OperaManagement();
 				if(utente instanceof UtenteAvanzato){
-					showOpere(opm.getOpera(txtRicercaIlTuo.getText()));
+					showOpere(opm.getOpera(Titolo.getText()));
 				}else{
-					showTitoli(opm.getTitle(txtRicercaIlTuo.getText()));
-				}
+					showTitoli(opm.getTitle(Titolo.getText()));
+				}				
 			}
 		});
 		
+		RicercaButtton.setBounds(751, 228, 97, 25);
+		RicercaButtton.setForeground(Color.WHITE);
+		RicercaButtton.setBackground(Color.DARK_GRAY);
 		frame.getContentPane().add(RicercaButtton);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(62, 282, 745, 421);
+		scrollPane.setBounds(72, 296, 764, 230);
 		frame.getContentPane().add(scrollPane);
-	
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+			
 		this.frame.setVisible(true);
 	}
 	
@@ -96,7 +99,7 @@ public class Ricerca implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		txtRicercaIlTuo.setText("");		
+		Titolo.setText("");		
 	}
 
 	@Override

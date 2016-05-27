@@ -55,7 +55,7 @@ public class Opera {
 	//aggiunta nuova immagine
 	public void addImmagine(Connection c,String path,ImageIcon imm){
 		this.immagini.put(this.getIsbn(), imm);
-		new OperaManagement(c).addImmagine(this,path);
+		new OperaManagement().addImmagine(this,path);
 	}	
 	// cancellazione immagine
 	public void deleteImmagine(String name) {

@@ -10,10 +10,9 @@ import business.model.*;
 import javax.swing.JOptionPane;
 
 public class UserManagement{
-	Connection c;
+	Connection c=new DbConnection().dbConnector();;
 	
-	public UserManagement(Connection c){	
-		this.c=c;
+	public UserManagement(){	
 	}
 	
 	public boolean nuovoUtente(String id,String nome,String cognome,String psw){
@@ -322,7 +321,7 @@ public class UserManagement{
 					JOptionPane.showMessageDialog(null, "Username o password non validi.");
 					return null;
 				}				
-			}catch(Exception e1){
+			}catch(Exception e){
 				JOptionPane.showMessageDialog(null, "utente avanzato inesistente");
 				return null;
 			}
@@ -518,7 +517,7 @@ public class UserManagement{
 	
 	public boolean deleteRevisoreI(String rev){
 		try{
-			PreparedStatement pst=c.prepareStatement("DELETE FROM RevisoreI where usernameIs=?");
+			PreparedStatement pst=c.prepareStatement("DELETE FROM RevisoreI where usernameI=?");
 			pst.setString(1,rev);
 			pst.execute();
 			return true;			
