@@ -2,8 +2,6 @@ package presentation;
 
 import java.sql.*;
 import java.awt.Font;
-import java.awt.ScrollPane;
-
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -20,14 +18,14 @@ import net.miginfocom.swing.MigLayout;
 
 import business.implementation.DbConnection;
 import business.model.*;
+import listener.ListenerEventi;
 
 public class AdminGui {
 	JFrame frame,frame1,frame2;
-	Connection c=new DbConnection().dbConnector();;
-	Admin admin;
+	Connection c= DbConnection.dbConnector();
+	static Admin admin=new Admin();
 	
-public AdminGui(Admin admin){
-	this.admin=admin;
+public AdminGui(){
 	initialize();
 }
 
@@ -115,11 +113,12 @@ public void addUtente(){
 	btnBack.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 	btnBack.setBounds(12, 30, 97, 25);
 	frame1.getContentPane().add(btnBack);
+	
 	//Bottone Back
 	btnBack.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			frame1.dispose();
-			new AdminGui(admin);
+			ListenerEventi.changePage("Admin", null);
 		}	
 	});
 	
@@ -183,25 +182,9 @@ public void addUtente(){
 	//bottone aggiungi
 	btnNewButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			switch (Utenza.getSelectedItem().toString()) {
-				case "Trascrittore":
-					admin.addTrascrittore(Username.getText(), Password.getText(), nome.getText(), cognome.getText());				
-					break;
-				case "Acquisitore":
-					admin.addAcquisitore(Username.getText(), Password.getText(), nome.getText(), cognome.getText());
-					break;
-				case "Revisore Immagini" :
-					admin.addRevisoreImm(Username.getText(), Password.getText(), nome.getText(), cognome.getText());
-					break;
-				case "Revisore Trascrizioni" :
-					admin.addRevisoreTr(Username.getText(), Password.getText(), nome.getText(), cognome.getText());
-					break;
-				default:
-					JOptionPane.showMessageDialog(null, "Errore aggiunta utente");
-					break;
-			}
+			ListenerEventi.addUtente(admin,Utenza.getSelectedItem().toString(),Username.getText(),Password.getText(),nome.getText(),cognome.getText());			
 			frame1.dispose();
-			new AdminGui(admin);
+			ListenerEventi.changePage("Admin", null);
 		}
 	});	
 	this.frame1.setVisible(true);
@@ -227,7 +210,7 @@ public void deleteOpera(){
 	button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			frame3.dispose();
-			new AdminGui(admin);
+			ListenerEventi.changePage("Admin",null);
 		}
 	});
 	
@@ -274,9 +257,8 @@ public void deleteOpera(){
 	
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			admin.clearOpera(codice.getText());
 			frame3.dispose();
-			new AdminGui(admin);
+			ListenerEventi.deleteOpera(admin,codice.getText());			
 		}
 	});
 	
@@ -380,36 +362,13 @@ public void deleteUtente(){
 	
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {	
-			switch (utenza.getSelectedItem().toString()) {
-			case "Utente Base":
-				admin.clearUtente(nome.getText());				
-				break;
-			case "Utente Avanzato":
-				admin.clearUtente(nome.getText());					
-				break;
-			case "Trascrittore":
-				admin.clearTrascrittore(nome.getText());			
-				break;
-			case "Acquisitore":
-				admin.clearAcquisitore(nome.getText());
-				break;
-			case "Revisore Immagini" :
-				admin.clearRevisoreImm(nome.getText());
-				break;
-			case "Revisore Trascrizioni" :
-				admin.clearRevisoreTr(nome.getText());
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'utente");
-				break;
-		}
-	frame2.dispose();
-	new AdminGui(admin);
+			frame2.dispose();
+			ListenerEventi.deleteUtente(admin,utenza.getSelectedItem().toString(),nome.getText());					
 		}
 	});
 
 	
-	JButton button = new JButton("Back");
+/*	JButton button = new JButton("Back");
 	button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 	button.setBounds(12, 25, 97, 25);
 	frame2.getContentPane().add(button);
@@ -418,7 +377,7 @@ public void deleteUtente(){
 			frame2.dispose();
 			showUsers();			
 		}
-	});
+	});	*/
 
 	this.frame2.setVisible(true);
 }

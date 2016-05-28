@@ -4,13 +4,13 @@ import java.sql.*;
 import java.util.Calendar;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import javax.swing.JPasswordField;
 import business.model.*;
+import business.Eccezioni;
 import javax.swing.JOptionPane;
 
 public class UserManagement{
-	Connection c=new DbConnection().dbConnector();;
+	Connection c=DbConnection.dbConnector();;
 	
 	public UserManagement(){	
 	}
@@ -32,12 +32,12 @@ public class UserManagement{
 			}
 			catch(Exception e)
 			{
-				JOptionPane.showMessageDialog(null, "Errore. Registrazione non effettuata.");
+				new Eccezioni("Errore. Registrazione non effettuata.",e);
 				return false;
 					}
 		}
 		else{
-			JOptionPane.showMessageDialog(null, "Username già presente.");
+			new Eccezioni("Username già presente.");
 			return false;
 		}
 		}
@@ -59,11 +59,11 @@ public class UserManagement{
 			}
 			catch(Exception e)
 			{
-				JOptionPane.showMessageDialog(null, "Errore. Registrazione non effettuata.");
+				new Eccezioni("Errore. Registrazione non effettuata.",e);
 				return false;
 					}
 		}else{
-			JOptionPane.showMessageDialog(null, "Username già presente.");
+			new Eccezioni("Username già presente.");
 			return false;
 		}
 	}
@@ -84,11 +84,11 @@ public class UserManagement{
 			}
 			catch(Exception e)
 			{
-				JOptionPane.showMessageDialog(null, "Errore. Registrazione non effettuata.");
+				new Eccezioni("Errore. Registrazione non effettuata.",e);
 				return false;
 					}
 		}else{
-			JOptionPane.showMessageDialog(null, "Username già presente.");
+			new Eccezioni("Username già presente.");
 			return false;
 		}
 	}
@@ -108,7 +108,7 @@ public class UserManagement{
 				return true;
 			}
 			catch(Exception e){
-				JOptionPane.showMessageDialog(null,e);
+				new Eccezioni(e);
 				return false;
 			}
 		}else{
@@ -154,11 +154,11 @@ public class UserManagement{
 			}
 			catch(Exception e)
 			{
-				JOptionPane.showMessageDialog(null, "Errore. Registrazione non effettuata.");
+				new Eccezioni("Errore. Registrazione non effettuata.",e);
 				return false;
 					}
 		}else{
-			JOptionPane.showMessageDialog(null, "Username già presente.");
+			new Eccezioni("Username già presente.");
 			return false;
 		}
 	}
@@ -250,38 +250,38 @@ public class UserManagement{
 													return null;													
 													}				
 												}catch(Exception e1){
-												JOptionPane.showMessageDialog(null, "Revisore trascrizioni inesistente");
+													new Eccezioni("Revisore trascrizioni inesistente",e1);
 												return null;
 												}
 											
 											}				
 										}catch(Exception e1){
-										JOptionPane.showMessageDialog(null, "Revisore immagini inesistente");
+											new Eccezioni("Revisore immagini inesistente",e1);
 										return null;
 										}
 
 									
 									}				
 								}catch(Exception e1){
-								JOptionPane.showMessageDialog(null, "acquisitore inesistente");
+									new Eccezioni("acquisitore inesistente",e1);
 								return null;
 								}
 
 							
 							}				
 						}catch(Exception e1){
-						JOptionPane.showMessageDialog(null, "trascrittore inesistente");
+							new Eccezioni("trascrittore inesistente",e1);
 						return null;
 						}
 
 					}				
 				}catch(Exception e1){
-				JOptionPane.showMessageDialog(null, "utente avanzato inesistente");
+					new Eccezioni("utente avanzato inesistente",e1);
 				return null;
 				}
 			}
 		}catch(Exception e){
-				JOptionPane.showMessageDialog(null, "utente base inesistente.");
+			new Eccezioni("utente base inesistente.",e);
 				return null;
 			}
 
@@ -318,16 +318,16 @@ public class UserManagement{
 					return new UtenteAvanzato(nome,cognome,username,password,dataI,true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Username o password non validi.");
+					new Eccezioni("Username o password non validi.");
 					return null;
 				}				
 			}catch(Exception e){
-				JOptionPane.showMessageDialog(null, "utente avanzato inesistente");
+				new Eccezioni("utente avanzato inesistente",e);
 				return null;
 			}
 			}
 		}catch(Exception e){
-				JOptionPane.showMessageDialog(null, "utente base inesistente.");
+			new Eccezioni("utente base inesistente.",e);
 				return null;
 			}
 
@@ -351,7 +351,7 @@ public class UserManagement{
 			rs.close();	
 			return true; 
 		}catch(Exception e){
-			System.out.println(e);
+			new Eccezioni(e);
 			return false;
 		}
 		
@@ -370,7 +370,7 @@ public class UserManagement{
 			}
 			rs.close();
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni(e);
 			return null;
 		} 
 		try{
@@ -382,7 +382,7 @@ public class UserManagement{
 			rsA.close();
 			return utentiBase;
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni(e);
 			return null;
 		} 
 	}
@@ -401,7 +401,7 @@ public class UserManagement{
 			rs.close();
 			return trascrittori;
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni(e);
 			return null;
 		} 
 		
@@ -421,7 +421,7 @@ public class UserManagement{
 			rs.close();
 			return acquisitori;
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni(e);
 			return null;
 		} 
 		
@@ -441,7 +441,7 @@ public class UserManagement{
 			rs.close();
 			return revisori;
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni(e);
 			return null;
 		} 
 	}
@@ -460,7 +460,7 @@ public class UserManagement{
 			rs.close();
 			return revisori;
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni(e);
 			return null;
 		} 
 	}
@@ -475,7 +475,7 @@ public class UserManagement{
 			pstA.execute();
 			return true;			
 			}catch(Exception e){
-				JOptionPane.showMessageDialog(null, e);
+				new Eccezioni(e);
 				return false;
 			}
 		}else{
@@ -485,7 +485,7 @@ public class UserManagement{
 				pst.execute();
 				return true;
 				}catch(Exception e){
-					JOptionPane.showMessageDialog(null,"Accipicchia");
+					new Eccezioni(e);
 					return false;
 				}
 		}
@@ -498,7 +498,7 @@ public class UserManagement{
 			pst.execute();
 			return true;			
 			}catch(Exception e){
-				JOptionPane.showMessageDialog(null, e);
+				new Eccezioni(e);
 				return false;
 			}
 	}
@@ -510,7 +510,7 @@ public class UserManagement{
 			pstA.execute();
 			return true;			
 			}catch(Exception e){
-				JOptionPane.showMessageDialog(null, e);
+				new Eccezioni(e);
 				return false;
 			}
 	}
@@ -522,7 +522,7 @@ public class UserManagement{
 			pst.execute();
 			return true;			
 			}catch(Exception e){
-				JOptionPane.showMessageDialog(null, e);
+				new Eccezioni(e);
 				return false;
 			}
 	}
@@ -534,7 +534,7 @@ public class UserManagement{
 			pst.execute();
 			return true;			
 			}catch(Exception e){
-				JOptionPane.showMessageDialog(null, e);
+				new Eccezioni(e);
 				return false;
 			}
 	}

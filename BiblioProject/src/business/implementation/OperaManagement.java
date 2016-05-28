@@ -1,13 +1,15 @@
 package business.implementation;
 
 import business.model.*;
+import business.Eccezioni;
+
 import java.sql.*;
 import java.util.*;
 
 import javax.swing.JOptionPane;
 
 public class OperaManagement {
-	Connection c = new DbConnection().dbConnector();;
+	Connection c = DbConnection.dbConnector();;
 	
 	public OperaManagement(){
 	}

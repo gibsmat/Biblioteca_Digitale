@@ -15,7 +15,7 @@ import business.model.*;
  */
 
 public class TrascrittoreGui {
-	Connection c=new DbConnection().dbConnector();;
+	Connection c=DbConnection.dbConnector();;
 	Trascrittore trascrittore;
 	
 	public TrascrittoreGui(Utente utente){

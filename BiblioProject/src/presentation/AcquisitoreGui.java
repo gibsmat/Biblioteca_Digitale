@@ -15,7 +15,7 @@ import business.model.*;
  */
 public class AcquisitoreGui extends JFrame{
 	final String path="img/hidan.jpg";
-	Connection c=new DbConnection().dbConnector();;
+	Connection c=DbConnection.dbConnector();;
 	Acquisitore acquisitore=null;
 
 	public AcquisitoreGui(Utente a){

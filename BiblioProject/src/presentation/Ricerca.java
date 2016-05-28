@@ -11,12 +11,13 @@ import javax.swing.*;
 import java.util.*;
 import business.model.*;
 import business.implementation.*;
+import listener.ListenerEventi;
 
 public class Ricerca implements MouseListener {
 	JFrame frame;
 	JTextField Titolo;
 	JTable table;
-	Connection c=new DbConnection().dbConnector();;
+	Connection c=DbConnection.dbConnector();;
 	UtenteBase utente=null;
 
 	public Ricerca(UtenteBase utente) {
@@ -63,8 +64,10 @@ public class Ricerca implements MouseListener {
 			public void actionPerformed(ActionEvent e) {
 				OperaManagement opm=new OperaManagement();
 				if(utente instanceof UtenteAvanzato){
+					close();
 					showOpere(opm.getOpera(Titolo.getText()));
 				}else{
+					close();
 					showTitoli(opm.getTitle(Titolo.getText()));
 				}				
 			}
@@ -93,6 +96,7 @@ public class Ricerca implements MouseListener {
 	public void showOpere(ArrayList<Opera> opere){
 		
 	}
+	
 	public void showTitoli(ArrayList<String> titoli){
 		
 	}

@@ -2,6 +2,9 @@ package presentation;
 
 import business.implementation.*;
 import business.model.*;
+import business.Eccezioni;
+import listener.ListenerEventi;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.*;
@@ -14,6 +17,7 @@ public class Login{
 		private JTextField txtUsername;
 		private JPasswordField passwordField;	
 		Connection c;
+		//static ListenerEventi l1=new ListenerEventi();
 		
 		public Login() {
 			c= new DbConnection().dbConnector();
@@ -53,51 +57,10 @@ public class Login{
 			btnNewButton.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 			
 			// BOTTONE LOGIN
-			btnNewButton.addActionListener(new ActionListener() {
-				
-				public void actionPerformed(ActionEvent arg0) {										
-					if(txtUsername.getText().equals("") || passwordField.getPassword().length == 0){					
-						JOptionPane.showMessageDialog(null, "Inserire password e username!");
-						close(); initialize(); 
-					}
-					else if(txtUsername.getText().equals("ADMIN") && passwordField.getText().equals("ADMIN")){
-						close();
-						new AdminGui(new Admin("ADMIN","ADMIN"));
-					}
-					else{ 
-						Utente utente = new UserManagement().getUtente(txtUsername.getText(), passwordField);
-						if(utente instanceof UtenteAvanzato){
-							close();
-							new UserGui((UtenteAvanzato)utente);
-						}
-						else if(utente instanceof UtenteBase){
-							close();
-							new UserGui((UtenteBase)utente);
-						}
-						else if(utente instanceof Trascrittore){
-							JOptionPane.showMessageDialog(null, "Trascrittore Loggato.");
-							close();
-							new TrascrittoreGui(utente);
-						}
-						else if(utente instanceof Acquisitore){
-							JOptionPane.showMessageDialog(null, "Acquisitore Loggato.");
-							close();
-							new AcquisitoreGui(utente);
-						}
-						else if(utente instanceof RevisoreTrascrizioni){
-							JOptionPane.showMessageDialog(null, "Revisore Trascrizioni loggato.");
-							close();
-						}
-						else if(utente instanceof RevisoreImmagine){
-							JOptionPane.showMessageDialog(null, "Revisore immagini loggato.");
-							close();
-						}
-						else{
-							JOptionPane.showMessageDialog(null, "Username e password non validi.");
-							close();
-							initialize();
-						}
-					}
+			btnNewButton.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent arg0) {						
+					close();
+					ListenerEventi.login(txtUsername.getText(),passwordField);	
 				}
 			});		
 
@@ -113,12 +76,14 @@ public class Login{
 			//Registrati
 			JButton btnRegistrati = new JButton("Registrati");
 			btnRegistrati.setFont(new Font("Roboto Black", Font.PLAIN, 13));
+			
 			btnRegistrati.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {	
 					close();
-					new Registrazione();
+					ListenerEventi.changePage("Registrazione",null);
 				}
 			});
+			
 			btnRegistrati.setBackground(UIManager.getColor("Button.light"));
 			btnRegistrati.setBounds(354, 300, 97, 25);
 			frame.getContentPane().add(btnRegistrati);

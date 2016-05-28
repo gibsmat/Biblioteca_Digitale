@@ -5,6 +5,8 @@ package presentation;
 
 import business.implementation.DbConnection;
 import business.model.*;
+import listener.ListenerEventi;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.*;
@@ -18,7 +20,7 @@ import java.awt.event.ActionEvent;
  */
 public class UserGui {
 	JFrame frame;
-	Connection c=new DbConnection().dbConnector();;
+	Connection c=DbConnection.dbConnector();;
 	UtenteBase utente;
 	
 	public UserGui(UtenteBase utente){
@@ -53,7 +55,7 @@ public class UserGui {
 		btnPaginaPer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				close();
-				new PersonalGui(utente);				
+				ListenerEventi.changePage("PersonalPage", utente);				
 			}
 		});
 		
@@ -70,7 +72,7 @@ public class UserGui {
 		Ricerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				close();
-				new Ricerca(utente);
+				ListenerEventi.changePage("Ricerca", utente);
 			}
 		});
 		

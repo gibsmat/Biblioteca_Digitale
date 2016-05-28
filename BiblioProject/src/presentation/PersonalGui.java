@@ -10,12 +10,12 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JButton;
-import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import business.implementation.DbConnection;
 import business.model.*;
+import listener.ListenerEventi;
 
 /**
  * @author antony
@@ -23,7 +23,7 @@ import business.model.*;
  */
 public class PersonalGui {
 	JFrame frame;
-	Connection c=new DbConnection().dbConnector();;
+	Connection c=DbConnection.dbConnector();
 	UtenteBase utentebase=null;
 	
 	public PersonalGui(UtenteBase utente){
@@ -37,7 +37,31 @@ public class PersonalGui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 			
-		User();
+		//User();
+		JLabel lblNome_1 = new JLabel(utentebase.getNome());
+		lblNome_1.setForeground(new Color(192, 192, 192));
+		lblNome_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+		lblNome_1.setBounds(190, 257, 185, 48);
+		frame.getContentPane().add(lblNome_1);			
+		
+		JLabel lblCognome_1 = new JLabel(utentebase.getCognome());
+		lblCognome_1.setForeground(new Color(192, 192, 192));
+		lblCognome_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+		lblCognome_1.setBounds(240, 333, 185, 43);
+		frame.getContentPane().add(lblCognome_1);			
+		
+		JLabel lblPassword_1 = new JLabel(utentebase.getPassword().getText());
+		lblPassword_1.setForeground(new Color(192, 192, 192));
+		lblPassword_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+		lblPassword_1.setBounds(240, 405, 185, 43);
+		frame.getContentPane().add(lblPassword_1);			
+		
+		JLabel lblUsername_1 = new JLabel(utentebase.getUserId());
+		lblUsername_1.setForeground(new Color(192, 192, 192));
+		lblUsername_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+		lblUsername_1.setBounds(240, 193, 185, 43);
+		frame.getContentPane().add(lblUsername_1);	
+		
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon("img/log2.png"));
@@ -64,9 +88,7 @@ public class PersonalGui {
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Roboto Black", Font.PLAIN, 30));
 		lblPassword.setBounds(86, 405, 142, 43);
-		frame.getContentPane().add(lblPassword);
-		
-		
+		frame.getContentPane().add(lblPassword);		
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Roboto Black", Font.PLAIN, 30));
@@ -79,21 +101,22 @@ public class PersonalGui {
 		frame.getContentPane().add(lblBenvenutoNellaTua);
 		
 		JButton btnBack = new JButton("back");
-		btnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				close();
-				new UserGui(utentebase);
-			}
-		});
 		btnBack.setBackground(Color.LIGHT_GRAY);
 		btnBack.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 		btnBack.setBounds(12, 13, 97, 25);
 		frame.getContentPane().add(btnBack);
 		
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				close();
+				ListenerEventi.changePage("UserPage", utentebase);
+			}
+		});
+		
 		this.frame.setVisible(true);
 	}
 	
-	public void User(){		
+/*	public void User(){	
 			
 				JLabel lblNome_1 = new JLabel(utentebase.getNome());
 				lblNome_1.setForeground(new Color(192, 192, 192));
@@ -117,10 +140,10 @@ public class PersonalGui {
 				lblUsername_1.setForeground(new Color(192, 192, 192));
 				lblUsername_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
 				lblUsername_1.setBounds(240, 193, 185, 43);
-				frame.getContentPane().add(lblUsername_1);			
-			}		
+				frame.getContentPane().add(lblUsername_1);					
+			}		*/
 	
 	public void close(){
-		frame.dispose();
+		this.frame.dispose();
 	}
 }

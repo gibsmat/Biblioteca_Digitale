@@ -1,6 +1,7 @@
 package presentation;
 
 import business.implementation.*;
+import listener.ListenerEventi;
 import java.awt.Font;
 import java.sql.*;
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class Registrazione {
 		private JPasswordField passwordField;
 		private JLabel lblCognome;
 		private JButton btnRegistrati;
-		Connection c=new DbConnection().dbConnector();
+		Connection c=DbConnection.dbConnector();
 
 		/**
 		 * Create the application.
@@ -94,59 +95,19 @@ public class Registrazione {
 			JLabel lblUtente = new JLabel("Utente");
 			lblUtente.setFont(new Font("Roboto Black", Font.PLAIN, 20));
 			lblUtente.setBounds(113, 437, 122, 23);
-			frame.getContentPane().add(lblUtente);
-			
-			//BOTTONE REGISTRATI
+			frame.getContentPane().add(lblUtente);			
+
 			btnRegistrati = new JButton("Registrati");
-			btnRegistrati.addActionListener(new ActionListener() {
-				
-				public void actionPerformed(ActionEvent arg0) {	
-					if(txtUsername.getText().equals("") || passwordField.getPassword().length == 0){
-						JOptionPane.showMessageDialog(null, "I campi username e password sono obbligatori!");
-						close();	
-						new Registrazione();
-					}
-					else if(passwordField.getText().length() < 5){
-						JOptionPane.showMessageDialog(null, "La password deve contenere almeno 5 caratteri.");
-						close(); 
-						new Registrazione();
-					}
-					else if(txtUsername.getText().equals("ADMIN")){
-						JOptionPane.showMessageDialog(null, "Username non disponibile.");
-						close(); 
-						new Registrazione();
-					}
-					else{											
-						if(comboBox.getSelectedItem().toString().equals("Utente Base")){	
-							//creazione utente base
-							if(new UserManagement().nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText()))
-							{
-								JOptionPane.showMessageDialog(null, "Registrazione effettuata.");
-								close();
-								new Login();
-							}
-							else{
-								close();
-								new Registrazione();
-							}
-						}
-						else{	//creazione utente avanzato
-							if(new UserManagement().nuovoUtente(txtUsername.getText(),txtNome.getText(),txtCognome.getText(),passwordField.getText(),'a'))
-							{
-							JOptionPane.showMessageDialog(null, "Registrazione effettuata.");
-							close();
-							new Login();
-							}
-							else{
-								close();
-								new Registrazione();
-							}
-						}
-					}
-				}
-			});
 			btnRegistrati.setBounds(119, 515, 275, 35);
 			frame.getContentPane().add(btnRegistrati);
+			
+			//BOTTONE REGISTRATI
+			btnRegistrati.addActionListener(new ActionListener() {				
+				public void actionPerformed(ActionEvent arg0) {	
+					close();
+					ListenerEventi.registrati(txtUsername.getText(),passwordField,comboBox.getSelectedItem().toString(),txtNome.getText(),txtCognome.getText());						
+				}
+			});
 			
 			JLabel lblalmenoCaratteri = new JLabel("(almeno 5 caratteri)");
 			lblalmenoCaratteri.setToolTipText("");
