@@ -108,7 +108,7 @@ public class UserManagement{
 				return true;
 			}
 			catch(Exception e){
-				new Eccezioni(e);
+				new Eccezioni("username già presente",e);
 				return false;
 			}
 		}else{
@@ -131,6 +131,7 @@ public class UserManagement{
 				return true;
 			}
 			catch(Exception e){
+				new Eccezioni("username già presente",e);
 				return false;
 			}
 		}else{

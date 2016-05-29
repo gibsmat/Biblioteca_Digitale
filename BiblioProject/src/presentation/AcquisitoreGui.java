@@ -7,8 +7,9 @@ package presentation;
 import java.sql.*;
 import javax.swing.*;
 
-import business.implementation.DbConnection;
 import business.model.*;
+import business.Eccezioni;
+import business.implementation.*;
 /**
  * @author antony
  *
@@ -26,13 +27,12 @@ public class AcquisitoreGui extends JFrame{
 	public void initialize(){
 		
 		//BOTTONE NUOVA OPERA
-		Opera newOpera=this.acquisitore.addOpera(c, 1695, "Buch4","Paoletto","b-u-c-h-4","unknown");
+		Opera newOpera=this.acquisitore.addOpera(1695, "Title","Paoletto","b-u-c-h-4","unknown");
 		//BOTTONE AGGIUNGI IMMAGINE
 		try{
-			newOpera.addImmagine(c, path,new ImageIcon(path));
-			JOptionPane.showMessageDialog(null, newOpera.getImmagini().values().toString());
+			newOpera.addImmagine(path,"nomeImm");
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni(e);
 		} 
 	} 
 	

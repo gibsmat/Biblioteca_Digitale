@@ -1,7 +1,8 @@
 package business.model;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
-import java.awt.*;
+import business.implementation.*;
 
 public class RevisoreImmagine implements Utente {
 	String userId;
@@ -71,15 +72,17 @@ public class RevisoreImmagine implements Utente {
 	public String getDataI(){
 		return null;
 	}
-	
-	public void revisionaIm(Image image){
+		
+	public void revisionaIm(ImageIcon image){
 		//aprire immagine		
 	}
-	public void acceptIm(){
-		// aggiunta immagine al database
+
+	public void acceptIm(String nameI){
+		new OperaManagement().changeStatoImm(nameI,1);
 	}
-	public void commenta(String testo,Image image){
-		Commento commento=new Commento(image.toString()/*titolo immagine*/,this.userId,testo);
-		// salvare commento nel database
+	
+	public void commenta(String testo,String imageName){
+		Commento commento=new Commento(imageName,this.userId,testo);
+		new OperaManagement().addCommentoI(commento);
 	}
 }

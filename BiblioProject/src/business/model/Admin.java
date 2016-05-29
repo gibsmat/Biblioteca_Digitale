@@ -1,9 +1,8 @@
 package business.model;
 
 import business.implementation.*;
+import business.Eccezioni;
 import java.sql.*;
-import java.util.*;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -11,7 +10,7 @@ public class Admin {
 	String adminId;
 	JPasswordField password= null;
 	boolean loginStatus;
-	Connection c=new DbConnection().dbConnector();;
+	Connection c= DbConnection.dbConnector();;
 	
 	public Admin(){		
 	}	
@@ -40,7 +39,7 @@ public class Admin {
 		if(new OperaManagement().deleteOpera(isbn)){
 			JOptionPane.showMessageDialog(null, "Opera eliminata correttamente.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'opera.");
+			new Eccezioni("Errore nella cancellazione dell'opera.");
 		}
 		
 	} 
@@ -49,7 +48,7 @@ public class Admin {
 		if(new UserManagement().deleteUtente(user)){
 			JOptionPane.showMessageDialog(null, "Utente eliminato.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'utente.");
+			new Eccezioni("Errore nella cancellazione dell'utente.");
 		}
 	}
 	
@@ -57,7 +56,7 @@ public class Admin {
 		if(new UserManagement().nuovoTrascrittore(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "Trascrittore aggiunto correttamente.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente trascrittore.");
+			new Eccezioni("Errore nell'aggiunta dell'utente trascrittore.");
 		}
 	}
 	
@@ -65,7 +64,7 @@ public class Admin {
 		if(new UserManagement().deleteTrascrittore(trascrittore)){
 			JOptionPane.showMessageDialog(null, "Trascrittore eliminato.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del trascrittore.");
+			new Eccezioni("Errore nella cancellazione del trascrittore.");
 		}
 	}
 	
@@ -73,7 +72,7 @@ public class Admin {
 		if(new UserManagement().nuovoAcquisitore(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "Acquisitore aggiunto correttamente.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente acquisitore.");
+			new Eccezioni("Errore nell'aggiunta dell'utente acquisitore.");
 		}
 	}
 	
@@ -81,7 +80,7 @@ public class Admin {
 		if(new UserManagement().deleteAcquisitore(acquisitore)){
 			JOptionPane.showMessageDialog(null, "Acquisitore eliminato.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nella cancellazione dell'acquisitore.");
+			new Eccezioni("Errore nella cancellazione dell'acquisitore.");
 		}
 	}
 	
@@ -89,7 +88,7 @@ public class Admin {
 		if(new UserManagement().nuovoRevisoreImm(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "revisore immagini aggiunto correttamente.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente revisore immagini.");
+			new Eccezioni("Errore nell'aggiunta dell'utente revisore immagini.");
 		}
 	}
 	
@@ -97,7 +96,7 @@ public class Admin {
 		if(new UserManagement().deleteRevisoreI(revisore)){
 			JOptionPane.showMessageDialog(null, "Revisore immagini eliminato.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del revisore immagini.");
+			new Eccezioni("Errore nella cancellazione del revisore immagini.");
 		}
 	}
 	
@@ -105,7 +104,7 @@ public class Admin {
 		if(new UserManagement().nuovoRevisoreT(username, nome, cognome, psw)){
 			JOptionPane.showMessageDialog(null, "revisore trascrizioni aggiunto correttamente.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nell'aggiunta dell'utente revisore trascrizioni.");
+			new Eccezioni("Errore nell'aggiunta dell'utente revisore trascrizioni.");
 		}
 	}
 	
@@ -113,7 +112,7 @@ public class Admin {
 		if(new UserManagement().deleteRevisoreT(revisore)){
 			JOptionPane.showMessageDialog(null, "Revisore trascrizioni eliminato.");
 		}else{
-			JOptionPane.showMessageDialog(null, "Errore nella cancellazione del revisore trascrizioni.");
+			new Eccezioni("Errore nella cancellazione del revisore trascrizioni.");
 		}
 	}
 	

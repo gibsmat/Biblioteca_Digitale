@@ -53,9 +53,9 @@ public class Opera {
 	}
 	
 	//aggiunta nuova immagine
-	public void addImmagine(Connection c,String path,ImageIcon imm){
-		this.immagini.put(this.getIsbn(), imm);
-		new OperaManagement().addImmagine(this,path);
+	public void addImmagine(String path,String nomeI){
+		this.immagini.put(nomeI, new ImageIcon(path));
+		new OperaManagement().addImmagine(this,path,nomeI);
 	}	
 	// cancellazione immagine
 	public void deleteImmagine(String name) {
@@ -64,6 +64,7 @@ public class Opera {
 				i.remove();
 			}
 			}
+		new OperaManagement().deleteImmagine(name);
 	}
 	
 	public void pubblica(){
