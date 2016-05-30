@@ -14,7 +14,7 @@ public class Eccezioni extends RuntimeException {
 
 		public Eccezioni(String message, Throwable cause) {
 			super(message, cause);
-			//JOptionPane.showMessageDialog(null, message);
+			JOptionPane.showMessageDialog(null, message);
 		}
 
 		public Eccezioni(String message) {

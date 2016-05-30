@@ -3,13 +3,11 @@
  */
 package presentation;
 
-import business.implementation.DbConnection;
 import business.model.*;
 import listener.ListenerEventi;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.sql.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -20,7 +18,6 @@ import java.awt.event.ActionEvent;
  */
 public class UserGui {
 	JFrame frame;
-	Connection c=DbConnection.dbConnector();;
 	UtenteBase utente;
 	
 	public UserGui(UtenteBase utente){

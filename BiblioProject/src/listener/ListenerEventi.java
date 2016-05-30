@@ -5,6 +5,7 @@ package listener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.table.TableModel;
 
 import business.Eccezioni;
 import business.implementation.*;
@@ -217,5 +218,19 @@ public class ListenerEventi {
 		}
 	}
 
+	public static void addOpera(Acquisitore acquisitore,String titolo,String anno,String autore,String editore,String isbn){
+		acquisitore.addOpera(anno,titolo, autore, isbn, editore);
+	}
 	
+	public static void addImmagine(Acquisitore acquisitore,String path,String opera,Integer page){
+		acquisitore.addImmagine(path,opera,page);		
+	}
+
+	public static TableModel getOpere(){
+		return new OperaManagement().getOpere();		
+	}
+
+	public static void deleteImmagine(String opera,int page){
+		new OperaManagement().deleteImmagine(opera,page);
+	}
 }

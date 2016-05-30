@@ -1,8 +1,6 @@
 package business.model;
 
-import business.implementation.*;
-import java.util.*;
-import java.sql.*;
+
 
 public class UtenteAvanzato extends UtenteBase {
 	final static char type='a';

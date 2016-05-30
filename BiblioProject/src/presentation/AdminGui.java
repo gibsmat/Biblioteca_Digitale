@@ -1,6 +1,5 @@
 package presentation;
 
-import java.sql.*;
 import java.awt.Font;
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -16,13 +15,11 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 
-import business.implementation.DbConnection;
 import business.model.*;
 import listener.ListenerEventi;
 
 public class AdminGui {
 	JFrame frame,frame1,frame2;
-	Connection c= DbConnection.dbConnector();
 	static Admin admin=new Admin();
 	
 public AdminGui(){
@@ -190,8 +187,6 @@ public void addUtente(){
 	this.frame1.setVisible(true);
 }
 
-
-
 public void deleteOpera(){
 	JFrame frame3;
 	JTextField titolo;
@@ -264,7 +259,6 @@ public void deleteOpera(){
 	
 	frame3.setVisible(true);
 }
-
 
 public void showUsers(){
 	JFrame frame4 = new JFrame();

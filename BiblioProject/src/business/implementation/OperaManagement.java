@@ -1,12 +1,14 @@
 package business.implementation;
 
 import business.model.*;
+import net.proteanit.sql.DbUtils;
 import business.Eccezioni;
 
 import java.sql.*;
 import java.util.*;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 
 public class OperaManagement {
 	Connection c = DbConnection.dbConnector();
@@ -14,11 +16,11 @@ public class OperaManagement {
 	public OperaManagement(){
 	}
 	
-	public Opera insertOpera(int anno,String titolo,String autore,String isbn,String editore){
+	public void insertOpera(String anno,String titolo,String autore,String isbn,String editore){
 		try{
-			String query="INSERT INTO Opera(anno,titolo,autore,isbn,editore,path) VALUES (?,?,?,?,?,?)";
+			String query="INSERT INTO Opera(anno,titolo,autore,isbn,editore,imm) VALUES (?,?,?,?,?,?)";
 			PreparedStatement pst=c.prepareStatement(query);
-			pst.setInt(1,anno);
+			pst.setString(1,anno);
 			pst.setString(2,titolo);
 			pst.setString(3,autore);
 			pst.setString(4,isbn);
@@ -27,12 +29,14 @@ public class OperaManagement {
 			
 			pst.execute();
 			pst.close();
+			c.close();
 			JOptionPane.showMessageDialog(null,"Opera aggiunta correttamente.");
-			return new Opera(anno,titolo,autore,isbn,editore);
+			//return new Opera(anno,titolo,autore,isbn,editore);
 			
 		}catch(Exception e){
-			new Eccezioni(e);
-			return null;
+			JOptionPane.showMessageDialog(null,e);
+			//new Eccezioni("Errore nell'aggiunta dell'opera.",e);
+			//return null;
 		}
 	}
 	
@@ -42,18 +46,21 @@ public class OperaManagement {
 		pst.setString(1, isbn);
 		pst.execute();
 		pst.close();
+		c.close();
 		return true;
+		
 		}catch(Exception e){
 			new Eccezioni(e);
 			return false;
 		}
 	}
 	
-	public void addImmagine(Opera o,String path,String nomeI){
+	public void addImmagine(String opera,String path,Integer page){
+		Opera o=getOpera(opera);
 		try{
 			String query="UPDATE Opera SET imm=? WHERE isbn=?";
 			PreparedStatement pst=c.prepareStatement(query);
-			pst.setString(1, nomeI);
+			pst.setString(1, path);
 			pst.setString(2,o.getIsbn());
 			
 			pst.execute();
@@ -63,46 +70,68 @@ public class OperaManagement {
 			new Eccezioni(e);
 		}
 		try{
-			String query1 = "INSERT INTO Immagini(path,nomeImm,stato) VALUES(?,?,?)";
+			String query1 = "INSERT INTO Immagini(path,page,stato,opera) VALUES(?,?,?,?)";
 			PreparedStatement pst1=c.prepareStatement(query1);
 			pst1.setString(1,path);
-			pst1.setString(2,nomeI);
+			pst1.setInt(2,page.intValue());
 			pst1.setInt(3, 0);
+			pst1.setString(4,o.getIsbn());
 			
 			pst1.execute();
 			pst1.close();
+			c.close();
 			
 			JOptionPane.showMessageDialog(null,"Immagine aggiunta correttamente.");
 			
-		}catch(Exception e){
+		}catch(SQLException e){
 			new Eccezioni(e);
 		}
 	}
 	
-	public void deleteImmagine(String name){
+	public void deleteImmagine(String opera,int page){		
 		try{
-			PreparedStatement pst=c.prepareStatement("DELETE FROM Immagini WHERE nomeImm=?");
-			pst.setString(1, name);
+			PreparedStatement pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=? AND page=?");
+			pst.setString(1, getOpera(opera).getIsbn());
+			pst.setInt(2, page);
 			pst.execute();
-			pst.close();	
+			pst.close();
 			
-			JOptionPane.showMessageDialog(null,"Immagine eliminata.");	
-			
-		}catch(Exception e){
+		}catch(SQLException e){
 			new Eccezioni(e);
-		}		
+		}	
+		String path=getPath(getOpera(opera).getIsbn(),page);
 		try{
 			String query1="UPDATE Opera SET imm=? WHERE imm=?";
 			PreparedStatement pst1=c.prepareStatement(query1);
 			pst1.setString(1,"");
-			pst1.setString(2,name);
+			pst1.setString(2,path);
 			
 			pst1.execute();
 			pst1.close();
+			c.close();
 			
-		}catch(Exception e){
+			JOptionPane.showMessageDialog(null,"Immagine eliminata.");	
+			
+		}catch(SQLException e){
 			new Eccezioni(e);
 		}	
+	}
+	
+	public String getPath(String opera,int page){
+		try{
+			String query="SELECT path FROM Immagini where opera=? AND page=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, opera);
+			pst.setInt(2, page);
+			
+			ResultSet rs=pst.executeQuery();
+			return rs.getString("path");
+			
+		}catch(SQLException e){
+			new Eccezioni(e);
+			return null;
+		}
+		
 	}
 	
 	public int getStatoImm(String name){
@@ -112,7 +141,10 @@ public class OperaManagement {
 			pst.setString(1, name);
 			
 			ResultSet rs=pst.executeQuery();
-			return rs.getInt("stato");			
+			int ris= rs.getInt("stato");
+			c.close();
+			return ris;
+			
 			
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -130,6 +162,7 @@ public class OperaManagement {
 			
 			pst.execute();
 			pst.close();
+			c.close();
 			
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -147,6 +180,7 @@ public class OperaManagement {
 			
 			pst.execute();
 			pst.close();
+			c.close();
 			JOptionPane.showMessageDialog(null,"Commento aggiunto.");
 			
 		}catch(Exception e){
@@ -165,6 +199,7 @@ public class OperaManagement {
 			
 			pst.execute();
 			pst.close();
+			c.close();
 			JOptionPane.showMessageDialog(null,"Commento aggiunto.");
 			
 		}catch(Exception e){
@@ -172,11 +207,46 @@ public class OperaManagement {
 		}
 	}
 	
-	public Opera getOpera(String stringa){
-		List<Opera>listaOpera = new ArrayList<Opera>();
-		//ricerca opera nel DB per titolo o isbn o autore
-		//return oggetto Opera trovato
-		return null;
+	public TableModel getOpere(){
+		try{
+			String query="SELECT anno,titolo,autore,isbn,editore FROM Opera";
+			Statement st = c.createStatement();
+			ResultSet rs=st.executeQuery(query);			
+			TableModel tm= DbUtils.resultSetToTableModel(rs);	
+			c.close();
+			return tm;			
+		}catch(SQLException e){
+			JOptionPane.showMessageDialog(null,e);
+			new Eccezioni(e);
+			return null;
+		}
+	}
+	
+	public Opera getOpera(String op){
+		String anno,titolo,autore,isbn,editore;
+		
+		try{
+			String query="SELECT * FROM Opera where isbn=? OR titolo=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, op);
+			pst.setString(2, op);
+			
+			ResultSet rs=pst.executeQuery();
+			while(rs.next()){
+				anno=rs.getString("anno");
+				titolo=rs.getString("titolo");
+				autore=rs.getString("autore");
+				isbn=rs.getString("isbn");
+				editore=rs.getString("editore");
+				return new Opera(anno,titolo,autore,isbn,editore);
+			}
+			rs.close();
+			c.close();
+			return null;			
+		}catch(SQLException e){
+			new Eccezioni(e);
+			return null;
+		}
 	}
 
 	public ArrayList<String> getTitles(String stringa){

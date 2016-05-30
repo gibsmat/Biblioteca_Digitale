@@ -10,7 +10,7 @@ import business.Eccezioni;
 import javax.swing.JOptionPane;
 
 public class UserManagement{
-	Connection c=DbConnection.dbConnector();;
+	Connection c=DbConnection.dbConnector();
 	
 	public UserManagement(){	
 	}
@@ -28,6 +28,7 @@ public class UserManagement{
 	
 				pst.execute();
 				pst.close();
+				c.close();
 				return true;
 			}
 			catch(Exception e)
@@ -54,7 +55,8 @@ public class UserManagement{
 				pst.setString(5, new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()).toString().substring(0, 16));
 	
 				pst.execute();
-				pst.close(); 
+				pst.close();
+				c.close();
 				return true;
 			}
 			catch(Exception e)
@@ -80,6 +82,7 @@ public class UserManagement{
 	
 				pst.execute();
 				pst.close(); 
+				c.close();
 				return true;
 			}
 			catch(Exception e)
@@ -105,6 +108,7 @@ public class UserManagement{
 	
 				pst.execute();
 				pst.close(); 
+				c.close();
 				return true;
 			}
 			catch(Exception e){
@@ -128,6 +132,7 @@ public class UserManagement{
 	
 				pst.execute();
 				pst.close(); 
+				c.close();
 				return true;
 			}
 			catch(Exception e){
@@ -151,6 +156,7 @@ public class UserManagement{
 	
 				pst.execute();
 				pst.close(); 
+				c.close();
 				return true;
 			}
 			catch(Exception e)
@@ -179,6 +185,7 @@ public class UserManagement{
 				nome=rs.getString("nome");
 				cognome=rs.getString("cognome");
 				dataI=rs.getString("dataI");
+				c.close();
 				return new UtenteBase(nome,cognome,username,psw.getText(),dataI,true);
 			}
 			else{ 
@@ -193,6 +200,7 @@ public class UserManagement{
 					nome=rs.getString("nomeA");
 					cognome=rs.getString("cognomeA");
 					dataI=rs.getString("dataIA");
+					c.close();
 					return new UtenteAvanzato(nome,cognome,username,psw.getText(),dataI,true);
 				}
 				else{
@@ -206,6 +214,7 @@ public class UserManagement{
 						if(rs.next()){
 							nome=rs.getString("nomeT");
 							cognome=rs.getString("cognomeT");
+							c.close();
 							return new Trascrittore(nome,cognome,username,psw.getText(),true);
 						}
 						else{
@@ -219,6 +228,7 @@ public class UserManagement{
 								if(rs.next()){
 									nome=rs.getString("nomeAc");
 									cognome=rs.getString("cognomeAc");
+									c.close();
 									return new Acquisitore(nome,cognome,username,psw.getText(),true);
 								}
 								else{
@@ -232,6 +242,7 @@ public class UserManagement{
 										if(rs.next()){
 											nome=rs.getString("nomeI");
 											cognome=rs.getString("cognomeI");
+											c.close();
 											return new RevisoreImmagine(nome,cognome,username,psw.getText(),true);
 										}
 										else{
@@ -245,6 +256,7 @@ public class UserManagement{
 												if(rs.next()){
 													nome=rs.getString("nomeTr");
 													cognome=rs.getString("cognomeTr");
+													c.close();
 													return new RevisoreTrascrizioni(nome,cognome,username,psw.getText(),true);
 												}
 												else{
@@ -302,6 +314,7 @@ public class UserManagement{
 				nome=rs.getString("nome");
 				cognome=rs.getString("cognome");
 				dataI=rs.getString("dataI");
+				c.close();
 				return new UtenteBase(nome,cognome,username,password,dataI,true);
 			}
 			else{ 
@@ -316,6 +329,7 @@ public class UserManagement{
 					nome=rsA.getString("nomeA");
 					cognome=rsA.getString("cognomeA");
 					dataI=rsA.getString("dataIA");
+					c.close();
 					return new UtenteAvanzato(nome,cognome,username,password,dataI,true);
 				}
 				else{
@@ -346,10 +360,12 @@ public class UserManagement{
 			if(rs.next()){			
 				pstC.close();
 				rs.close();
+				c.close();
 				return false;
 			}
 			pstC.close();
 			rs.close();	
+			c.close();
 			return true; 
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -370,6 +386,7 @@ public class UserManagement{
 				utentiBase.add(rs.getString("username"));
 			}
 			rs.close();
+			c.close();
 		}catch(Exception e){
 			new Eccezioni(e);
 			return null;
@@ -381,6 +398,7 @@ public class UserManagement{
 				utentiBase.add(rsA.getString("usernameA"));
 			}
 			rsA.close();
+			c.close();
 			return utentiBase;
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -400,6 +418,7 @@ public class UserManagement{
 				trascrittori.add(rs.getString("usernameT"));
 			}
 			rs.close();
+			c.close();
 			return trascrittori;
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -420,6 +439,7 @@ public class UserManagement{
 				acquisitori.add(rs.getString("usernameAc"));
 			}
 			rs.close();
+			c.close();
 			return acquisitori;
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -440,6 +460,7 @@ public class UserManagement{
 				revisori.add(rs.getString("usernameI"));
 			}
 			rs.close();
+			c.close();
 			return revisori;
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -459,6 +480,7 @@ public class UserManagement{
 				revisori.add(rs.getString("usernameTr"));
 			}
 			rs.close();
+			c.close();
 			return revisori;
 		}catch(Exception e){
 			new Eccezioni(e);
@@ -474,6 +496,8 @@ public class UserManagement{
 			PreparedStatement pstA=c.prepareStatement(queryA);
 			pstA.setString(1,user);
 			pstA.execute();
+			pstA.close();
+			c.close();
 			return true;			
 			}catch(Exception e){
 				new Eccezioni(e);
@@ -484,6 +508,8 @@ public class UserManagement{
 				PreparedStatement pst=c.prepareStatement("DELETE FROM UTENTEBASE where username=?");
 				pst.setString(1,user);				
 				pst.execute();
+				pst.close();
+				c.close();
 				return true;
 				}catch(Exception e){
 					new Eccezioni(e);
@@ -497,6 +523,8 @@ public class UserManagement{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM Trascrittore where usernameT=?");
 			pst.setString(1,tr);
 			pst.execute();
+			pst.close();
+			c.close();
 			return true;			
 			}catch(Exception e){
 				new Eccezioni(e);
@@ -509,6 +537,8 @@ public class UserManagement{
 			PreparedStatement pstA=c.prepareStatement("DELETE FROM Acquisitore where usernameAc=?");
 			pstA.setString(1,ac);
 			pstA.execute();
+			pstA.close();
+			c.close();
 			return true;			
 			}catch(Exception e){
 				new Eccezioni(e);
@@ -521,6 +551,8 @@ public class UserManagement{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM RevisoreI where usernameI=?");
 			pst.setString(1,rev);
 			pst.execute();
+			pst.close();
+			c.close();
 			return true;			
 			}catch(Exception e){
 				new Eccezioni(e);
@@ -533,6 +565,8 @@ public class UserManagement{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM RevisoreT where usernameTr=?");
 			pst.setString(1,rev);
 			pst.execute();
+			pst.close();
+			c.close();
 			return true;			
 			}catch(Exception e){
 				new Eccezioni(e);

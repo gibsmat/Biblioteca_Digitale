@@ -1,10 +1,6 @@
 package business.model;
 
 import javax.swing.JPasswordField;
-import java.sql.*;
-import business.implementation.OperaManagement;
-
-import java.util.*;
 
 public class UtenteBase implements Utente {
 	String nome,cognome,userId,dataI;

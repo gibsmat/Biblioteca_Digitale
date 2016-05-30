@@ -1,22 +1,19 @@
 package presentation;
 
-import business.implementation.*;
 import listener.ListenerEventi;
 import java.awt.Font;
-import java.sql.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Registrazione {
-		private JFrame frame;
-		private JTextField txtNome;
-		private JTextField txtCognome;
-		private JTextField txtUsername;
-		private JPasswordField passwordField;
-		private JLabel lblCognome;
-		private JButton btnRegistrati;
-		Connection c=DbConnection.dbConnector();
+		JFrame frame;
+		JTextField txtNome;
+		JTextField txtCognome;
+		JTextField txtUsername;
+		JPasswordField passwordField;
+		JLabel lblCognome;
+		JButton btnRegistrati;
 
 		/**
 		 * Create the application.

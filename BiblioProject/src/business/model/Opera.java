@@ -10,12 +10,11 @@ import java.sql.*;
 import business.implementation.OperaManagement;
 
 public class Opera {
-	int anno;
-	String titolo,autore,isbn,Editore;
+	String anno,titolo,autore,isbn,Editore;
 	SortedMap <String,ImageIcon> immagini;
 	//file TEI
 	
-	public Opera(int anno,String titolo, String autore,String isbn,String editore){
+	public Opera(String anno,String titolo, String autore,String isbn,String editore){
 		this.anno=anno;
 		this.titolo=titolo;
 		this.autore=autore;
@@ -23,10 +22,10 @@ public class Opera {
 		this.Editore=editore;
 		this.immagini=new TreeMap<String,ImageIcon>();
 	}
-	public int getAnno() {
+	public String getAnno() {
 		return anno;
 	}
-	public void setAnno(int anno) {
+	public void setAnno(String anno) {
 		this.anno = anno;
 	}
 	public String getTitolo() {
@@ -55,7 +54,6 @@ public class Opera {
 	//aggiunta nuova immagine
 	public void addImmagine(String path,String nomeI){
 		this.immagini.put(nomeI, new ImageIcon(path));
-		new OperaManagement().addImmagine(this,path,nomeI);
 	}	
 	// cancellazione immagine
 	public void deleteImmagine(String name) {

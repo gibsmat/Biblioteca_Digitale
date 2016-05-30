@@ -3,10 +3,8 @@
  */
 package presentation;
 
-import java.sql.*;
 import javax.swing.*;
 
-import business.implementation.DbConnection;
 import business.model.*;
 
 /**
@@ -15,7 +13,6 @@ import business.model.*;
  */
 
 public class TrascrittoreGui {
-	Connection c=DbConnection.dbConnector();;
 	Trascrittore trascrittore;
 	
 	public TrascrittoreGui(Utente utente){
@@ -24,6 +21,9 @@ public class TrascrittoreGui {
 	}
 	
 	public void initialize(){
+		//mostra tutte le opere
+		showOpere();
+		
 		//scegli opera
 		trascrivi();
 	}
@@ -31,7 +31,9 @@ public class TrascrittoreGui {
 	public void trascrivi(){
 		//apri finestra con immagine e box per trascrizione
 		
-		//JTextPane.setContentType("text/html")
+	}
+	public void showOpere(){
+		
 	}
 
 }

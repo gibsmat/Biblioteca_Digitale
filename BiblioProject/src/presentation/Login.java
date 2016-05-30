@@ -1,13 +1,9 @@
 package presentation;
 
-import business.implementation.*;
-import business.model.*;
-import business.Eccezioni;
 import listener.ListenerEventi;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.sql.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -16,11 +12,8 @@ public class Login{
 		public JFrame frame=new JFrame();
 		private JTextField txtUsername;
 		private JPasswordField passwordField;	
-		Connection c;
-		//static ListenerEventi l1=new ListenerEventi();
 		
 		public Login() {
-			c= new DbConnection().dbConnector();
 			initialize();
 		}
 		/**

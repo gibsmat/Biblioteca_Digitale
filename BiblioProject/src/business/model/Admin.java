@@ -2,7 +2,6 @@ package business.model;
 
 import business.implementation.*;
 import business.Eccezioni;
-import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -10,7 +9,6 @@ public class Admin {
 	String adminId;
 	JPasswordField password= null;
 	boolean loginStatus;
-	Connection c= DbConnection.dbConnector();;
 	
 	public Admin(){		
 	}	
