@@ -316,10 +316,19 @@ public class ListenerEventi {
 		return om.getPath(isbn, 1,'c');
 	}
 
-	public static String getImmPrec(String opera){
+	public static String getImm(String opera, String number,char s){
 		OperaManagement om = new OperaManagement();
 		String isbn = om.getOpera(opera).getIsbn();
-		
-		
+		int n=Integer.parseInt(number);
+		if(s=='-'){
+			if(n > 1){
+				return om.getPath(isbn, n-1, 'c');
+			}else{
+				return "";
+			}
+		}
+		else{
+			return om.getPath(isbn, n+1, 'c');
+		}								
 	}
 }

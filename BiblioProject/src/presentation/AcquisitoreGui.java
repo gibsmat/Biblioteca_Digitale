@@ -133,6 +133,11 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		JButton btnBrowser = new JButton("Browser");
 		btnBrowser.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 		
+		path = new JTextField();
+		path.setBounds(207, 315, 324, 33);
+		frame.getContentPane().add(path);
+		path.setColumns(10);
+		
 		btnBrowser.addActionListener(new ActionListener() {
 		public void actionPerformed(java.awt.event.ActionEvent evt) {				
 				x= new JFileChooser();				
@@ -144,12 +149,6 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		
 		btnBrowser.setBounds(84, 319, 97, 25);
 		frame.getContentPane().add(btnBrowser);
-		
-		path = new JTextField();
-		path.setBounds(207, 315, 324, 33);
-		frame.getContentPane().add(path);
-		path.setColumns(10);
-
 	
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon("img/log2.png"));
@@ -194,11 +193,8 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 				if(ListenerEventi.addImmagine(acquisitore,path.getText(),Id.getText(),Page.getText())){
 					ListenerEventi.saveImage(x.getSelectedFile(),Id.getText());
 				}
-				else{
-					frame.dispose();
-					addImmagini();
-				}
-				
+				frame.dispose();
+				addImmagini();				
 			}
 		});
 		

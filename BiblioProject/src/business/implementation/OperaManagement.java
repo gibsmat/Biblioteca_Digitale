@@ -18,14 +18,13 @@ public class OperaManagement {
 	
 	public void insertOpera(String anno,String titolo,String autore,String isbn,String editore){
 		try{
-			String query="INSERT INTO Opera(anno,titolo,autore,isbn,editore,imm) VALUES (?,?,?,?,?,?)";
+			String query="INSERT INTO Opera(anno,titolo,autore,isbn,editore) VALUES (?,?,?,?,?)";
 			PreparedStatement pst=c.prepareStatement(query);
 			pst.setString(1,anno);
 			pst.setString(2,titolo);
 			pst.setString(3,autore);
 			pst.setString(4,isbn);
 			pst.setString(5, editore);
-			pst.setString(6, "");
 			
 			pst.execute();
 			pst.close();
@@ -59,18 +58,6 @@ public class OperaManagement {
 		Opera o=getOpera(opera);
 		String path="img/"+o.getTitolo()+"/"+path1;
 		try{
-			String query="UPDATE Opera SET imm=? WHERE isbn=?";
-			PreparedStatement pst=c.prepareStatement(query);
-			pst.setString(1, path);
-			pst.setString(2,o.getIsbn());
-			
-			pst.execute();
-			pst.close();
-			
-		}catch(Exception e){
-			new Eccezioni("Db error",e);
-		}
-		try{
 			String query1 = "INSERT INTO Immagini(path,page,stato,opera) VALUES(?,?,?,?)";
 			PreparedStatement pst1=c.prepareStatement(query1);
 			pst1.setString(1,path);
@@ -85,25 +72,12 @@ public class OperaManagement {
 			JOptionPane.showMessageDialog(null,"Immagine aggiunta correttamente.");
 			
 		}catch(SQLException e){
-			new Eccezioni("Errore",e);
+			new Eccezioni("Errore nell'aggiunta dell'immagine",e);
 		}
 	}
 	
 	public void deleteImmagine(String opera,int page){	
 		Opera op=getOpera(opera);
-		String path=getPath(op.getIsbn(),page);
-		try{
-			String query1="UPDATE Opera SET imm=? WHERE imm=?";
-			PreparedStatement pst1=c.prepareStatement(query1);
-			pst1.setString(1,"");
-			pst1.setString(2,path);
-			
-			pst1.execute();
-			pst1.close();				
-			
-		}catch(SQLException e){
-			new Eccezioni("Db error",e);
-		}		
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=? AND page=?");
 			pst.setString(1, op.getIsbn());
@@ -127,7 +101,11 @@ public class OperaManagement {
 			pst.setInt(2, page);
 			
 			ResultSet rs=pst.executeQuery();
-			return rs.getString("path");
+			if(rs.next()){
+				return rs.getString("path");
+			}else{
+				return "";
+			}
 			
 		}catch(SQLException e){
 			new Eccezioni(e);
@@ -143,12 +121,16 @@ public class OperaManagement {
 			pst.setInt(2, page);
 			
 			ResultSet rs=pst.executeQuery();
-			String p=rs.getString("path");
-			c.close();
-			return p;
-			
-		}catch(SQLException e){
-			new Eccezioni(e);
+			if(rs.next()){
+				String p=rs.getString("path");
+				c.close();
+				return p;
+			}else{
+				c.close();
+				return "";
+			}
+		}catch(Exception e){
+			new Eccezioni("Immagine non trovata");
 			return null;
 		}		
 	}
@@ -307,27 +289,13 @@ public class OperaManagement {
 			c.close();
 			return null;			
 		}catch(SQLException e){
-			new Eccezioni(e);
+			new Eccezioni("Db error",e);
 			return null;
 		}
 	}
 
 	public void deleteTrascrizione(String opera,int page){
-		Opera op=getOpera(opera);		
-		String path=getPathT(op.getIsbn(),page);
-		try{
-			String query1="UPDATE Opera SET trasc=? WHERE trasc=?";
-			PreparedStatement pst1=c.prepareStatement(query1);
-			pst1.setString(1,"");
-			pst1.setString(2,path);
-			
-			pst1.execute();
-			pst1.close();	
-			
-		}catch(SQLException e){
-			new Eccezioni("Db error.",e);
-		}	
-		
+		Opera op=getOpera(opera);				
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM Trascrizioni WHERE opera=? AND page=?");
 			pst.setString(1, op.getIsbn());

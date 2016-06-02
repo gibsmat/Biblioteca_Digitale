@@ -19,7 +19,6 @@ public class Acquisitore implements Utente {
 		this.loginStatus=status;
 	}
 	
-
 	@Override
 	public String getUserId() {
 		return userId;

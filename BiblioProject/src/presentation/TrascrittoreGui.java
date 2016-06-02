@@ -193,8 +193,16 @@ public class TrascrittoreGui implements FocusListener{
 		//immagine precedente
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String pathIP=ListenerEventi.getImmPrec(txtTitolo.getText());
-				label.setIcon(new ImageIcon(pathIP));
+				
+				String num=txtNumber.getText().toString();				
+				String pathIP=ListenerEventi.getImm(txtTitolo.getText(),num,'-');
+				if(pathIP.equals("")){
+					//new Eccezioni("Immagine non trovata.");
+				}else{
+					label.setIcon(new ImageIcon(pathIP));
+					int n=Integer.parseInt(num);
+					txtNumber.setText(Integer.toString(n-1));
+				}
 			}
 		});
 		
@@ -204,9 +212,19 @@ public class TrascrittoreGui implements FocusListener{
 		button_1.setBounds(384, 496, 33, 30);
 		frameT.getContentPane().add(button_1);
 		
-		//immagine successiva
+		// Immagine successiva
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				String num=txtNumber.getText();
+				String pathIP=ListenerEventi.getImm(txtTitolo.getText(),num,'+');
+				if(pathIP.equals("")){
+					//new Eccezioni("Immagine non trovata.");
+				}else{
+					label.setIcon(new ImageIcon(pathIP));
+					int n=Integer.parseInt(num);
+					txtNumber.setText(Integer.toString(n+1));
+				}
 			}
 		});	
 		
@@ -245,6 +263,7 @@ public class TrascrittoreGui implements FocusListener{
 		// bottone salva
 		btnSalva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				
 			}
 		});	
