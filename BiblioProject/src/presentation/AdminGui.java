@@ -86,24 +86,38 @@ public void initialize(){
 		}
 	});
 	
+	// log-out
+	JButton log_out_button = new JButton("Log-out");
+	log_out_button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+	log_out_button.setBounds(12, 13, 97, 25);
+	frame.getContentPane().add(log_out_button);
+			
+	log_out_button.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			frame.dispose();
+			ListenerEventi.changePage("Login", null);
+		}
+	});
+	
 	
 	this.frame.setVisible(true);
 }
 
 public void addUtente(){
+	JFrame frame1;
 	JTextField nome;
 	JTextField Username;
 	JTextField Password;
 	JTextField cognome;
 	
 	frame1 = new JFrame();
-	frame1.setBounds(100, 100, 546, 817);
+	frame1.setBounds(100, 100, 513, 625);
 	frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame1.getContentPane().setLayout(null);
 	
 	JLabel label = new JLabel("");
 	label.setIcon(new ImageIcon("img/log2.png"));
-	label.setBounds(148, 24, 211, 170);
+	label.setBounds(207, 7, 228, 115);
 	frame1.getContentPane().add(label);
 	
 	JButton btnBack = new JButton("Back");
@@ -121,59 +135,59 @@ public void addUtente(){
 	
 	JLabel lblNome = new JLabel("Nome :");
 	lblNome.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	lblNome.setBounds(67, 233, 160, 38);
+	lblNome.setBounds(67, 139, 160, 38);
 	frame1.getContentPane().add(lblNome);
 	
 	JLabel label_1 = new JLabel("Cognome:");
 	label_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	label_1.setBounds(67, 307, 157, 43);
+	label_1.setBounds(67, 205, 157, 43);
 	frame1.getContentPane().add(label_1);
 	
 	JLabel label_3 = new JLabel("Password:");
 	label_3.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	label_3.setBounds(67, 472, 142, 43);
+	label_3.setBounds(66, 339, 142, 43);
 	frame1.getContentPane().add(label_3);
 	
 	JLabel label_2 = new JLabel("Username:");
 	label_2.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	label_2.setBounds(67, 394, 160, 38);
+	label_2.setBounds(67, 278, 160, 38);
 	frame1.getContentPane().add(label_2);
 	
-	JLabel label_4 = new JLabel("Utente");
-	label_4.setFont(new Font("Roboto Black", Font.PLAIN, 30));
-	label_4.setBounds(67, 545, 160, 57);
-	frame1.getContentPane().add(label_4);
+	JLabel lblUtente = new JLabel("Utente :");
+	lblUtente.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+	lblUtente.setBounds(67, 418, 160, 57);
+	frame1.getContentPane().add(lblUtente);
 	
 	nome = new JTextField();
-	nome.setBounds(243, 240, 211, 38);
+	nome.setBounds(243, 139, 211, 38);
 	frame1.getContentPane().add(nome);
 	nome.setColumns(10);
 	
 	cognome = new JTextField();
 	cognome.setColumns(10);
-	cognome.setBounds(243, 312, 211, 38);
+	cognome.setBounds(243, 205, 211, 38);
 	frame1.getContentPane().add(cognome);
 	
 	Username = new JTextField();
 	Username.setColumns(10);
-	Username.setBounds(243, 394, 211, 38);
+	Username.setBounds(243, 278, 211, 38);
 	frame1.getContentPane().add(Username);
 	
 	Password = new JTextField();
 	Password.setColumns(10);
-	Password.setBounds(243, 477, 211, 38);
+	Password.setBounds(243, 349, 211, 38);
 	frame1.getContentPane().add(Password);
 	
 	JComboBox<String> Utenza = new JComboBox<String>();
 	Utenza.setFont(new Font("Roboto Black", Font.PLAIN, 15));
 	Utenza.setModel(new DefaultComboBoxModel<String>(new String[] {"Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
 	Utenza.setToolTipText("");
-	Utenza.setBounds(243, 570, 211, 42);
+	Utenza.setBounds(243, 431, 211, 42);
 	frame1.getContentPane().add(Utenza);
 	
 	JButton btnNewButton = new JButton("Aggiungi");
 	btnNewButton.setFont(new Font("Roboto Black", Font.PLAIN, 16));
-	btnNewButton.setBounds(171, 671, 173, 56);
+	btnNewButton.setBounds(162, 516, 173, 56);
 	frame1.getContentPane().add(btnNewButton);
 	
 	//bottone aggiungi
@@ -184,7 +198,7 @@ public void addUtente(){
 			ListenerEventi.changePage("Admin", null);
 		}
 	});	
-	this.frame1.setVisible(true);
+	frame1.setVisible(true);
 }
 
 public void deleteOpera(){
@@ -195,7 +209,7 @@ public void deleteOpera(){
 	
 	frame3 = new JFrame();
 	frame3.setBounds(100, 100, 569, 593);
-	frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame3.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frame3.getContentPane().setLayout(null);
 	
 	JButton button = new JButton("Back");
@@ -265,7 +279,7 @@ public void showUsers(){
 	JTable table;
 	
 	frame4.setBounds(100, 100, 920, 811);
-	frame4.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame4.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frame4.getContentPane().setLayout(new MigLayout("", "[343px][2px][480px]", "[57px][76px][496px][47px]"));
 	
 	JScrollPane scrollPane_1 = new JScrollPane();
@@ -319,7 +333,7 @@ public void deleteUtente(){
 	
 	frame2 = new JFrame();
 	frame2.setBounds(100, 100, 527, 613);
-	frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frame2.getContentPane().setLayout(null);
 	
 	JLabel label = new JLabel("");

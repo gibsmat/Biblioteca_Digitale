@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 import java.awt.Font;
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
@@ -28,8 +29,12 @@ import listener.ListenerEventi;
 public class AcquisitoreGui extends JFrame implements FocusListener{
 	Acquisitore acquisitore=null;
 	JFrame frame;
+	JFrame frameD = new JFrame();
 	JTable table;
 	JTextField path,txtInserisciIlTitolo,Id,Page,id,Page1;
+	final String insert="Inserisci il titolo o l'isbn dell'opera";
+	final String page_st = "Page";
+	JFileChooser x;
 
 	public AcquisitoreGui(Utente a){
 		this.acquisitore=(Acquisitore)a;
@@ -100,6 +105,19 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		btnEliminaImagine.setBounds(499, 419, 176, 59);
 		frame.getContentPane().add(btnEliminaImagine);
 		
+	// log-out
+		JButton log_out_button = new JButton("Log-out");
+		log_out_button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+		log_out_button.setBounds(12, 13, 97, 25);
+		frame.getContentPane().add(log_out_button);
+		
+		log_out_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+				ListenerEventi.changePage("Login", null);
+			}
+		});
+		
 		this.frame.setVisible(true);		
 	}
 	
@@ -116,12 +134,11 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		btnBrowser.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 		
 		btnBrowser.addActionListener(new ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				JFileChooser x= new JFileChooser();			
+		public void actionPerformed(java.awt.event.ActionEvent evt) {				
+				x= new JFileChooser();				
 				if(x.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
-					String file=x.getSelectedFile().getName();
-					path.setText(file);	
-				}				
+					path.setText(x.getSelectedFile().getName());
+				}
 			}
 		});
 		
@@ -149,7 +166,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frame.getContentPane().add(separator);
 
 		Page = new JTextField();
-		Page.setText("Page");
+		Page.setText(page_st);
 		Page.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 		Page.setColumns(10);
 		Page.setBounds(457, 225, 67, 33);
@@ -158,7 +175,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 
 		Id = new JTextField();
 		Id.setFont(new Font("Roboto Black", Font.PLAIN, 13));
-		Id.setText("Inserisci il titolo o l'isbn dell'opera");
+		Id.setText(insert);
 		Id.setBounds(69, 225, 323, 33);
 		frame.getContentPane().add(Id);
 		Id.setColumns(10);
@@ -170,9 +187,18 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frame.getContentPane().add(lblSelezionaLimmmagineDa);
 		
 		JButton btnCarica = new JButton("Carica");
+		
+		// Carica immagine
 		btnCarica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListenerEventi.addImmagine(acquisitore,path.getText(),Id.getText(),Integer.parseInt(Page.getText()));
+				if(ListenerEventi.addImmagine(acquisitore,path.getText(),Id.getText(),Page.getText())){
+					ListenerEventi.saveImage(x.getSelectedFile(),Id.getText());
+				}
+				else{
+					frame.dispose();
+					addImmagini();
+				}
+				
 			}
 		});
 		
@@ -190,6 +216,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		btnVisualizzaOpere.setBounds(75, 386, 171, 41);
 		frame.getContentPane().add(btnVisualizzaOpere);
 		
+		//back
 		JButton button = new JButton("Back");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -333,10 +360,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	}
 
 	public void deleteImmagini(){
-		JFrame frameD;
 		JTable table;
 		
-		frameD = new JFrame();
+		frameD=new JFrame();
 		frameD.setBounds(100, 100, 640, 623);
 		frameD.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameD.getContentPane().setLayout(null);
@@ -358,48 +384,54 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frameD.getContentPane().add(button);
 		
 		id = new JTextField();
-		id.setText("Inserisci il titolo o l'isbn dell'opera da cui eliminare l'immagine");
-		id.setFont(new Font("Roboto Black", Font.PLAIN, 10));
+		id.setText(insert);
+		id.setFont(new Font("Roboto Black", Font.PLAIN, 12));
 		id.setColumns(10);
 		id.setBounds(35, 214, 323, 33);
-		//id.addMouseListener(this);
 		frameD.getContentPane().add(id);
+		id.addFocusListener(this);
 
 		Page1 = new JTextField();
 		Page1.setFont(new Font("Roboto Black", Font.PLAIN, 12));
-		Page1.setText("Page");
+		Page1.setText(page_st);
 		Page1.setBounds(509, 214, 67, 33);
 		frameD.getContentPane().add(Page1);
 		Page1.setColumns(10);
+		Page1.addFocusListener(this);
 		
 		JButton button_1 = new JButton("Rimuovi");
 		button_1.setFont(new Font("Roboto Black", Font.PLAIN, 16));
 		button_1.setBounds(418, 488, 173, 56);
 		frameD.getContentPane().add(button_1);
+	
+		// Rimuovi immagine
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n=Integer.parseInt(Page1.getText());
-				ListenerEventi.deleteImmagine(id.getText(),n);
+				ListenerEventi.deleteImmagine(acquisitore,id.getText(),Page1.getText());
+				frameD.dispose();
+				deleteImmagini();	
 			}
 		});
 	
-		JButton btnVisualizzaOpere = new JButton("Visualizza Opere");
-		
-		btnVisualizzaOpere.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				viewOpere();
-			}
-		});
-		btnVisualizzaOpere.setFont(new Font("Roboto Black", Font.PLAIN, 16));
-		btnVisualizzaOpere.setBounds(45, 488, 173, 56);
-		frameD.getContentPane().add(btnVisualizzaOpere);
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(35, 275, 557, 192);
 		frameD.getContentPane().add(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		
+		JButton btnVisualizzaOpere = new JButton("Visualizza Opere");
+		btnVisualizzaOpere.setFont(new Font("Roboto Black", Font.PLAIN, 16));
+		btnVisualizzaOpere.setBounds(45, 488, 173, 56);
+		frameD.getContentPane().add(btnVisualizzaOpere);
+		
+		//visualizza opere
+		btnVisualizzaOpere.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TableModel opere=ListenerEventi.getOpere();
+				table.setModel(opere);
+			}
+		});	
 		
 		frameD.setVisible(true);
 	}
@@ -412,17 +444,27 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frame = new JFrame();
 		frame.setBounds(100, 100, 727, 615);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setLayout(null);		
+		
+		Commenti = new JTextField();
+		Commenti.setBounds(63, 399, 565, 57);
+		frame.getContentPane().add(Commenti);
+		Commenti.setColumns(10);
+		
 		
 		JButton btnInserisciCommento = new JButton("Inserisci commento");
-		btnInserisciCommento.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		btnInserisciCommento.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 		btnInserisciCommento.setBounds(407, 501, 173, 38);
 		frame.getContentPane().add(btnInserisciCommento);
+		
+		//aggiungi commento
+		btnInserisciCommento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListenerEventi.addCommento(acquisitore,Commenti.getText().toString());
+				frame.dispose();
+				initialize();
+			}
+		});		
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon("img/log.png"));
@@ -441,21 +483,21 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
+		//visualizza commenti
 		JButton button = new JButton("Visualizza commenti");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				TableModel commenti=ListenerEventi.getCommenti(acquisitore);
+				table.setModel(commenti);
+				table.setRowHeight(55);
 			}
 		});
+		
 		button.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 		button.setBounds(133, 501, 173, 38);
 		frame.getContentPane().add(button);
 		
-		Commenti = new JTextField();
-		Commenti.setBounds(63, 399, 565, 57);
-		frame.getContentPane().add(Commenti);
-		Commenti.setColumns(10);
-		
+		//back
 		JButton button_1 = new JButton("Back");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -472,10 +514,23 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 
 	@Override
 	public void focusGained(FocusEvent arg0) {
-		if(Id.hasFocus())
-			this.Id.setText("");
-		else if(Page.hasFocus())
-			this.Page.setText("");
+		if(frameD.isActive()){
+			if(id.hasFocus() && id.getText().toString().equals(insert)){
+				this.id.setText("");
+			}			
+			else if(Page1.hasFocus() && Page1.getText().toString().equals(page_st)){
+				this.Page1.setText("");
+			}
+		}
+		else{	
+			if(Id.hasFocus() && Id.getText().toString().equals(insert)){
+				this.Id.setText("");	
+			}			
+			else if(Page.hasFocus() && Page.getText().toString().equals(page_st)){
+				this.Page.setText("");
+			}
+		}
+		
 	}
 
 	@Override

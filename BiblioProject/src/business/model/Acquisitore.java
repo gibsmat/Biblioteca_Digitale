@@ -1,6 +1,8 @@
 package business.model;
 
 import javax.swing.JPasswordField;
+import javax.swing.table.TableModel;
+
 import business.implementation.OperaManagement;
 
 public class Acquisitore implements Utente {
@@ -77,13 +79,21 @@ public class Acquisitore implements Utente {
 		new OperaManagement().insertOpera(anno,titolo,autore,isbn,editore);
 	}
 	
-	public void deleteImmagine(String nome){
-		new OperaManagement().deleteImmagine(nome);
+	public void deleteImmagine(String nome,int page){
+		new OperaManagement().deleteImmagine(nome,page);
 	}
 	
 	public void addImmagine(String path,String opera,Integer page){
-		new OperaManagement().addImmagine(opera,"img/".concat(path), page);
-		
+		new OperaManagement().addImmagine(opera,path,page);		
+	}
+	
+	public void addCommento(String text){
+		Commento commento=new Commento(this.getUserId(),text);
+		new OperaManagement().addCommentoI(commento);
+	}
+	
+	public TableModel viewCommenti(){
+		return new OperaManagement().getCommentiI();
 	}
 
 }

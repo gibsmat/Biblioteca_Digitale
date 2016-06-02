@@ -3,6 +3,10 @@
  */
 package listener;
 
+import java.awt.image.BufferedImage;
+import java.io.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.table.TableModel;
@@ -105,19 +109,15 @@ public class ListenerEventi {
 				changePage("UserPage",(UtenteBase)utente);
 			}
 			else if(utente instanceof Trascrittore){
-				//JOptionPane.showMessageDialog(null, "Trascrittore Loggato.");
 				changePage("Trascrittore",utente);
 			}
 			else if(utente instanceof Acquisitore){
-				//JOptionPane.showMessageDialog(null, "Acquisitore Loggato.");
 				changePage("Acquisitore",utente);
 			}
 			else if(utente instanceof RevisoreTrascrizioni){
-				JOptionPane.showMessageDialog(null, "Revisore Trascrizioni loggato.");
 				changePage("Revisore Trascrizioni",utente);
 			}
 			else if(utente instanceof RevisoreImmagine){
-				JOptionPane.showMessageDialog(null, "Revisore immagini loggato.");
 				changePage("Revisore Immagini",utente);
 			}
 			else{
@@ -205,7 +205,8 @@ public class ListenerEventi {
 					changePage("Registrazione",null);
 				}
 			}
-			else{	//creazione utente avanzato
+			else{	
+				//creazione utente avanzato
 				if(new UserManagement().nuovoUtente(username,nome,cognome,psw.getText(),'a'))
 				{
 				JOptionPane.showMessageDialog(null, "Registrazione effettuata.");				
@@ -220,17 +221,105 @@ public class ListenerEventi {
 
 	public static void addOpera(Acquisitore acquisitore,String titolo,String anno,String autore,String editore,String isbn){
 		acquisitore.addOpera(anno,titolo, autore, isbn, editore);
+		try{
+			(new File("img/"+titolo)).mkdir();
+		}catch(Exception e){
+			new Eccezioni("errore creazione cartella");
+		}
 	}
 	
-	public static void addImmagine(Acquisitore acquisitore,String path,String opera,Integer page){
-		acquisitore.addImmagine(path,opera,page);		
+	public static boolean addImmagine(Acquisitore acquisitore,String path,String opera,String page1){
+		if(path.equals("") || opera.equals("") || page1.equals("")){
+			new Eccezioni("Completare tutti i campi");
+			return false;
+		}
+		else{
+			try{
+				Integer page = Integer.parseInt(page1);	
+				acquisitore.addImmagine(path,opera,page);
+				return true;
+			}catch(Exception e){
+				new Eccezioni("Page deve essere un numero intero");
+				return false;
+			}				
+		}
 	}
 
 	public static TableModel getOpere(){
 		return new OperaManagement().getOpere();		
 	}
 
-	public static void deleteImmagine(String opera,int page){
-		new OperaManagement().deleteImmagine(opera,page);
+	public static void deleteImmagine(Acquisitore ac,String opera,String page){
+		if(opera.equals("") || page.equals("")){
+			new Eccezioni("Completare tutti i campi!");
+		}
+		else{
+			try{
+				int p=Integer.parseInt(page);
+				ac.deleteImmagine(opera,p);
+			}catch(Exception e){
+				new Eccezioni("Page deve essere un numero intero!");
+			}
+		}
+	}
+
+	public static void saveImage(File file,String opera){
+		String title=new OperaManagement().getOpera(opera).getTitolo();
+		try{
+			BufferedImage bi=ImageIO.read(file);
+			File outfile= new File("img/"+ title +"/" +file.getName());
+			ImageIO.write(bi, "jpg", outfile);
+		}catch(IOException e){
+			new Eccezioni("error",e);
+		}
+	}
+
+	public static TableModel getCommenti(Utente utente){
+		if(utente instanceof Acquisitore){
+			return ((Acquisitore) utente).viewCommenti();
+		}
+		else if(utente instanceof Trascrittore){
+			return ((Trascrittore)utente).viewCommenti();
+		}
+		else
+			return null;
+	}
+	
+	public static void addCommento(Utente utente,String text){
+		if(utente instanceof Acquisitore){
+			((Acquisitore) utente).addCommento(text);
+		}
+		else if(utente instanceof Trascrittore){
+			((Trascrittore)utente).addCommento(text);
+		}		
+		
+	}
+
+	public static void deleteTrascrizione(Trascrittore tr,String opera,String page){
+		if(opera.equals("") || page.equals("")){
+			new Eccezioni("Completare tutti i campi!");
+		}
+		else{
+			try{
+				int p=Integer.parseInt(page);
+				tr.deleteTrascrizione(opera,p);
+			}catch(Exception e){
+				new Eccezioni("Page deve essere un numero intero!");
+			}
+		}
+		
+	}
+	
+	public static String getFirstImm(String opera){
+		OperaManagement om=new OperaManagement();
+		String isbn=om.getOpera(opera).getIsbn();
+		return om.getPath(isbn, 1,'c');
+	}
+
+	public static String getImmPrec(String opera){
+		OperaManagement om = new OperaManagement();
+		String isbn = om.getOpera(opera).getIsbn();
+		
+		
 	}
 }

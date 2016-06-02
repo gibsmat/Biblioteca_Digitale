@@ -215,7 +215,7 @@ public class UserManagement{
 							nome=rs.getString("nomeT");
 							cognome=rs.getString("cognomeT");
 							c.close();
-							return new Trascrittore(nome,cognome,username,psw.getText(),true);
+							return new Trascrittore(username,nome,cognome,psw.getText(),true);
 						}
 						else{
 							try{
@@ -229,7 +229,7 @@ public class UserManagement{
 									nome=rs.getString("nomeAc");
 									cognome=rs.getString("cognomeAc");
 									c.close();
-									return new Acquisitore(nome,cognome,username,psw.getText(),true);
+									return new Acquisitore(username,nome,cognome,psw.getText(),true);
 								}
 								else{
 									try{

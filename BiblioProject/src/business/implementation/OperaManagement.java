@@ -55,8 +55,9 @@ public class OperaManagement {
 		}
 	}
 	
-	public void addImmagine(String opera,String path,Integer page){
+	public void addImmagine(String opera,String path1,Integer page){
 		Opera o=getOpera(opera);
+		String path="img/"+o.getTitolo()+"/"+path1;
 		try{
 			String query="UPDATE Opera SET imm=? WHERE isbn=?";
 			PreparedStatement pst=c.prepareStatement(query);
@@ -67,7 +68,7 @@ public class OperaManagement {
 			pst.close();
 			
 		}catch(Exception e){
-			new Eccezioni(e);
+			new Eccezioni("Db error",e);
 		}
 		try{
 			String query1 = "INSERT INTO Immagini(path,page,stato,opera) VALUES(?,?,?,?)";
@@ -84,22 +85,13 @@ public class OperaManagement {
 			JOptionPane.showMessageDialog(null,"Immagine aggiunta correttamente.");
 			
 		}catch(SQLException e){
-			new Eccezioni(e);
+			new Eccezioni("Errore",e);
 		}
 	}
 	
-	public void deleteImmagine(String opera,int page){		
-		try{
-			PreparedStatement pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=? AND page=?");
-			pst.setString(1, getOpera(opera).getIsbn());
-			pst.setInt(2, page);
-			pst.execute();
-			pst.close();
-			
-		}catch(SQLException e){
-			new Eccezioni(e);
-		}	
-		String path=getPath(getOpera(opera).getIsbn(),page);
+	public void deleteImmagine(String opera,int page){	
+		Opera op=getOpera(opera);
+		String path=getPath(op.getIsbn(),page);
 		try{
 			String query1="UPDATE Opera SET imm=? WHERE imm=?";
 			PreparedStatement pst1=c.prepareStatement(query1);
@@ -107,14 +99,24 @@ public class OperaManagement {
 			pst1.setString(2,path);
 			
 			pst1.execute();
-			pst1.close();
-			c.close();
-			
-			JOptionPane.showMessageDialog(null,"Immagine eliminata.");	
+			pst1.close();				
 			
 		}catch(SQLException e){
-			new Eccezioni(e);
-		}	
+			new Eccezioni("Db error",e);
+		}		
+		try{
+			PreparedStatement pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=? AND page=?");
+			pst.setString(1, op.getIsbn());
+			pst.setInt(2, page);
+			pst.execute();
+			pst.close();
+			c.close();
+			
+			JOptionPane.showMessageDialog(null,"Immagine eliminata.");
+			
+		}catch(SQLException e){
+			new Eccezioni("Db error",e);
+		}		
 	}
 	
 	public String getPath(String opera,int page){
@@ -130,8 +132,41 @@ public class OperaManagement {
 		}catch(SQLException e){
 			new Eccezioni(e);
 			return null;
-		}
-		
+		}		
+	}
+	
+	public String getPath(String opera,int page,char close){
+		try{
+			String query="SELECT path FROM Immagini where opera=? AND page=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, opera);
+			pst.setInt(2, page);
+			
+			ResultSet rs=pst.executeQuery();
+			String p=rs.getString("path");
+			c.close();
+			return p;
+			
+		}catch(SQLException e){
+			new Eccezioni(e);
+			return null;
+		}		
+	}
+	
+	public String getPathT(String opera,int page){
+		try{
+			String query="SELECT path FROM Trascrizioni where opera=? AND page=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, opera);
+			pst.setInt(2, page);
+			
+			ResultSet rs=pst.executeQuery();
+			return rs.getString("path");
+			
+		}catch(SQLException e){
+			new Eccezioni("Db error.",e);
+			return null;
+		}		
 	}
 	
 	public int getStatoImm(String name){
@@ -171,12 +206,12 @@ public class OperaManagement {
 	
 	public void addCommentoI(Commento comm){
 		try{
-			String query="INSERT INTO Commenti(autore,testo,data,immagine) VALUES (?,?,?,?)";
+			String query="INSERT INTO Commenti(autore,testo,data,type) VALUES (?,?,?,?)";
 			PreparedStatement pst=c.prepareStatement(query);
 			pst.setString(1,comm.getAutore());
 			pst.setString(2,comm.getText());
 			pst.setString(3,comm.getData());
-			pst.setString(4,comm.getTitolo());
+			pst.setInt(4,1);
 			
 			pst.execute();
 			pst.close();
@@ -184,18 +219,18 @@ public class OperaManagement {
 			JOptionPane.showMessageDialog(null,"Commento aggiunto.");
 			
 		}catch(Exception e){
-			new Eccezioni(e);
+			new Eccezioni("errore nell'aggiunta del commento",e);
 		}
 	}
 	
 	public void addCommentoT(Commento comm){
 		try{
-			String query="INSERT INTO Commenti(autore,testo,data,trascrizione) VALUES (?,?,?,?)";
+			String query="INSERT INTO Commenti(autore,testo,data,type) VALUES (?,?,?,?)";
 			PreparedStatement pst=c.prepareStatement(query);
 			pst.setString(1,comm.getAutore());
 			pst.setString(2,comm.getText());
 			pst.setString(3,comm.getData());
-			pst.setString(4,comm.getTitolo());
+			pst.setInt(4,0);
 			
 			pst.execute();
 			pst.close();
@@ -218,6 +253,34 @@ public class OperaManagement {
 		}catch(SQLException e){
 			JOptionPane.showMessageDialog(null,e);
 			new Eccezioni(e);
+			return null;
+		}
+	}
+	
+	public TableModel getCommentiI(){
+		try{
+			String query="SELECT autore,testo,data FROM Commenti WHERE type=1";
+			Statement st = c.createStatement();
+			ResultSet rs=st.executeQuery(query);			
+			TableModel tm= DbUtils.resultSetToTableModel(rs);	
+			c.close();
+			return tm;			
+		}catch(SQLException e){
+			new Eccezioni("Errore Db",e);
+			return null;
+		}
+	}
+	
+	public TableModel getCommentiT(){
+		try{
+			String query="SELECT autore,testo,data FROM Commenti WHERE type=0";
+			Statement st = c.createStatement();
+			ResultSet rs=st.executeQuery(query);			
+			TableModel tm= DbUtils.resultSetToTableModel(rs);	
+			c.close();
+			return tm;			
+		}catch(SQLException e){
+			new Eccezioni("Errore Db",e);
 			return null;
 		}
 	}
@@ -249,6 +312,37 @@ public class OperaManagement {
 		}
 	}
 
+	public void deleteTrascrizione(String opera,int page){
+		Opera op=getOpera(opera);		
+		String path=getPathT(op.getIsbn(),page);
+		try{
+			String query1="UPDATE Opera SET trasc=? WHERE trasc=?";
+			PreparedStatement pst1=c.prepareStatement(query1);
+			pst1.setString(1,"");
+			pst1.setString(2,path);
+			
+			pst1.execute();
+			pst1.close();	
+			
+		}catch(SQLException e){
+			new Eccezioni("Db error.",e);
+		}	
+		
+		try{
+			PreparedStatement pst=c.prepareStatement("DELETE FROM Trascrizioni WHERE opera=? AND page=?");
+			pst.setString(1, op.getIsbn());
+			pst.setInt(2, page);
+			pst.execute();
+			pst.close();			
+			c.close();
+			
+			JOptionPane.showMessageDialog(null,"Trascrizione eliminata con successo.");
+			
+		}catch(SQLException e){
+			new Eccezioni("Errore Db",e);
+		}			
+	}
+	
 	public ArrayList<String> getTitles(String stringa){
 		List<String> listaTitoli = new ArrayList<String>();
 		//ricerca e restituzione dei titoli di tutte le opere nel DB

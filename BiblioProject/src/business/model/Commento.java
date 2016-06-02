@@ -1,21 +1,15 @@
 package business.model;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Commento {
-	String titolo,autore,text;
-	Date data;
+	String autore,text;
+	String data;
 	
-	public Commento(String titolo, String autore, String text) {
-		this.titolo = titolo;
+	public Commento(String autore, String text) {
 		this.autore = autore;
 		this.text = text;
-		this.data = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()); //current time
-	}
-
-	public String getTitolo() {
-		return titolo;
+		this.data = new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()).toString().substring(0, 16); //current time
 	}
 
 	public String getAutore() {
@@ -27,7 +21,7 @@ public class Commento {
 	}
 
 	public String getData() {
-		return data.toString();
+		return data;
 	}
 	
 	

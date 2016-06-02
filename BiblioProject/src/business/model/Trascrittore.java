@@ -1,6 +1,9 @@
 package business.model;
 
 import javax.swing.JPasswordField;
+import javax.swing.table.TableModel;
+
+import business.implementation.OperaManagement;
 
 public class Trascrittore implements Utente {
 	String userId;
@@ -65,10 +68,26 @@ public class Trascrittore implements Utente {
 	public void changeStatus() {
 		loginStatus=!loginStatus;
 	}
+	
 	@Override
 	public String getDataI(){
 		return null;
 	}
+	
+	public void addCommento(String text){
+		Commento commento=new Commento(this.getUserId(),text);
+		new OperaManagement().addCommentoT(commento);
+	}
+	
+	public TableModel viewCommenti(){
+		return new OperaManagement().getCommentiT();
+	}
 
-
+	public void addTrascrizione(){
+		
+	}
+	
+	public void deleteTrascrizione(String opera,int page){
+		new OperaManagement().deleteTrascrizione(opera, page);
+	}
 }

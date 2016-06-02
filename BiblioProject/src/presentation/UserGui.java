@@ -88,7 +88,20 @@ public class UserGui {
 		lblUsername.setForeground(new Color(105, 105, 105));
 		lblUsername.setFont(new Font("Roboto Black", Font.PLAIN, 26));
 		lblUsername.setBounds(482, 215, 228, 41);
-		frame.getContentPane().add(lblUsername);			
+		frame.getContentPane().add(lblUsername);	
+		
+		// log-out
+		JButton log_out_button = new JButton("Log-out");
+		log_out_button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+		log_out_button.setBounds(12, 13, 97, 25);
+		frame.getContentPane().add(log_out_button);
+				
+		log_out_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+				ListenerEventi.changePage("Login", null);
+			}
+		});
 
 		this.frame.setVisible(true);
 	}	

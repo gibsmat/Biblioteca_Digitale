@@ -55,16 +55,16 @@ public class Opera {
 	public void addImmagine(String path,String nomeI){
 		this.immagini.put(nomeI, new ImageIcon(path));
 	}	
-	// cancellazione immagine
-	public void deleteImmagine(String name) {
+	/* cancellazione immagine
+	public void deleteImmagine(String name,int page) {
 		for (Iterator<String> i=this.immagini.keySet().iterator(); i.hasNext();) {
 			if(i.equals(name)){
 				i.remove();
 			}
 			}
-		new OperaManagement().deleteImmagine(name);
+		new OperaManagement().deleteImmagine(name,page);
 	}
-	
+	*/
 	public void pubblica(){
 		/* pubblicazione dell'opera */
 	}

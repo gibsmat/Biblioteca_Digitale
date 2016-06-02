@@ -1,7 +1,6 @@
 package business.model;
 
 
-
 public class UtenteAvanzato extends UtenteBase {
 	final static char type='a';
 
