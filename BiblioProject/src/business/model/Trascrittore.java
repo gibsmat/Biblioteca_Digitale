@@ -83,8 +83,8 @@ public class Trascrittore implements Utente {
 		return new OperaManagement().getCommentiT();
 	}
 
-	public void addTrascrizione(){
-		
+	public void addTrascrizione(String titolo,String anno,int page){
+		new OperaManagement().addTrascrizione(this,titolo,anno,page);
 	}
 	
 	public void deleteTrascrizione(String opera,int page){

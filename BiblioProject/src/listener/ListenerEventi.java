@@ -147,36 +147,47 @@ public class ListenerEventi {
 		}
 	}
 	
-	public static void deleteOpera(Admin admin,String cod){
-		admin.clearOpera(cod);
-		changePage("Admin",null);
+	public static boolean deleteOpera(Admin admin,String cod){
+		if(cod.equals("")){
+			new Eccezioni("Codice isbn non può essere vuoto!");
+			return false;
+		}else{
+			admin.clearOpera(cod);
+			changePage("Admin",null);
+			return true;
+		}
 	}
 
 	public static void deleteUtente(Admin admin,String type,String nome){
-		switch (type) {
-		case "Utente Base":
-			admin.clearUtente(nome);				
-			break;
-		case "Utente Avanzato":
-			admin.clearUtente(nome);					
-			break;
-		case "Trascrittore":
-			admin.clearTrascrittore(nome);			
-			break;
-		case "Acquisitore":
-			admin.clearAcquisitore(nome);
-			break;
-		case "Revisore Immagini" :
-			admin.clearRevisoreImm(nome);
-			break;
-		case "Revisore Trascrizioni" :
-			admin.clearRevisoreTr(nome);
-			break;
-		default:
-			new Eccezioni("Errore nella cancellazione dell'utente");
-			break;
+		if(nome.equals("")){
+			new Eccezioni("Inserire l'username");
 		}
+		else{
+			switch (type) {
+			case "Utente Base":
+				admin.clearUtente(nome);				
+				break;
+			case "Utente Avanzato":
+				admin.clearUtente(nome);					
+				break;
+			case "Trascrittore":
+				admin.clearTrascrittore(nome);			
+				break;
+			case "Acquisitore":
+				admin.clearAcquisitore(nome);
+				break;
+			case "Revisore Immagini" :
+				admin.clearRevisoreImm(nome);
+				break;
+			case "Revisore Trascrizioni" :
+				admin.clearRevisoreTr(nome);
+				break;
+			default:
+				new Eccezioni("Errore nella cancellazione dell'utente");
+				break;
+			}
 		changePage("Admin",null);
+		}
 	}
 
 	public static void registrati(String username,JPasswordField psw,String type,String nome,String cognome){
@@ -223,30 +234,22 @@ public class ListenerEventi {
 		acquisitore.addOpera(anno,titolo, autore, isbn, editore);
 		try{
 			(new File("img/"+titolo)).mkdir();
+			(new File("trascrizioni/"+titolo)).mkdir();
 		}catch(Exception e){
 			new Eccezioni("errore creazione cartella");
 		}
 	}
 	
-	public static boolean addImmagine(Acquisitore acquisitore,String path,String opera,String page1){
-		if(path.equals("") || opera.equals("") || page1.equals("")){
-			new Eccezioni("Completare tutti i campi");
-			return false;
-		}
-		else{
-			try{
-				Integer page = Integer.parseInt(page1);	
-				acquisitore.addImmagine(path,opera,page);
-				return true;
-			}catch(Exception e){
-				new Eccezioni("Page deve essere un numero intero");
-				return false;
-			}				
-		}
+	public static Opera getOpera(String opera){
+		return new OperaManagement().getOpera(opera,'c');
 	}
-
+	
 	public static TableModel getOpere(){
 		return new OperaManagement().getOpere();		
+	}
+	
+	public static TableModel getUtenti(String type){
+		return new UserManagement().getUtenti(type);		
 	}
 
 	public static void deleteImmagine(Acquisitore ac,String opera,String page){
@@ -255,22 +258,15 @@ public class ListenerEventi {
 		}
 		else{
 			try{
+				Opera o=getOpera(opera);
+				String path = getImm(o.getIsbn(),page);
+				File ImmFile = new File(path);
+				ImmFile.delete();				
 				int p=Integer.parseInt(page);
 				ac.deleteImmagine(opera,p);
 			}catch(Exception e){
 				new Eccezioni("Page deve essere un numero intero!");
 			}
-		}
-	}
-
-	public static void saveImage(File file,String opera){
-		String title=new OperaManagement().getOpera(opera).getTitolo();
-		try{
-			BufferedImage bi=ImageIO.read(file);
-			File outfile= new File("img/"+ title +"/" +file.getName());
-			ImageIO.write(bi, "jpg", outfile);
-		}catch(IOException e){
-			new Eccezioni("error",e);
 		}
 	}
 
@@ -301,7 +297,10 @@ public class ListenerEventi {
 		}
 		else{
 			try{
-				int p=Integer.parseInt(page);
+				Opera o=getOpera(opera);
+				File tFile = new File("trascrizioni/"+o.getTitolo()+"/"+o.getTitolo()+page+".html");
+				tFile.delete();
+				int p=Integer.parseInt(page);				
 				tr.deleteTrascrizione(opera,p);
 			}catch(Exception e){
 				new Eccezioni("Page deve essere un numero intero!");
@@ -311,24 +310,87 @@ public class ListenerEventi {
 	}
 	
 	public static String getFirstImm(String opera){
-		OperaManagement om=new OperaManagement();
-		String isbn=om.getOpera(opera).getIsbn();
-		return om.getPath(isbn, 1,'c');
+		String isbn=new OperaManagement().getOpera(opera).getIsbn();
+		return new OperaManagement().getPath(isbn, 1,'c');
 	}
 
 	public static String getImm(String opera, String number,char s){
-		OperaManagement om = new OperaManagement();
-		String isbn = om.getOpera(opera).getIsbn();
+		String isbn = new OperaManagement().getOpera(opera).getIsbn();
 		int n=Integer.parseInt(number);
 		if(s=='-'){
 			if(n > 1){
-				return om.getPath(isbn, n-1, 'c');
+				return new OperaManagement().getPath(isbn, n-1, 'c');
 			}else{
 				return "";
 			}
 		}
 		else{
-			return om.getPath(isbn, n+1, 'c');
+			return new OperaManagement().getPath(isbn, n+1, 'c');
 		}								
 	}
+	
+	public static String getImm(String isbn, String number){
+		Integer n=Integer.parseInt(number);
+		return new OperaManagement().getPath(isbn, n.intValue(), 'c');										
+	}
+
+	public static boolean addImmagine(Acquisitore acquisitore,String path,String opera,String page1){
+		if(path.equals("") || opera.equals("") || page1.equals("")){
+			new Eccezioni("Completare tutti i campi");
+			return false;
+		}
+		else{
+			try{
+				Integer page = Integer.parseInt(page1);	
+				acquisitore.addImmagine(path,opera,page);
+				return true;
+			}catch(Exception e){
+				new Eccezioni("Page deve essere un numero intero");
+				return false;
+			}				
+		}
+	}
+	
+	public static void saveImage(File file,String opera){
+		String title=new OperaManagement().getOpera(opera).getTitolo();
+		try{
+			BufferedImage bi=ImageIO.read(file);
+			File outfile= new File("img/"+ title +"/" +file.getName());
+			ImageIO.write(bi, "jpg", outfile);
+		}catch(IOException e){
+			new Eccezioni("error",e);
+		}
+	}
+	
+	public static boolean addTrascrizione(Trascrittore trasc,String titolo,String anno,String text,String page1){
+		if(titolo.equals("") || anno.equals("") || text.equals("")){
+			new Eccezioni("Completare tutti i campi");
+			return false;
+		}
+		else{
+			try{
+				Integer page = Integer.parseInt(page1);	
+				trasc.addTrascrizione(titolo,anno,page.intValue());
+				return true;
+			}catch(Exception e){
+				new Eccezioni("Page deve essere un numero intero");
+				return false;
+			}				
+		}
+	}
+	
+	public static void saveTrascrizione(String titolo,String anno,String page,String text){
+		try{
+			FileOutputStream file;
+			file = new FileOutputStream("trascrizioni/" +titolo+ "/" +titolo + page+ ".html");
+		     PrintStream Output = new PrintStream(file);
+		     
+		     Output.println("<h1>Titolo : " +titolo+ "</h1> <h2>Anno : "+ anno+"</h2> <h3>Testo : </h3>" +text);
+		     Output.close();
+			
+		}catch(Exception e){
+			new Eccezioni("error \n"+e);
+		}
+	}
+
 }

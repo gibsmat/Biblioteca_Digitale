@@ -142,6 +142,8 @@ public class PersonalGui {
 		JButton button = new JButton("Back");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				ListenerEventi.changePage("PersonalPage", utentebase);
 			}			
 		});
 		button.setFont(new Font("Roboto Black", Font.PLAIN, 14));

@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
+import javax.swing.table.TableModel;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -216,6 +217,8 @@ public void deleteOpera(){
 	button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 	button.setBounds(12, 28, 97, 25);
 	frame3.getContentPane().add(button);
+	
+	//back button
 	button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
 			frame3.dispose();
@@ -234,7 +237,7 @@ public void deleteOpera(){
 	frame3.getContentPane().add(lblTitolo);
 	
 	JLabel lblCodice = new JLabel("Codice isbn :");
-	lblCodice.setFont(new Font("Roboto Black", Font.PLAIN, 30));
+	lblCodice.setFont(new Font("Roboto Black", Font.PLAIN, 24));
 	lblCodice.setBounds(54, 292, 160, 38);
 	frame3.getContentPane().add(lblCodice);
 	
@@ -266,8 +269,9 @@ public void deleteOpera(){
 	
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			frame3.dispose();
-			ListenerEventi.deleteOpera(admin,codice.getText());			
+			if(ListenerEventi.deleteOpera(admin,codice.getText())){
+				frame3.dispose();
+			}
 		}
 	});
 	
@@ -278,7 +282,7 @@ public void showUsers(){
 	JFrame frame4 = new JFrame();
 	JTable table;
 	
-	frame4.setBounds(100, 100, 920, 811);
+	frame4.setBounds(100, 100, 763, 502);
 	frame4.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frame4.getContentPane().setLayout(new MigLayout("", "[343px][2px][480px]", "[57px][76px][496px][47px]"));
 	
@@ -292,28 +296,26 @@ public void showUsers(){
 	table.setFont(new Font("Roboto Black", Font.PLAIN, 13));
 	scrollPane.setViewportView(table);
 	
-	JButton btnVisualizza = new JButton("visualizza");
+	JComboBox<String> comboBox = new JComboBox<String>();
+	comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato", "Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
+	comboBox.setToolTipText("");
+	frame4.getContentPane().add(comboBox, "cell 2 1,growx,aligny center");
+	
+	JButton btnVisualizza = new JButton("Visualizza");
 	btnVisualizza.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-		
+			TableModel tm=ListenerEventi.getUtenti(comboBox.getSelectedItem().toString());
+			table.setModel(tm);
 		}
 	});
 	
 	btnVisualizza.setFont(new Font("Roboto Black", Font.PLAIN, 24));
 	frame4.getContentPane().add(btnVisualizza, "cell 0 3 2 1,alignx center,growy");
 	
-	JLabel label = new JLabel("");
-	label.setIcon(new ImageIcon("img/log2.png"));
-	frame4.getContentPane().add(label, "cell 0 0 1 2,alignx center,aligny center");
-	
-	JComboBox<String> comboBox = new JComboBox<String>();
-	comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato ", "Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
-	comboBox.setToolTipText("");
-	frame4.getContentPane().add(comboBox, "cell 2 1,growx,aligny center");
-	
 	JButton btnRimuovi = new JButton("Rimuovi");
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
+			frame4.dispose();
 			deleteUtente();
 		}
 	});
@@ -370,8 +372,8 @@ public void deleteUtente(){
 	
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {	
+			ListenerEventi.deleteUtente(admin,utenza.getSelectedItem().toString(),nome.getText());
 			frame2.dispose();
-			ListenerEventi.deleteUtente(admin,utenza.getSelectedItem().toString(),nome.getText());					
 		}
 	});
 

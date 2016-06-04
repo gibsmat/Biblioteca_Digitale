@@ -5,7 +5,10 @@ import java.util.Calendar;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.swing.JPasswordField;
+import javax.swing.table.TableModel;
+
 import business.model.*;
+import net.proteanit.sql.DbUtils;
 import business.Eccezioni;
 import javax.swing.JOptionPane;
 
@@ -172,8 +175,8 @@ public class UserManagement{
 	
 	public Utente getUtente(String username,JPasswordField psw){
 		String nome, cognome,dataI;
-		PreparedStatement pst=null;
-		ResultSet rs=null;
+		PreparedStatement pst;
+		ResultSet rs;
 		try{
 			String query="select * from UTENTEBASE where username=? and password=?";
 			pst= c.prepareStatement(query);
@@ -314,7 +317,7 @@ public class UserManagement{
 				nome=rs.getString("nome");
 				cognome=rs.getString("cognome");
 				dataI=rs.getString("dataI");
-				c.close();
+				//c.close();
 				return new UtenteBase(nome,cognome,username,password,dataI,true);
 			}
 			else{ 
@@ -329,7 +332,7 @@ public class UserManagement{
 					nome=rsA.getString("nomeA");
 					cognome=rsA.getString("cognomeA");
 					dataI=rsA.getString("dataIA");
-					c.close();
+					//c.close();
 					return new UtenteAvanzato(nome,cognome,username,password,dataI,true);
 				}
 				else{
@@ -346,6 +349,46 @@ public class UserManagement{
 				return null;
 			}
 
+	}
+	
+	public TableModel getUtenti(String type){
+		Statement st;
+		ResultSet rs;
+		TableModel tm;
+		String query="";
+		try{
+			switch(type){
+				case "Utente Base" :
+					query= "SELECT username,nome,cognome FROM UTENTEBASE";
+					break;
+				case "Utente Avanzato":
+					query= "SELECT usernameA,nomeA,cognomeA,dataIA FROM UtenteAvanzato";
+					break;
+				case "Trascrittore":
+					query= "SELECT usernameT,nomeT,cognomeT FROM Trascrittore";
+					break;
+				case "Acquisitore":
+					query= "SELECT usernameAc,nomeAc,cognomeAc FROM Acquisitore";
+					break;
+				case "Revisore Immagini":
+					query= "SELECT usernameI,nomeI,cognomeI FROM RevisoreI";
+					break;
+				case "Revisore Trascrizioni":
+					query= "SELECT usernameTr,nomeTr,cognomeTr FROM RevisoreT";	
+					break;
+				default:
+					break;
+			}			
+			st=c.createStatement();
+			rs= st.executeQuery(query);
+			tm= DbUtils.resultSetToTableModel(rs);
+			c.close();
+			return tm;	
+			
+		}catch(SQLException e){
+			new Eccezioni("Db error \n"+e);
+			return null;
+		}
 	}
 	
 	public boolean check(String username){
@@ -365,7 +408,6 @@ public class UserManagement{
 			}
 			pstC.close();
 			rs.close();	
-			c.close();
 			return true; 
 		}catch(Exception e){
 			new Eccezioni(e);

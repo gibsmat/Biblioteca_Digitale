@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 public class OperaManagement {
-	Connection c = DbConnection.dbConnector();
+	Connection c=DbConnection.dbConnector();
 	
 	public OperaManagement(){
 	}
@@ -72,7 +72,7 @@ public class OperaManagement {
 			JOptionPane.showMessageDialog(null,"Immagine aggiunta correttamente.");
 			
 		}catch(SQLException e){
-			new Eccezioni("Errore nell'aggiunta dell'immagine",e);
+			new Eccezioni("Errore nell'aggiunta dell'immagine.\n"+e);
 		}
 	}
 	
@@ -283,7 +283,36 @@ public class OperaManagement {
 				autore=rs.getString("autore");
 				isbn=rs.getString("isbn");
 				editore=rs.getString("editore");
+				rs.close();
 				return new Opera(anno,titolo,autore,isbn,editore);
+			}
+			c.close();
+			return null;			
+		}catch(SQLException e){
+			new Eccezioni("Db error",e);
+			return null;
+		}
+	}
+	
+	public Opera getOpera(String op,char close){
+		String anno,titolo,autore,isbn,editore;
+		
+		try{
+			String query="SELECT * FROM Opera where isbn=? OR titolo=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, op);
+			pst.setString(2, op);
+			
+			ResultSet rs=pst.executeQuery();
+			while(rs.next()){
+				anno=rs.getString("anno");
+				titolo=rs.getString("titolo");
+				autore=rs.getString("autore");
+				isbn=rs.getString("isbn");
+				editore=rs.getString("editore");
+				Opera opera=new Opera(anno,titolo,autore,isbn,editore);
+				c.close();
+				return opera;
 			}
 			rs.close();
 			c.close();
@@ -294,11 +323,31 @@ public class OperaManagement {
 		}
 	}
 
+	public void addTrascrizione(Trascrittore t,String titolo,String anno,int page){
+		try{
+			String query="INSERT INTO Trascrizioni(path,stato,opera,page,trascrittore) VALUES (?,?,?,?,?)";
+			PreparedStatement pst=c.prepareStatement(query);
+			pst.setString(1, "trascrizioni/" +titolo+ "/" + titolo + page + ".html");
+			pst.setInt(2,0);
+			pst.setString(3,titolo);
+			pst.setInt(4,page);
+			pst.setString(5,t.getUserId());
+			
+			pst.execute();
+			pst.close();
+			c.close();
+			JOptionPane.showMessageDialog(null,"Trascrizione aggiunta.");
+			
+		}catch(Exception e){
+			new Eccezioni("errore nell'aggiunta della trascrizione \n"+e);
+		}		
+	}
+	
 	public void deleteTrascrizione(String opera,int page){
 		Opera op=getOpera(opera);				
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM Trascrizioni WHERE opera=? AND page=?");
-			pst.setString(1, op.getIsbn());
+			pst.setString(1, op.getTitolo());
 			pst.setInt(2, page);
 			pst.execute();
 			pst.close();			
@@ -307,7 +356,7 @@ public class OperaManagement {
 			JOptionPane.showMessageDialog(null,"Trascrizione eliminata con successo.");
 			
 		}catch(SQLException e){
-			new Eccezioni("Errore Db",e);
+			new Eccezioni("Errore Db. \n"+e);
 		}			
 	}
 	

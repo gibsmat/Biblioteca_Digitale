@@ -175,12 +175,29 @@ public class TrascrittoreGui implements FocusListener{
 		frameT.getContentPane().add(txtNumber);
 		txtNumber.setColumns(10);
 		
+		txtTitle = new JTextPane();
+		txtTitle.setDisabledTextColor(Color.DARK_GRAY);
+		txtTitle.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtTitle.setText(titolo);
+		txtTitle.setBounds(523, 48, 211, 20);
+		frameT.getContentPane().add(txtTitle);
+		txtTitle.addFocusListener(this);
+		
+		txtanno = new JTextPane();
+		txtanno.setText(anno);
+		txtanno.setBounds(744, 48, 151, 20);
+		frameT.getContentPane().add(txtanno);
+		txtanno.addFocusListener(this);
+		
 		//bottone ricerca
 		btnRicerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String pathI=ListenerEventi.getFirstImm(txtTitolo.getText());
 				label.setIcon(new ImageIcon(pathI));	
 				txtNumber.setText("1");
+				Opera o=ListenerEventi.getOpera(txtTitolo.getText());
+				txtTitle.setText(o.getTitolo());
+				txtanno.setText(o.getAnno());
 			}
 		});
 		
@@ -240,21 +257,7 @@ public class TrascrittoreGui implements FocusListener{
 		button_back.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 		button_back.setBounds(12, 13, 97, 25);
 		frameT.getContentPane().add(button_back);
-		
-		txtTitle = new JTextPane();
-		txtTitle.setDisabledTextColor(Color.DARK_GRAY);
-		txtTitle.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		txtTitle.setText(titolo);
-		txtTitle.setBounds(523, 48, 211, 20);
-		frameT.getContentPane().add(txtTitle);
-		txtTitle.addFocusListener(this);
-		
-		txtanno = new JTextPane();
-		txtanno.setText(anno);
-		txtanno.setBounds(744, 48, 151, 20);
-		frameT.getContentPane().add(txtanno);
-		txtanno.addFocusListener(this);
-		
+				
 		btnSalva = new JButton("Salva");
 		btnSalva.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 		btnSalva.setBounds(637, 501, 97, 25);
@@ -263,7 +266,9 @@ public class TrascrittoreGui implements FocusListener{
 		// bottone salva
 		btnSalva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				if(ListenerEventi.addTrascrizione(trascrittore,txtTitle.getText(),txtanno.getText(),txtCorpo.getText(),txtNumber.getText())){
+					ListenerEventi.saveTrascrizione(txtTitle.getText(),txtanno.getText(), txtNumber.getText(),txtCorpo.getText());
+				}
 				
 			}
 		});	
@@ -318,7 +323,7 @@ public class TrascrittoreGui implements FocusListener{
 		button_1.setBounds(418, 488, 173, 56);
 		frameD.getContentPane().add(button_1);
 		
-		//bottone elimina trascizione
+		//bottone elimina trascrizione
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
 				ListenerEventi.deleteTrascrizione(trascrittore,id.getText(),Page.getText());
@@ -438,7 +443,7 @@ public class TrascrittoreGui implements FocusListener{
 				this.Page.setText("");
 			}
 		}
-		else if(frameT.isActive()){
+	/*	else if(frameT.isActive()){
 			if(txtTitolo.hasFocus() && txtTitolo.getText().toString().equals(title)){
 				this.txtTitolo.setText("");
 			}
@@ -448,7 +453,8 @@ public class TrascrittoreGui implements FocusListener{
 			else if(txtanno.hasFocus() && txtanno.getText().toString().equals(anno)){
 				this.txtanno.setText("");
 			}
-		}
+	 
+		}	*/
 		else{	
 			if(txtTitolo.hasFocus() && txtTitolo.getText().toString().equals(title))
 				this.txtTitolo.setText("");				

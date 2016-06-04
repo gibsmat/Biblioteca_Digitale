@@ -31,7 +31,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	JFrame frame;
 	JFrame frameD = new JFrame();
 	JTable table;
-	JTextField path,txtInserisciIlTitolo,Id,Page,id,Page1;
+	JTextField txtInserisciIlTitolo,Id,Page,id,Page1;
 	final String insert="Inserisci il titolo o l'isbn dell'opera";
 	final String page_st = "Page";
 	JFileChooser x;
@@ -123,6 +123,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	
 	public void addImmagini(){
 		JFrame frame;
+		JTextField path;
 		
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Roboto Black", Font.PLAIN, 18));
@@ -212,7 +213,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		btnVisualizzaOpere.setBounds(75, 386, 171, 41);
 		frame.getContentPane().add(btnVisualizzaOpere);
 		
-		//back
+		//back button
 		JButton button = new JButton("Back");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -220,6 +221,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 				initialize();
 			}
 		});
+		
 		button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 		button.setBounds(12, 13, 97, 25);
 		frame.getContentPane().add(button);
