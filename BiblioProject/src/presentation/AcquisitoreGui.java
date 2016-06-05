@@ -36,6 +36,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	final String page_st = "Page";
 	JFileChooser x;
 
+	public AcquisitoreGui(){
+	}
+	
 	public AcquisitoreGui(Utente a){
 		this.acquisitore=(Acquisitore)a;
 		initialize();

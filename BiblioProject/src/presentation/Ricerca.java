@@ -7,8 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
+import javax.swing.table.TableModel;
+
 import java.util.*;
 import business.model.*;
+import listener.ListenerEventi;
 import business.implementation.*;
 
 public class Ricerca implements MouseListener {
@@ -33,46 +36,28 @@ public class Ricerca implements MouseListener {
 		frame.getContentPane().setLayout(null);
 		
 		JLabel label = new JLabel("");
-		label.setBounds(62, 0, 244, 216);
+		label.setBounds(33, 0, 260, 183);
 		label.setIcon(new ImageIcon("img/log2.png"));
 		frame.getContentPane().add(label);
 		
 		JLabel lblRicerca = new JLabel("...Ricerca...");
-		lblRicerca.setBounds(369, 13, 326, 122);
+		lblRicerca.setBounds(434, 11, 326, 122);
 		lblRicerca.setForeground(Color.RED);
 		lblRicerca.setFont(new Font("Roboto Black", Font.PLAIN, 57));
 		lblRicerca.setBackground(new Color(255, 0, 0));
 		frame.getContentPane().add(lblRicerca);
 		
 		Titolo = new JTextField();
-		Titolo.setBounds(23, 229, 682, 22);
+		Titolo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		Titolo.setBounds(44, 251, 617, 22);
 		Titolo.setText("Ricerca per titolo o isbn....");
 		frame.getContentPane().add(Titolo);
 		Titolo.setColumns(10);
 		Titolo.addMouseListener(this);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(216, 196, 444, 2);
-		frame.getContentPane().add(separator);
-		
-		JButton RicercaButtton = new JButton("Ricerca");
-		
-		RicercaButtton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				OperaManagement opm=new OperaManagement();
-				close();
-				if(utente instanceof UtenteAvanzato){					
-					showOpera(opm.getOpera(Titolo.getText()));
-				}else{
-					showTitoli(opm.getTitles(Titolo.getText()));
-				}				
-			}
-		});
-		
-		RicercaButtton.setBounds(751, 228, 97, 25);
-		RicercaButtton.setForeground(Color.WHITE);
-		RicercaButtton.setBackground(Color.DARK_GRAY);
-		frame.getContentPane().add(RicercaButtton);
+		separator.setBounds(347, 146, 489, 2);
+		frame.getContentPane().add(separator);		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(72, 296, 764, 230);
@@ -80,26 +65,67 @@ public class Ricerca implements MouseListener {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
-			
-		this.frame.setVisible(true);
+		
+		JButton RicercaButtton = new JButton("Ricerca");
+		RicercaButtton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		RicercaButtton.setBounds(727, 243, 109, 32);
+		frame.getContentPane().add(RicercaButtton);
+		
+		JTextField txtOppure = new JTextField();
+		txtOppure.setBorder(null);
+		txtOppure.setFont(new Font("Tahoma", Font.ITALIC, 14));
+		txtOppure.setEditable(false);
+		txtOppure.setText("oppure");
+		txtOppure.setBounds(219, 207, 86, 20);
+		frame.getContentPane().add(txtOppure);
+		txtOppure.setColumns(10);
+		
+		JButton btnAll = new JButton("Visualizza tutto");
+		btnAll.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnAll.setBounds(43, 183, 158, 44);
+		frame.getContentPane().add(btnAll);
+		
+		//visualizza tutto
+		btnAll.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			TableModel tm=ListenerEventi.getOpere();
+			table.setModel(tm);
+			}
+		});
+		
+		RicercaButtton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TableModel tm=ListenerEventi.getOperaModel(Titolo.getText());
+				table.setModel(tm);
+			}
+		});
+		
+		//back button
+		JButton backButton = new JButton("Back");
+		backButton.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+		backButton.setBounds(12, 13, 97, 25);
+		frame.getContentPane().add(backButton);
+		
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				ListenerEventi.changePage("UserPage", utente);
+			}
+		});
+							
+		frame.setVisible(true);
 	}
 	
 	public void close(){		
 		this.frame.dispose();
 	}
-	
 
-	public void showOpera(Opera opera){
-		
-	}
-	
-	public void showTitoli(ArrayList<String> titoli){
-		
-	}
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		Titolo.setText("");		
+		if(Titolo.getText().equals("Ricerca per titolo o isbn....")){
+			Titolo.setText("");	
+		}
 	}
 
 	@Override

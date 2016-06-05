@@ -9,10 +9,12 @@ import javax.swing.table.TableModel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.image.BufferedImage;
 
 import business.model.*;
 import listener.ListenerEventi;
@@ -192,8 +194,8 @@ public class TrascrittoreGui implements FocusListener{
 		//bottone ricerca
 		btnRicerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String pathI=ListenerEventi.getFirstImm(txtTitolo.getText());
-				label.setIcon(new ImageIcon(pathI));	
+				Image img=ListenerEventi.getFirstImm(txtTitolo.getText());
+				label.setIcon(new ImageIcon(img));	
 				txtNumber.setText("1");
 				Opera o=ListenerEventi.getOpera(txtTitolo.getText());
 				txtTitle.setText(o.getTitolo());
@@ -212,11 +214,11 @@ public class TrascrittoreGui implements FocusListener{
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String num=txtNumber.getText().toString();				
-				String pathIP=ListenerEventi.getImm(txtTitolo.getText(),num,'-');
-				if(pathIP.equals("")){
+				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'-');
+				if(img.equals(null)){
 					//new Eccezioni("Immagine non trovata.");
 				}else{
-					label.setIcon(new ImageIcon(pathIP));
+					label.setIcon(new ImageIcon(img));
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n-1));
 				}
@@ -234,11 +236,11 @@ public class TrascrittoreGui implements FocusListener{
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String num=txtNumber.getText();
-				String pathIP=ListenerEventi.getImm(txtTitolo.getText(),num,'+');
-				if(pathIP.equals("")){
+				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'+');
+				if(img.equals(null)){
 					//new Eccezioni("Immagine non trovata.");
 				}else{
-					label.setIcon(new ImageIcon(pathIP));
+					label.setIcon(new ImageIcon(img));
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n+1));
 				}
@@ -381,7 +383,7 @@ public class TrascrittoreGui implements FocusListener{
 			public void actionPerformed(ActionEvent e) {
 				ListenerEventi.addCommento(trascrittore,Commenti.getText().toString());
 				frame.dispose();
-				initialize();
+				commenta();
 			}
 		});		
 		

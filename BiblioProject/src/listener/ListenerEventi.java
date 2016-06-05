@@ -3,6 +3,8 @@
  */
 package listener;
 
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -15,6 +17,7 @@ import business.Eccezioni;
 import business.implementation.*;
 import business.model.*;
 import presentation.*;
+import sun.misc.IOUtils;
 
 /**
  * @author antony
@@ -22,6 +25,8 @@ import presentation.*;
  */
 
 public class ListenerEventi {
+	final static int WIDTH = 333;
+	final static int HEIGHT = 520;
 
 	public ListenerEventi(){		
 	}	
@@ -189,7 +194,15 @@ public class ListenerEventi {
 		changePage("Admin",null);
 		}
 	}
-
+	
+	public static boolean setUtente(UtenteBase utente,String username,String nome,String cognome,String password){
+		if(username.equals("") || password.equals("")){
+			new Eccezioni("Username e password non possono essere lasciati vuoti.");
+			return false;
+		}
+		return new UserManagement().setUtente(utente,username,nome,cognome,password);
+	}
+	
 	public static void registrati(String username,JPasswordField psw,String type,String nome,String cognome){
 	
 		if(username.equals("") || psw.getPassword().length == 0){
@@ -244,6 +257,10 @@ public class ListenerEventi {
 		return new OperaManagement().getOpera(opera,'c');
 	}
 	
+	public static TableModel getOperaModel(String opera){
+		return new OperaManagement().getOperaModel(opera);
+	}
+	
 	public static TableModel getOpere(){
 		return new OperaManagement().getOpere();		
 	}
@@ -282,13 +299,16 @@ public class ListenerEventi {
 	}
 	
 	public static void addCommento(Utente utente,String text){
-		if(utente instanceof Acquisitore){
-			((Acquisitore) utente).addCommento(text);
+		if(!(text.equals(""))){
+			if(utente instanceof Acquisitore){
+				((Acquisitore) utente).addCommento(text);
+			}
+			else if(utente instanceof Trascrittore){
+				((Trascrittore)utente).addCommento(text);
+			}	
 		}
-		else if(utente instanceof Trascrittore){
-			((Trascrittore)utente).addCommento(text);
-		}		
-		
+		else
+			new Eccezioni("Inserire il commento.");
 	}
 
 	public static void deleteTrascrizione(Trascrittore tr,String opera,String page){
@@ -309,24 +329,55 @@ public class ListenerEventi {
 		
 	}
 	
-	public static String getFirstImm(String opera){
-		String isbn=new OperaManagement().getOpera(opera).getIsbn();
-		return new OperaManagement().getPath(isbn, 1,'c');
+	public static Image getFirstImm(String opera){
+		Opera op=new OperaManagement().getOpera(opera);
+		if(op!=null){
+			String isbn=op.getIsbn();
+			String path=new OperaManagement().getPath(isbn, 1,'c');
+			try{
+				BufferedImage srcIm = ImageIO.read(new File(path));
+				Image scaledIm = srcIm.getScaledInstance(WIDTH, HEIGHT, BufferedImage.SCALE_DEFAULT);		
+				return scaledIm;
+			}
+			catch(Exception e){
+				new Eccezioni("Errore :\n"+e);
+				return null;
+			}	
+		}
+		else{
+			new Eccezioni("Opera non presente");
+			return null;
+		}
 	}
 
-	public static String getImm(String opera, String number,char s){
+	public static Image getImm(String opera, String number,char s){
 		String isbn = new OperaManagement().getOpera(opera).getIsbn();
+		String path;
 		int n=Integer.parseInt(number);
 		if(s=='-'){
 			if(n > 1){
-				return new OperaManagement().getPath(isbn, n-1, 'c');
+				path= new OperaManagement().getPath(isbn, n-1, 'c');
 			}else{
-				return "";
+				return null;
 			}
 		}
 		else{
-			return new OperaManagement().getPath(isbn, n+1, 'c');
-		}								
+			path= new OperaManagement().getPath(isbn, n+1, 'c');
+		}
+		if(path.equals("")){
+			return null;
+		}
+		else{
+			try{
+				BufferedImage srcIm = ImageIO.read(new File(path));
+				Image scaledIm = srcIm.getScaledInstance(WIDTH, HEIGHT, BufferedImage.SCALE_DEFAULT); 			
+				return scaledIm;
+			}
+			catch(Exception e){
+				new Eccezioni("Errore :\n"+e);
+				return null;
+			}
+		}
 	}
 	
 	public static String getImm(String isbn, String number){
@@ -357,7 +408,8 @@ public class ListenerEventi {
 			BufferedImage bi=ImageIO.read(file);
 			File outfile= new File("img/"+ title +"/" +file.getName());
 			ImageIO.write(bi, "jpg", outfile);
-		}catch(IOException e){
+		}
+		catch(IOException e){
 			new Eccezioni("error",e);
 		}
 	}
@@ -393,4 +445,38 @@ public class ListenerEventi {
 		}
 	}
 
+	public static String getTrascrizione(String opera,String number){
+		Opera op=new OperaManagement().getOpera(opera);
+		if(op!=null){
+			
+			String titolo=op.getTitolo();			
+			try {
+				int n=Integer.parseInt(number);				
+				String path= new OperaManagement().getPathT(titolo, n);
+				if(path==null){
+					return null;
+				}
+				BufferedReader br = new BufferedReader(new FileReader(path));
+			    StringBuilder sb = new StringBuilder();
+			    String line = br.readLine();
+
+			    while (line != null) {
+				   sb.append(line);
+				   sb.append(System.lineSeparator());
+				   line = br.readLine();
+				}
+			    br.close();
+				return sb.toString();
+				}
+			catch(Exception e) {
+			    new Eccezioni(e);
+			    return null;
+			}
+		}
+		else
+			return null;
+	}
+
+	
+	
 }

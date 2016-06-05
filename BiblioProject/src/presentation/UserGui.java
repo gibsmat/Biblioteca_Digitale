@@ -8,6 +8,8 @@ import listener.ListenerEventi;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -32,6 +34,7 @@ public class UserGui implements FocusListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		if(utente instanceof UtenteAvanzato){
 			
 			frame = new JFrame();
@@ -63,7 +66,7 @@ public class UserGui implements FocusListener {
 			JButton btnElencoOpere = new JButton("Elenco opere");
 			btnElencoOpere.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					
+					new AcquisitoreGui().viewOpere();
 					
 					//elenco opere nel db
 				}
@@ -103,7 +106,7 @@ public class UserGui implements FocusListener {
 			
 			frame = new JFrame();
 			frame.setBounds(100, 100, 963, 586);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.getContentPane().setLayout(null);
 			
 			JLabel label = new JLabel("");
@@ -178,23 +181,7 @@ public class UserGui implements FocusListener {
 			this.frame.setVisible(true);
 		}
 	}
-	   //query... che restuisce il testo della trascrizione
-/*		
-		try {
-			//file è il risutlato della query 
-		      file = new FileOutputStream("file.html");
-		      PrintStream Output = new PrintStream(file);
-		      
-		      Output.println(t1);
-		      Output.close();
-		      
-		      System.out.println(t1);
-		  
-		    } catch (Exception e) {
-		      System.out.println("Errore: " + e);
-		      System.exit(1);
-		    }
-*/		
+	
 	public void viewOpera(){
 		
 		frame = new JFrame();
@@ -220,10 +207,11 @@ public class UserGui implements FocusListener {
 		scrollPane.setViewportView(label);
 		
 		textField = new JTextField();
-		textField.setText("");
+		textField.setText(titleS);
 		textField.setFont(new Font("Roboto Black", Font.PLAIN, 12));
 		textField.setColumns(10);
 		textField.setBounds(12, 128, 124, 22);
+		textField.addFocusListener(this);
 		frame.getContentPane().add(textField);
 		
 		txtNumber = new JTextField();
@@ -241,9 +229,13 @@ public class UserGui implements FocusListener {
 		//bottone ricerca opera
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String firstImm=ListenerEventi.getFirstImm(textField.getText());
-				label.setIcon(new ImageIcon(firstImm));
-				txtNumber.setText("1");
+				Image img=ListenerEventi.getFirstImm(textField.getText());
+				if(img!=null){
+					label.setIcon(new ImageIcon(img));
+					txtNumber.setText("1");
+					String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
+					textPane.setText(testo);					
+				}				
 			}
 		});
 		
@@ -256,13 +248,20 @@ public class UserGui implements FocusListener {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String num=txtNumber.getText();
-				String pathIP=ListenerEventi.getImm(textField.getText(),num,'+');
-				if(pathIP.equals("")){
-					//new Eccezioni("Immagine non trovata.");
-				}else{
-					label.setIcon(new ImageIcon(pathIP));
-					int n=Integer.parseInt(num);
-					txtNumber.setText(Integer.toString(n+1));
+				if(!(num.equals(""))){
+					Image imm=ListenerEventi.getImm(textField.getText(),num,'+');
+					if(imm==null){
+						//new Eccezioni("Immagine non trovata.");
+					}else{
+						label.setIcon(new ImageIcon(imm));
+						int n=Integer.parseInt(num);
+						txtNumber.setText(Integer.toString(n+1));
+						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
+						if(testo!=null){
+							textPane.setText(testo);
+						}else
+							textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
+					}
 				}
 			}
 		});
@@ -276,14 +275,18 @@ public class UserGui implements FocusListener {
 		//immagine precedente
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String num=txtNumber.getText().toString();				
-				String pathIP=ListenerEventi.getImm(textField.getText(),num,'-');
-				if(pathIP.equals("")){
-					//new Eccezioni("Immagine non trovata.");
-				}else{
-					label.setIcon(new ImageIcon(pathIP));
-					int n=Integer.parseInt(num);
-					txtNumber.setText(Integer.toString(n-1));
+				String num=txtNumber.getText().toString();
+				if(!(num.equals(""))){
+					Image imm=ListenerEventi.getImm(textField.getText(),num,'-');
+					if(imm==null){
+						//new Eccezioni("Immagine non trovata.");
+					}else{
+						label.setIcon(new ImageIcon(imm));
+						int n=Integer.parseInt(num);
+						txtNumber.setText(Integer.toString(n-1));
+						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
+						textPane.setText(testo);
+					}
 				}
 			}
 		});		
@@ -292,6 +295,19 @@ public class UserGui implements FocusListener {
 		label_1.setIcon(new ImageIcon("img/log.png"));
 		label_1.setBounds(30, 27, 58, 56);
 		frame.getContentPane().add(label_1);
+		
+		//back button
+		JButton backButton = new JButton("Back");
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				initialize();
+			}
+		});
+				
+		backButton.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+		backButton.setBounds(12, 13, 97, 25);
+		frame.getContentPane().add(backButton);
 
 		frame.setVisible(true);
 	}
@@ -307,6 +323,7 @@ public class UserGui implements FocusListener {
 			textField.setText("");
 		}		
 	}
+	
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub

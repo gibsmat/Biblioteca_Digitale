@@ -5,6 +5,7 @@ package presentation;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import business.Eccezioni;
 import business.model.*;
 import listener.ListenerEventi;
 
@@ -36,7 +38,6 @@ public class PersonalGui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 			
-		//User();
 		JLabel lblNome_1 = new JLabel(utentebase.getNome());
 		lblNome_1.setForeground(new Color(192, 192, 192));
 		lblNome_1.setFont(new Font("Roboto Black", Font.PLAIN, 30));
@@ -131,7 +132,7 @@ public class PersonalGui {
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 494, 693);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel label = new JLabel("");
@@ -193,6 +194,13 @@ public class PersonalGui {
 		JButton btnModifica = new JButton("Modifica");
 		btnModifica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(ListenerEventi.setUtente(utentebase,Username.getText(),Nome.getText(),Cognome.getText(),Password.getText())){
+					JOptionPane.showMessageDialog(null,"Dati modificati con successo.");
+					frame.dispose();
+					ListenerEventi.changePage("Login", null);
+				}else{
+					
+				}
 			}
 		});
 		btnModifica.setFont(new Font("Roboto Black", Font.PLAIN, 16));

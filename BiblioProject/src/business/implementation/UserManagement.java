@@ -391,6 +391,47 @@ public class UserManagement{
 		}
 	}
 	
+	public boolean setUtente(UtenteBase utente,String username,String nome,String cognome,String password){
+		if(utente instanceof UtenteAvanzato){
+			try{
+				String query="UPDATE UtenteAvanzato SET usernameA=?, nomeA=?, cognomeA=?, passwordA=? WHERE usernameA=?";
+				PreparedStatement pst = c.prepareStatement(query);
+				pst.setString(1, username);
+				pst.setString(2, nome);
+				pst.setString(3, cognome);
+				pst.setString(4, password);
+				pst.setString(5,utente.getUserId());
+				
+				pst.execute();
+				c.close();
+				return true;			
+			}	
+			catch(Exception e){
+				new Eccezioni("Db error \n"+e);
+				return false;
+			}
+		}
+		else{
+			try{
+				String query="UPDATE UTENTEBASE SET username=?, nome=?, cognome=?, password=? WHERE username=?";
+				PreparedStatement pst = c.prepareStatement(query);
+				pst.setString(1, username);
+				pst.setString(2, nome);
+				pst.setString(3, cognome);
+				pst.setString(4, password);
+				pst.setString(5,utente.getUserId());
+				
+				pst.execute();
+				c.close();
+				return true;			
+			}	
+			catch(Exception e){
+				new Eccezioni("Db error \n"+e);
+				return false;
+			}
+		}
+	}
+	
 	public boolean check(String username){
 		int i;
 		try{

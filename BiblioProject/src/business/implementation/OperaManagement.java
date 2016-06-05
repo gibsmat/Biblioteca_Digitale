@@ -143,7 +143,12 @@ public class OperaManagement {
 			pst.setInt(2, page);
 			
 			ResultSet rs=pst.executeQuery();
-			return rs.getString("path");
+			if(rs.next()){
+				String path= rs.getString("path");
+				rs.close();
+				return path;
+			}else
+				return null;
 			
 		}catch(SQLException e){
 			new Eccezioni("Db error.",e);
@@ -286,6 +291,7 @@ public class OperaManagement {
 				rs.close();
 				return new Opera(anno,titolo,autore,isbn,editore);
 			}
+			rs.close();
 			c.close();
 			return null;			
 		}catch(SQLException e){
@@ -323,6 +329,25 @@ public class OperaManagement {
 		}
 	}
 
+	public TableModel getOperaModel(String op){
+		
+		try{
+			String query="SELECT anno,titolo,autore,isbn,editore FROM Opera where isbn=? OR titolo=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, op);
+			pst.setString(2, op);
+			
+			ResultSet rs=pst.executeQuery();
+			TableModel tm= DbUtils.resultSetToTableModel(rs);	
+			c.close();
+			return tm;	
+			
+		}catch(SQLException e){
+			new Eccezioni("Db error \n"+e);
+			return null;
+		}
+	}
+	
 	public void addTrascrizione(Trascrittore t,String titolo,String anno,int page){
 		try{
 			String query="INSERT INTO Trascrizioni(path,stato,opera,page,trascrittore) VALUES (?,?,?,?,?)";
