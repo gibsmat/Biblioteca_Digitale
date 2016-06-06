@@ -1,6 +1,3 @@
-/**
- * 
- */
 package presentation;
 
 import javax.swing.*;

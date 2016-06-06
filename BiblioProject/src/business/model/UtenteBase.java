@@ -68,10 +68,12 @@ public class UtenteBase implements Utente {
 	public boolean getStatus() {
 		return loginStatus;
 	}
-	@Override
+	
+	@Override	
 	public void changeStatus() {
 		this.loginStatus= !(loginStatus);
 	}
+	
 	@Override
 	public String getDataI(){
 		return this.dataI;

@@ -211,11 +211,10 @@ public class TrascrittoreGui implements FocusListener{
 		
 		//immagine precedente
 		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
+			public void actionPerformed(ActionEvent arg0) {				
 				String num=txtNumber.getText().toString();				
 				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'-');
-				if(img.equals(null)){
+				if(img==null){
 					//new Eccezioni("Immagine non trovata.");
 				}else{
 					label.setIcon(new ImageIcon(img));
@@ -237,7 +236,7 @@ public class TrascrittoreGui implements FocusListener{
 				
 				String num=txtNumber.getText();
 				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'+');
-				if(img.equals(null)){
+				if(img==null){
 					//new Eccezioni("Immagine non trovata.");
 				}else{
 					label.setIcon(new ImageIcon(img));

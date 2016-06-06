@@ -114,30 +114,53 @@ public class OperaManagement {
 	}
 	
 	public String getPath(String opera,int page,char close){
-		try{
-			String query="SELECT path FROM Immagini where opera=? AND page=?";
-			PreparedStatement pst = c.prepareStatement(query);
-			pst.setString(1, opera);
-			pst.setInt(2, page);
-			
-			ResultSet rs=pst.executeQuery();
-			if(rs.next()){
-				String p=rs.getString("path");
-				c.close();
-				return p;
-			}else{
-				c.close();
-				return "";
+		if(close=='r'){
+			try{
+				String query="SELECT path FROM Immagini where opera=? AND page=?";
+				PreparedStatement pst = c.prepareStatement(query);
+				pst.setString(1, opera);
+				pst.setInt(2, page);
+				
+				ResultSet rs=pst.executeQuery();
+				if(rs.next()){
+					String p=rs.getString("path");
+					c.close();
+					return p;
+				}else{
+					c.close();
+					return "";
+				}
+			}catch(Exception e){
+				new Eccezioni("Immagine non trovata");
+				return null;
 			}
-		}catch(Exception e){
-			new Eccezioni("Immagine non trovata");
-			return null;
-		}		
+		}
+		else{
+			try{
+				String query="SELECT path FROM Immagini where opera=? AND page=? AND stato=1";
+				PreparedStatement pst = c.prepareStatement(query);
+				pst.setString(1, opera);
+				pst.setInt(2, page);
+				
+				ResultSet rs=pst.executeQuery();
+				if(rs.next()){
+					String p=rs.getString("path");
+					c.close();
+					return p;
+				}else{
+					c.close();
+					return "";
+				}
+			}catch(Exception e){
+				new Eccezioni("Immagine non trovata");
+				return null;
+			}	
+		}
 	}
 	
 	public String getPathT(String opera,int page){
 		try{
-			String query="SELECT path FROM Trascrizioni where opera=? AND page=?";
+			String query="SELECT path FROM Trascrizioni where opera=? AND page=? AND stato=1";
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setString(1, opera);
 			pst.setInt(2, page);
@@ -156,11 +179,11 @@ public class OperaManagement {
 		}		
 	}
 	
-	public int getStatoImm(String name){
+	public int getStatoImm(String path){
 		try{
-			String query="SELECT stato FROM Immagini where nomeImm=?";
+			String query="SELECT stato FROM Immagini where path=?";
 			PreparedStatement pst = c.prepareStatement(query);
-			pst.setString(1, name);
+			pst.setString(1, path);
 			
 			ResultSet rs=pst.executeQuery();
 			int ris= rs.getInt("stato");
@@ -175,12 +198,12 @@ public class OperaManagement {
 		
 	}
 	
-	public void changeStatoImm(String name,int s){
+	public void changeStatoImm(String path,int s){
 		try{
-			String query="UPDATE Immagini SET stato=? WHERE nomeImm=?";
+			String query="UPDATE Immagini SET stato=? WHERE path=?";
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setInt(1, s);
-			pst.setString(2, name);
+			pst.setString(2, path);
 			
 			pst.execute();
 			pst.close();
@@ -393,10 +416,5 @@ public class OperaManagement {
 			new Eccezioni("Errore Db. \n"+e);
 		}			
 	}
-	
-	public ArrayList<String> getTitles(String stringa){
-		List<String> listaTitoli = new ArrayList<String>();
-		//ricerca e restituzione dei titoli di tutte le opere nel DB
-		return null;
-	} 
+
 }

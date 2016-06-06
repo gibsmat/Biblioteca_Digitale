@@ -1,6 +1,6 @@
 package business.model;
 
-import java.awt.*;
+import javax.swing.table.TableModel;
 
 import business.implementation.OperaManagement;
 
@@ -14,9 +14,12 @@ public class RevisoreTrascrizioni extends RevisoreImmagine {
 		//revisionaIm(image);
 		//aprire finestra con trascrizione TEI
 	}
-	public void commenta(String testo,String titoloOpera){
-		Commento commento=new Commento(titoloOpera,this.userId,testo);
+	public void commenta(String testo){
+		Commento commento=new Commento(this.userId,testo);
 		new OperaManagement().addCommentoT(commento);
 	}
 
+	public TableModel viewCommenti(){
+		return new OperaManagement().getCommentiT();
+	}
 }

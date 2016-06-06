@@ -3,7 +3,6 @@
  */
 package listener;
 
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -17,7 +16,6 @@ import business.Eccezioni;
 import business.implementation.*;
 import business.model.*;
 import presentation.*;
-import sun.misc.IOUtils;
 
 /**
  * @author antony
@@ -57,11 +55,11 @@ public class ListenerEventi {
 			break;
 			
 		case "Revisore Immagini":
-			//new RevisoreI_Gui(utente);
+			new RevisoreI_Gui(utente);
 			break;
 			
 		case "Revisore Trascrizioni":
-			//new RevisoreT_Gui(utente);
+			new RevisoreT_Gui(utente);
 			break;
 			
 		case "PersonalPage":
@@ -298,8 +296,14 @@ public class ListenerEventi {
 		if(utente instanceof Acquisitore){
 			return ((Acquisitore) utente).viewCommenti();
 		}
+		else if(utente instanceof RevisoreImmagine){
+			return ((RevisoreImmagine)utente).viewCommenti();
+		}
 		else if(utente instanceof Trascrittore){
 			return ((Trascrittore)utente).viewCommenti();
+		}
+		else if(utente instanceof RevisoreTrascrizioni){
+			return ((RevisoreTrascrizioni)utente).viewCommenti();
 		}
 		else
 			return null;
@@ -313,6 +317,12 @@ public class ListenerEventi {
 			else if(utente instanceof Trascrittore){
 				((Trascrittore)utente).addCommento(text);
 			}	
+			else if(utente instanceof RevisoreImmagine){
+				((RevisoreImmagine)utente).commenta(text);
+			}
+			else if(utente instanceof RevisoreTrascrizioni){
+				((RevisoreTrascrizioni)utente).commenta(text);
+			}
 		}
 		else
 			new Eccezioni("Inserire il commento.");
@@ -341,9 +351,38 @@ public class ListenerEventi {
 		if(op!=null){
 			String isbn=op.getIsbn();
 			String path=new OperaManagement().getPath(isbn, 1,'c');
+			if(path.equals("")){
+				new Eccezioni("L'immagine non è stata ancora approvata.");
+				return null;
+			}
 			try{
 				BufferedImage srcIm = ImageIO.read(new File(path));
 				Image scaledIm = srcIm.getScaledInstance(WIDTH, HEIGHT, BufferedImage.SCALE_DEFAULT);		
+				return scaledIm;
+			}
+			catch(Exception e){
+				new Eccezioni("Errore :\n"+e);
+				return null;
+			}	
+		}
+		else{
+			new Eccezioni("Opera non presente");
+			return null;
+		}
+	}
+	
+	public static Image getFirstImm(String opera,int width,int height){
+		Opera op=new OperaManagement().getOpera(opera);
+		if(op!=null){
+			String isbn=op.getIsbn();
+			String path=new OperaManagement().getPath(isbn, 1,'r');
+			if(path.equals("")){
+				new Eccezioni("L'immagine non è stata ancora approvata.");
+				return null;
+			}
+			try{
+				BufferedImage srcIm = ImageIO.read(new File(path));
+				Image scaledIm = srcIm.getScaledInstance(width, height, BufferedImage.SCALE_DEFAULT);		
 				return scaledIm;
 			}
 			catch(Exception e){
@@ -372,12 +411,43 @@ public class ListenerEventi {
 			path= new OperaManagement().getPath(isbn, n+1, 'c');
 		}
 		if(path.equals("")){
+			new Eccezioni("L'immagine non è stata ancora approvata.");
 			return null;
 		}
 		else{
 			try{
 				BufferedImage srcIm = ImageIO.read(new File(path));
 				Image scaledIm = srcIm.getScaledInstance(WIDTH, HEIGHT, BufferedImage.SCALE_DEFAULT); 			
+				return scaledIm;
+			}
+			catch(Exception e){
+				new Eccezioni("Errore :\n"+e);
+				return null;
+			}
+		}
+	}
+	
+	public static Image getImm(String opera, String number,char s,int width,int height){
+		String isbn = new OperaManagement().getOpera(opera).getIsbn();
+		String path;
+		int n=Integer.parseInt(number);
+		if(s=='-'){
+			if(n > 1){
+				path= new OperaManagement().getPath(isbn, n-1, 'r');
+			}else{
+				return null;
+			}
+		}
+		else{
+			path= new OperaManagement().getPath(isbn, n+1, 'r');
+		}
+		if(path.equals("")){
+			return null;
+		}
+		else{
+			try{
+				BufferedImage srcIm = ImageIO.read(new File(path));
+				Image scaledIm = srcIm.getScaledInstance(width,height, BufferedImage.SCALE_DEFAULT); 			
 				return scaledIm;
 			}
 			catch(Exception e){
@@ -421,6 +491,15 @@ public class ListenerEventi {
 		}
 	}
 	
+	public void approvaImm(RevisoreTrascrizioni rev,String opera,String page){
+		Opera op=new OperaManagement().getOpera(opera);
+		String isbn=op.getIsbn();
+		Integer p=Integer.parseInt(page);
+		String path=new OperaManagement().getPath(isbn, p.intValue(),'c');
+		rev.acceptIm(path);
+		
+	}
+	
 	public static boolean addTrascrizione(Trascrittore trasc,String titolo,String anno,String text,String page1){
 		if(titolo.equals("") || anno.equals("") || text.equals("")){
 			new Eccezioni("Completare tutti i campi");
@@ -461,6 +540,7 @@ public class ListenerEventi {
 				int n=Integer.parseInt(number);				
 				String path= new OperaManagement().getPathT(titolo, n);
 				if(path==null){
+					new Eccezioni("La trascizione deve essere ancora approvata.");
 					return null;
 				}
 				BufferedReader br = new BufferedReader(new FileReader(path));

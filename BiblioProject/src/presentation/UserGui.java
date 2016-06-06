@@ -26,13 +26,14 @@ public class UserGui implements FocusListener {
 	UtenteBase utente;
 	final String titleS="titolo/isbn..";
 	
+	public UserGui(){
+	}
+	
 	public UserGui(UtenteBase utente){
 		this.utente=utente;
 		initialize();
 	}
-	/**
-	 * Initialize the contents of the frame.
-	 */
+
 	private void initialize() {
 		
 		if(utente instanceof UtenteAvanzato){
@@ -232,11 +233,14 @@ public class UserGui implements FocusListener {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Image img=ListenerEventi.getFirstImm(textField.getText());
+				txtNumber.setText("1");
 				if(img!=null){
-					label.setIcon(new ImageIcon(img));
-					txtNumber.setText("1");
+					label.setIcon(new ImageIcon(img));					
 					String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
-					textPane.setText(testo);					
+					if(testo!=null){
+						textPane.setText(testo);
+					}else
+						textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");					
 				}				
 			}
 		});
@@ -252,12 +256,12 @@ public class UserGui implements FocusListener {
 				String num=txtNumber.getText();
 				if(!(num.equals(""))){
 					Image imm=ListenerEventi.getImm(textField.getText(),num,'+');
+					int n=Integer.parseInt(num);
+					txtNumber.setText(Integer.toString(n+1));
 					if(imm==null){
 						//new Eccezioni("Immagine non trovata.");
 					}else{
 						label.setIcon(new ImageIcon(imm));
-						int n=Integer.parseInt(num);
-						txtNumber.setText(Integer.toString(n+1));
 						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
 						if(testo!=null){
 							textPane.setText(testo);
@@ -280,14 +284,17 @@ public class UserGui implements FocusListener {
 				String num=txtNumber.getText().toString();
 				if(!(num.equals(""))){
 					Image imm=ListenerEventi.getImm(textField.getText(),num,'-');
+					int n=Integer.parseInt(num);
+					txtNumber.setText(Integer.toString(n-1));
 					if(imm==null){
 						//new Eccezioni("Immagine non trovata.");
 					}else{
 						label.setIcon(new ImageIcon(imm));
-						int n=Integer.parseInt(num);
-						txtNumber.setText(Integer.toString(n-1));
 						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
-						textPane.setText(testo);
+						if(testo!=null){
+							textPane.setText(testo);
+						}else
+							textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
 					}
 				}
 			}
