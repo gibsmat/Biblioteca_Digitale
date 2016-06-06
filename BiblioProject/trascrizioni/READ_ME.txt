@@ -1,0 +1,1 @@
+Questa cartella conterrà le trascrizioni, salvate come file html e organizzate in cartelle (ogni opera avrà la propria cartella).

@@ -1,0 +1,1 @@
+La cartella img contiene le immagini utili all'implementazione dell'interfaccia grafica dell'applicazione e le immagini delle opere, organizzate in cartelle (ogni opera avrà la propria cartella).
