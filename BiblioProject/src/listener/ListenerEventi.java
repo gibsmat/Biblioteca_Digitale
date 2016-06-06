@@ -25,6 +25,8 @@ import sun.misc.IOUtils;
  */
 
 public class ListenerEventi {
+	final static String INSERT="Inserisci il titolo o l'isbn dell'opera";
+	final static String PAGE = "Page";
 	final static int WIDTH = 333;
 	final static int HEIGHT = 520;
 
@@ -244,12 +246,17 @@ public class ListenerEventi {
 	}
 
 	public static void addOpera(Acquisitore acquisitore,String titolo,String anno,String autore,String editore,String isbn){
-		acquisitore.addOpera(anno,titolo, autore, isbn, editore);
-		try{
-			(new File("img/"+titolo)).mkdir();
-			(new File("trascrizioni/"+titolo)).mkdir();
-		}catch(Exception e){
-			new Eccezioni("errore creazione cartella");
+		if(titolo.equals("") || isbn.equals("")){
+			new Eccezioni("I campi titolo e isbn sono obbligatori!");
+		}
+		else{
+			acquisitore.addOpera(anno,titolo, autore, isbn, editore);
+			try{
+				(new File("img/"+titolo)).mkdir();
+				(new File("trascrizioni/"+titolo)).mkdir();
+			}catch(Exception e){
+				new Eccezioni("errore creazione cartella");
+			}
 		}
 	}
 	
@@ -270,7 +277,7 @@ public class ListenerEventi {
 	}
 
 	public static void deleteImmagine(Acquisitore ac,String opera,String page){
-		if(opera.equals("") || page.equals("")){
+		if(opera.equals("") || page.equals("") || opera.equals(INSERT) || page.equals(PAGE)){
 			new Eccezioni("Completare tutti i campi!");
 		}
 		else{
@@ -386,7 +393,7 @@ public class ListenerEventi {
 	}
 
 	public static boolean addImmagine(Acquisitore acquisitore,String path,String opera,String page1){
-		if(path.equals("") || opera.equals("") || page1.equals("")){
+		if(path.equals("") || opera.equals("") || opera.equals(INSERT) || page1.equals("") || page1.equals(PAGE)){
 			new Eccezioni("Completare tutti i campi");
 			return false;
 		}

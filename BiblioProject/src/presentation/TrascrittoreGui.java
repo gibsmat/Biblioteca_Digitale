@@ -30,7 +30,7 @@ public class TrascrittoreGui implements FocusListener{
 	JTextPane txtTitle=new JTextPane();
 	JTextPane txtanno=new JTextPane();
 	JTextField id,Page,txtTitolo,txtNumber;
-	final String insert="Inserisci l'Id dell'opera da cui eliminare il testo";
+	final String insert="Titolo o isbn dell'opera da cui eliminare il testo";
 	final String page_s="Page";
 	final String title="Titolo/isbn";
 	final String titolo="...Titolo...";

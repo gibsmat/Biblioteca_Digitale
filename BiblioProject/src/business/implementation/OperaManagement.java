@@ -276,10 +276,13 @@ public class OperaManagement {
 		String anno,titolo,autore,isbn,editore;
 		
 		try{
-			String query="SELECT * FROM Opera where isbn=? OR titolo=?";
+			String query="SELECT * FROM Opera where isbn=? OR titolo=? OR editore=? OR autore=? OR anno=?";
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setString(1, op);
 			pst.setString(2, op);
+			pst.setString(3, op);
+			pst.setString(4, op);
+			pst.setString(5, op);
 			
 			ResultSet rs=pst.executeQuery();
 			while(rs.next()){
@@ -304,10 +307,13 @@ public class OperaManagement {
 		String anno,titolo,autore,isbn,editore;
 		
 		try{
-			String query="SELECT * FROM Opera where isbn=? OR titolo=?";
+			String query="SELECT * FROM Opera where isbn=? OR titolo=? OR anno=? OR editore=? or autore=?";
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setString(1, op);
 			pst.setString(2, op);
+			pst.setString(3, op);
+			pst.setString(4, op);
+			pst.setString(5, op);
 			
 			ResultSet rs=pst.executeQuery();
 			while(rs.next()){
@@ -332,10 +338,13 @@ public class OperaManagement {
 	public TableModel getOperaModel(String op){
 		
 		try{
-			String query="SELECT anno,titolo,autore,isbn,editore FROM Opera where isbn=? OR titolo=?";
+			String query="SELECT anno,titolo,autore,isbn,editore FROM Opera where isbn=? OR titolo=? OR anno=? OR editore=? or autore=?";
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setString(1, op);
 			pst.setString(2, op);
+			pst.setString(3, op);
+			pst.setString(4, op);
+			pst.setString(5, op);
 			
 			ResultSet rs=pst.executeQuery();
 			TableModel tm= DbUtils.resultSetToTableModel(rs);	

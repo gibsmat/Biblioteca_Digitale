@@ -267,7 +267,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	}				
 
 	public void newOpera(){
-		 JFrame frame;
+		JFrame frame;
 		 JTextField Titolo;
 		 JTextField Anno;
 		 JTextField Autore;
@@ -275,74 +275,76 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		 JTextField ISBN;
 		 
 		 	frame = new JFrame();
-			frame.setBounds(100, 100, 512, 753);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setBounds(100, 100, 499, 672);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.getContentPane().setLayout(null);
 			
+			//back button
 			JButton button = new JButton("Back");
+			button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+			button.setBounds(12, 13, 97, 25);
+			frame.getContentPane().add(button);			
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					frame.dispose();
 					initialize();
 				}
 			});
-			button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
-			button.setBounds(12, 13, 97, 25);
-			frame.getContentPane().add(button);
+			
 			
 			JLabel label = new JLabel("");
 			label.setIcon(new ImageIcon("img/log2.png"));
-			label.setBounds(152, 48, 211, 170);
+			label.setBounds(207, 13, 217, 161);
 			frame.getContentPane().add(label);
 			
 			JLabel lblTitolo = new JLabel("* Titolo :");
 			lblTitolo.setFont(new Font("Roboto Black", Font.PLAIN,26));
-			lblTitolo.setBounds(30, 245, 160, 38);
+			lblTitolo.setBounds(12, 206, 160, 38);
 			frame.getContentPane().add(lblTitolo);
 			
 			JLabel lblAnno = new JLabel("Anno :");
 			lblAnno.setFont(new Font("Roboto Black", Font.PLAIN, 28));
-			lblAnno.setBounds(30, 323, 160, 38);
+			lblAnno.setBounds(12, 281, 160, 38);
 			frame.getContentPane().add(lblAnno);
 			
 			JLabel lblAutore = new JLabel("Autore :");
 			lblAutore.setFont(new Font("Roboto Black", Font.PLAIN, 28));
-			lblAutore.setBounds(30, 397, 160, 38);
+			lblAutore.setBounds(12, 358, 160, 38);
 			frame.getContentPane().add(lblAutore);
 			
 			JLabel lblEditore = new JLabel("Editore :");
 			lblEditore.setFont(new Font("Roboto Black", Font.PLAIN, 28));
-			lblEditore.setBounds(30, 475, 160, 38);
+			lblEditore.setBounds(12, 434, 160, 38);
 			frame.getContentPane().add(lblEditore);
 			
 			JLabel lblCodiceIsbn = new JLabel("* Codice ISBN :");
-			lblCodiceIsbn.setFont(new Font("Roboto Black", Font.PLAIN, 24));
-			lblCodiceIsbn.setBounds(30, 555, 211, 38);
+			lblCodiceIsbn.setFont(new Font("Dialog", Font.PLAIN, 20));
+			lblCodiceIsbn.setBounds(12, 510, 211, 38);
 			frame.getContentPane().add(lblCodiceIsbn);
 			
 			Titolo = new JTextField();
 			Titolo.setColumns(10);
-			Titolo.setBounds(189, 245, 211, 38);
+			Titolo.setBounds(189, 206, 211, 38);
 			frame.getContentPane().add(Titolo);
 			
 			Anno = new JTextField();
 			Anno.setColumns(10);
-			Anno.setBounds(189, 323, 211, 38);
+			Anno.setBounds(189, 281, 211, 38);
 			frame.getContentPane().add(Anno);
 			
 			Autore = new JTextField();
 			Autore.setColumns(10);
-			Autore.setBounds(189, 397, 211, 38);
+			Autore.setBounds(189, 358, 211, 38);
 			frame.getContentPane().add(Autore);
 			
 			Editore = new JTextField();
 			Editore.setColumns(10);
-			Editore.setBounds(189, 475, 211, 38);
+			Editore.setBounds(189, 434, 211, 38);
 			frame.getContentPane().add(Editore);
 			
 			ISBN = new JTextField();
 			ISBN.setColumns(10);
-			ISBN.setBounds(251, 555, 211, 38);
+			ISBN.setBounds(189, 510, 211, 38);
 			frame.getContentPane().add(ISBN);			
 			
 			JButton button_1 = new JButton("Aggiungi");
@@ -350,11 +352,11 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 				public void actionPerformed(ActionEvent e) {
 					frame.dispose();
 					ListenerEventi.addOpera(acquisitore,Titolo.getText(),Anno.getText(),Autore.getText(),Editore.getText(),ISBN.getText());
-					initialize();
+					newOpera();
 				}
 			});
 			button_1.setFont(new Font("Roboto Black", Font.PLAIN, 16));
-			button_1.setBounds(166, 637, 173, 56);
+			button_1.setBounds(157, 573, 160, 50);
 			frame.getContentPane().add(button_1);			
 			
 			frame.setVisible(true);

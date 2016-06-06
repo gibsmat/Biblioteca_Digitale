@@ -50,7 +50,7 @@ public class Ricerca implements MouseListener {
 		Titolo = new JTextField();
 		Titolo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		Titolo.setBounds(44, 251, 617, 22);
-		Titolo.setText("Ricerca per titolo o isbn....");
+		Titolo.setText("Ricerca opera....");
 		frame.getContentPane().add(Titolo);
 		Titolo.setColumns(10);
 		Titolo.addMouseListener(this);

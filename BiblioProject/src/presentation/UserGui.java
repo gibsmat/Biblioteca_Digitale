@@ -24,7 +24,7 @@ public class UserGui implements FocusListener {
 	JFrame frame;
 	JTextField textField,txtNumber;
 	UtenteBase utente;
-	final String titleS="Titolo/isbn";
+	final String titleS="titolo/isbn..";
 	
 	public UserGui(UtenteBase utente){
 		this.utente=utente;
@@ -64,17 +64,19 @@ public class UserGui implements FocusListener {
 			frame.getContentPane().add(btnPaginaPer);
 			
 			JButton btnElencoOpere = new JButton("Elenco opere");
+			
+			//elenco opere presenti
 			btnElencoOpere.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					new AcquisitoreGui().viewOpere();
-					
-					//elenco opere nel db
+
 				}
 			});
 			btnElencoOpere.setFont(new Font("Roboto Black", Font.PLAIN, 16));
 			btnElencoOpere.setBounds(45, 270, 199, 59);
 			frame.getContentPane().add(btnElencoOpere);
 			
+			//visualizza opera
 			JButton btnVisualizzaOpera = new JButton("Visualizza Opera");
 			btnVisualizzaOpera.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
