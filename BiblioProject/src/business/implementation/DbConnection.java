@@ -2,14 +2,30 @@ package business.implementation;
 
 import java.sql.*;
 import javax.swing.*;
-	
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DbConnection.
+ */
 public class DbConnection {
-	private static final String db ="jdbc:sqlite:biblioDb.db";
-	private static Connection conn;
 	
+	/** The Constant db. */
+	private static final String db ="jdbc:sqlite:biblioDb.db";
+	
+	/** The conn. */
+	private static Connection conn;
+
+	/**
+	 * Instantiates a new db connection.
+	 */
 	public DbConnection(){
 	}
 	
+	/**
+	 * Db connector.
+	 *
+	 * @return the connection
+	 */
 	public static Connection dbConnector()
 	{
 		try{

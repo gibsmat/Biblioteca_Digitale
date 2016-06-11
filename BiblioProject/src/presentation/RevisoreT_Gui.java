@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -25,21 +26,37 @@ import business.model.RevisoreTrascrizioni;
 import business.model.Utente;
 import listener.ListenerEventi;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author antony
+ * The Class RevisoreT_Gui.
  *
+ * @author antony
  */
 public class RevisoreT_Gui implements FocusListener {
+	
+	/** The rev t. */
 	RevisoreTrascrizioni revT=null;
+	
+	/** The title s. */
 	final String titleS="titolo/isbn..";
+	
+	/** The txt number. */
 	JTextField textField,txtNumber;
 	
 	
+	/**
+	 * Instantiates a new revisore t_ gui.
+	 *
+	 * @param utente the utente
+	 */
 	public RevisoreT_Gui(Utente utente){
 		this.revT=(RevisoreTrascrizioni)utente;
 		initialize();
 	}
 	
+	/**
+	 * Initialize.
+	 */
 	public void initialize(){
 		JFrame frame;
 		
@@ -114,6 +131,9 @@ public class RevisoreT_Gui implements FocusListener {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Commenta.
+	 */
 	public void commenta(){
 		JFrame frame;
 		JTable table;
@@ -190,6 +210,9 @@ public class RevisoreT_Gui implements FocusListener {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * View trascrizione.
+	 */
 	public void viewTrascrizione(){
 		JFrame frame;
 		
@@ -238,11 +261,11 @@ public class RevisoreT_Gui implements FocusListener {
 		//bottone ricerca opera
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Image img=ListenerEventi.getFirstImm(textField.getText());
+				Image img=ListenerEventi.getFirstImm(textField.getText(),333,520);
 				if(img!=null){
 					label.setIcon(new ImageIcon(img));
 					txtNumber.setText("1");
-					String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
+					String testo=ListenerEventi.getTrascrizione(revT,textField.getText(),txtNumber.getText());
 					if(testo!=null){
 						textPane.setText(testo);
 					}else
@@ -261,14 +284,15 @@ public class RevisoreT_Gui implements FocusListener {
 			public void actionPerformed(ActionEvent arg0) {
 				String num=txtNumber.getText();
 				if(!(num.equals(""))){
-					Image imm=ListenerEventi.getImm(textField.getText(),num,'+');
+					Image imm=ListenerEventi.getImm(textField.getText(),num,'+',333,520);
+					int n=Integer.parseInt(num);
 					if(imm==null){
-						//new Eccezioni("Immagine non trovata.");
+						label.setIcon(null);
+						txtNumber.setText(Integer.toString(n+1));
 					}else{
 						label.setIcon(new ImageIcon(imm));
-						int n=Integer.parseInt(num);
 						txtNumber.setText(Integer.toString(n+1));
-						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
+						String testo=ListenerEventi.getTrascrizione(revT,textField.getText(),txtNumber.getText());
 						if(testo!=null){
 							textPane.setText(testo);
 						}else
@@ -289,20 +313,34 @@ public class RevisoreT_Gui implements FocusListener {
 			public void actionPerformed(ActionEvent arg0) {
 				String num=txtNumber.getText().toString();
 				if(!(num.equals(""))){
-					Image imm=ListenerEventi.getImm(textField.getText(),num,'-');
+					Image imm=ListenerEventi.getImm(textField.getText(),num,'-',333,520);
+					int n=Integer.parseInt(num);
 					if(imm==null){
-						//new Eccezioni("Immagine non trovata.");
-					}else{
-						label.setIcon(new ImageIcon(imm));
-						int n=Integer.parseInt(num);
+						label.setIcon(null);
 						txtNumber.setText(Integer.toString(n-1));
-						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
+					}else{
+						label.setIcon(new ImageIcon(imm));						
+						txtNumber.setText(Integer.toString(n-1));
+						String testo=ListenerEventi.getTrascrizione(revT,textField.getText(),txtNumber.getText());
 						if(testo!=null){
 							textPane.setText(testo);
 						}else
 							textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
 					}
 				}
+			}
+		});		
+		
+		// Approva trascrizione
+		JButton btnApprova = new JButton("Approva");
+		btnApprova.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnApprova.setBounds(679, 563, 134, 30);
+		frame.getContentPane().add(btnApprova);
+		btnApprova.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ListenerEventi.approvaTras(revT,textField.getText(),txtNumber.getText());
+				//btnApprova.setEnabled(false);
+				JOptionPane.showMessageDialog(null, "Trascrizione approvata.");
 			}
 		});		
 		
@@ -327,6 +365,9 @@ public class RevisoreT_Gui implements FocusListener {
 		frame.setVisible(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		if(textField.hasFocus() && textField.getText().equals(titleS)){
@@ -334,6 +375,9 @@ public class RevisoreT_Gui implements FocusListener {
 		}		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub

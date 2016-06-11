@@ -10,12 +10,30 @@ import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OperaManagement.
+ */
 public class OperaManagement {
+	
+	/** The c. */
 	Connection c=DbConnection.dbConnector();
 	
+	/**
+	 * Instantiates a new opera management.
+	 */
 	public OperaManagement(){
 	}
 	
+	/**
+	 * Insert opera.
+	 *
+	 * @param anno the anno
+	 * @param titolo the titolo
+	 * @param autore the autore
+	 * @param isbn the isbn
+	 * @param editore the editore
+	 */
 	public void insertOpera(String anno,String titolo,String autore,String isbn,String editore){
 		try{
 			String query="INSERT INTO Opera(anno,titolo,autore,isbn,editore) VALUES (?,?,?,?,?)";
@@ -39,21 +57,49 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Delete opera.
+	 *
+	 * @param isbn the isbn
+	 * @return true, if successful
+	 */
 	public boolean deleteOpera(String isbn){
-		try{
-		PreparedStatement pst=c.prepareStatement("DELETE FROM Opera WHERE isbn=?");
-		pst.setString(1, isbn);
-		pst.execute();
-		pst.close();
-		c.close();
-		return true;
-		
-		}catch(Exception e){
-			new Eccezioni(e);
+		Opera op=getOpera(isbn);
+		if(op!=null){
+			try{
+			PreparedStatement pst=c.prepareStatement("DELETE FROM Opera WHERE isbn=?");
+			pst.setString(1, isbn);
+			pst.execute();
+			pst.close();
+			
+			pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=?");
+			pst.setString(1, isbn);
+			pst.execute();
+			pst.close();
+			
+			pst=c.prepareStatement("DELETE FROM Trascrizioni WHERE opera=?");
+			pst.setString(1,op.getTitolo());
+			pst.execute();
+			pst.close();
+			c.close();
+			return true;
+			
+			}catch(Exception e){
+				new Eccezioni(e);
+				return false;
+			}
+		}else{
 			return false;
 		}
 	}
 	
+	/**
+	 * Adds the immagine.
+	 *
+	 * @param opera the opera
+	 * @param path1 the path1
+	 * @param page the page
+	 */
 	public void addImmagine(String opera,String path1,Integer page){
 		Opera o=getOpera(opera);
 		String path="img/"+o.getTitolo()+"/"+path1;
@@ -76,6 +122,12 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Delete immagine.
+	 *
+	 * @param opera the opera
+	 * @param page the page
+	 */
 	public void deleteImmagine(String opera,int page){	
 		Opera op=getOpera(opera);
 		try{
@@ -93,6 +145,13 @@ public class OperaManagement {
 		}		
 	}
 	
+	/**
+	 * Gets the path.
+	 *
+	 * @param opera the opera
+	 * @param page the page
+	 * @return the path
+	 */
 	public String getPath(String opera,int page){
 		try{
 			String query="SELECT path FROM Immagini where opera=? AND page=?";
@@ -113,6 +172,14 @@ public class OperaManagement {
 		}		
 	}
 	
+	/**
+	 * Gets the path.
+	 *
+	 * @param opera the opera
+	 * @param page the page
+	 * @param close the close
+	 * @return the path
+	 */
 	public String getPath(String opera,int page,char close){
 		if(close=='r'){
 			try{
@@ -123,10 +190,14 @@ public class OperaManagement {
 				
 				ResultSet rs=pst.executeQuery();
 				if(rs.next()){
-					String p=rs.getString("path");
+					String p=rs.getString("path");					
+					pst.close();
+					rs.close();
 					c.close();
 					return p;
 				}else{
+					pst.close();
+					rs.close();
 					c.close();
 					return "";
 				}
@@ -145,9 +216,13 @@ public class OperaManagement {
 				ResultSet rs=pst.executeQuery();
 				if(rs.next()){
 					String p=rs.getString("path");
+					pst.close();
+					rs.close();
 					c.close();
 					return p;
 				}else{
+					pst.close();					
+					rs.close();
 					c.close();
 					return "";
 				}
@@ -158,27 +233,69 @@ public class OperaManagement {
 		}
 	}
 	
-	public String getPathT(String opera,int page){
-		try{
-			String query="SELECT path FROM Trascrizioni where opera=? AND page=? AND stato=1";
-			PreparedStatement pst = c.prepareStatement(query);
-			pst.setString(1, opera);
-			pst.setInt(2, page);
-			
-			ResultSet rs=pst.executeQuery();
-			if(rs.next()){
-				String path= rs.getString("path");
-				rs.close();
-				return path;
-			}else
+	/**
+	 * Gets the path t.
+	 *
+	 * @param opera the opera
+	 * @param page the page
+	 * @param rev the rev
+	 * @return the path t
+	 */
+	public String getPathT(String opera,int page,char rev){
+			try{
+				String query="SELECT path FROM Trascrizioni where opera=? AND page=?";
+				PreparedStatement pst = c.prepareStatement(query);
+				pst.setString(1, opera);
+				pst.setInt(2, page);
+				
+				ResultSet rs=pst.executeQuery();
+				if(rs.next()){
+					String path= rs.getString("path");
+					rs.close();
+					return path;
+				}else
+					return null;
+				
+			}catch(SQLException e){
+				new Eccezioni("Db error.",e);
 				return null;
-			
-		}catch(SQLException e){
-			new Eccezioni("Db error.",e);
-			return null;
-		}		
+			}
+		}
+	
+	/**
+	 * Gets the path t.
+	 *
+	 * @param opera the opera
+	 * @param page the page
+	 * @return the path t
+	 */
+	public String getPathT(String opera,int page){
+			try{
+				String query="SELECT path FROM Trascrizioni where opera=? AND page=? AND stato=1";
+				PreparedStatement pst = c.prepareStatement(query);
+				pst.setString(1, opera);
+				pst.setInt(2, page);
+				
+				ResultSet rs=pst.executeQuery();
+				if(rs.next()){
+					String path= rs.getString("path");
+					rs.close();
+					return path;
+				}else
+					return null;
+				
+			}catch(SQLException e){
+				new Eccezioni("Db error.",e);
+				return null;
+			}
 	}
 	
+	/**
+	 * Gets the stato imm.
+	 *
+	 * @param path the path
+	 * @return the stato imm
+	 */
 	public int getStatoImm(String path){
 		try{
 			String query="SELECT stato FROM Immagini where path=?";
@@ -198,6 +315,12 @@ public class OperaManagement {
 		
 	}
 	
+	/**
+	 * Change stato imm.
+	 *
+	 * @param path the path
+	 * @param s the s
+	 */
 	public void changeStatoImm(String path,int s){
 		try{
 			String query="UPDATE Immagini SET stato=? WHERE path=?";
@@ -214,6 +337,33 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Change stato t.
+	 *
+	 * @param path the path
+	 * @param s the s
+	 */
+	public void changeStatoT(String path,int s){
+		try{
+			String query="UPDATE Trascrizioni SET stato=? WHERE path=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setInt(1, s);
+			pst.setString(2, path);
+			
+			pst.execute();
+			pst.close();
+			c.close();
+			
+		}catch(Exception e){
+			new Eccezioni(e);
+		}
+	}
+	
+	/**
+	 * Adds the commento i.
+	 *
+	 * @param comm the comm
+	 */
 	public void addCommentoI(Commento comm){
 		try{
 			String query="INSERT INTO Commenti(autore,testo,data,type) VALUES (?,?,?,?)";
@@ -233,6 +383,11 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Adds the commento t.
+	 *
+	 * @param comm the comm
+	 */
 	public void addCommentoT(Commento comm){
 		try{
 			String query="INSERT INTO Commenti(autore,testo,data,type) VALUES (?,?,?,?)";
@@ -252,6 +407,11 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Gets the opere.
+	 *
+	 * @return the opere
+	 */
 	public TableModel getOpere(){
 		try{
 			String query="SELECT anno,titolo,autore,isbn,editore FROM Opera";
@@ -267,6 +427,11 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Gets the commenti i.
+	 *
+	 * @return the commenti i
+	 */
 	public TableModel getCommentiI(){
 		try{
 			String query="SELECT autore,testo,data FROM Commenti WHERE type=1";
@@ -281,6 +446,11 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Gets the commenti t.
+	 *
+	 * @return the commenti t
+	 */
 	public TableModel getCommentiT(){
 		try{
 			String query="SELECT autore,testo,data FROM Commenti WHERE type=0";
@@ -295,6 +465,12 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Gets the opera.
+	 *
+	 * @param op the op
+	 * @return the opera
+	 */
 	public Opera getOpera(String op){
 		String anno,titolo,autore,isbn,editore;
 		
@@ -318,7 +494,6 @@ public class OperaManagement {
 				return new Opera(anno,titolo,autore,isbn,editore);
 			}
 			rs.close();
-			c.close();
 			return null;			
 		}catch(SQLException e){
 			new Eccezioni("Db error",e);
@@ -326,6 +501,13 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Gets the opera.
+	 *
+	 * @param op the op
+	 * @param close the close
+	 * @return the opera
+	 */
 	public Opera getOpera(String op,char close){
 		String anno,titolo,autore,isbn,editore;
 		
@@ -358,6 +540,12 @@ public class OperaManagement {
 		}
 	}
 
+	/**
+	 * Gets the opera model.
+	 *
+	 * @param op the op
+	 * @return the opera model
+	 */
 	public TableModel getOperaModel(String op){
 		
 		try{
@@ -380,11 +568,21 @@ public class OperaManagement {
 		}
 	}
 	
+	/**
+	 * Adds the trascrizione.
+	 *
+	 * @param t the t
+	 * @param titolo the titolo
+	 * @param anno the anno
+	 * @param page the page
+	 */
 	public void addTrascrizione(Trascrittore t,String titolo,String anno,int page){
+		String path="trascrizioni/" +titolo+ "/" + titolo + page + ".html";
+
 		try{
 			String query="INSERT INTO Trascrizioni(path,stato,opera,page,trascrittore) VALUES (?,?,?,?,?)";
 			PreparedStatement pst=c.prepareStatement(query);
-			pst.setString(1, "trascrizioni/" +titolo+ "/" + titolo + page + ".html");
+			pst.setString(1, path);
 			pst.setInt(2,0);
 			pst.setString(3,titolo);
 			pst.setInt(4,page);
@@ -400,6 +598,12 @@ public class OperaManagement {
 		}		
 	}
 	
+	/**
+	 * Delete trascrizione.
+	 *
+	 * @param opera the opera
+	 * @param page the page
+	 */
 	public void deleteTrascrizione(String opera,int page){
 		Opera op=getOpera(opera);				
 		try{

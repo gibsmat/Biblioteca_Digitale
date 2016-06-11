@@ -16,24 +16,45 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author antony
+ * The Class UserGui.
  *
+ * @author antony
  */
 public class UserGui implements FocusListener {
+	
+	/** The frame. */
 	JFrame frame;
+	
+	/** The txt number. */
 	JTextField textField,txtNumber;
+	
+	/** The utente. */
 	UtenteBase utente;
+	
+	/** The title s. */
 	final String titleS="titolo/isbn..";
 	
+	/**
+	 * Instantiates a new user gui.
+	 */
 	public UserGui(){
 	}
 	
+	/**
+	 * Instantiates a new user gui.
+	 *
+	 * @param utente the utente
+	 */
 	public UserGui(UtenteBase utente){
 		this.utente=utente;
 		initialize();
 	}
 
+	/**
+	 * Initialize.
+	 */
 	private void initialize() {
 		
 		if(utente instanceof UtenteAvanzato){
@@ -185,6 +206,9 @@ public class UserGui implements FocusListener {
 		}
 	}
 	
+	/**
+	 * View opera.
+	 */
 	public void viewOpera(){
 		
 		frame = new JFrame();
@@ -234,14 +258,14 @@ public class UserGui implements FocusListener {
 			public void actionPerformed(ActionEvent arg0) {
 				Image img=ListenerEventi.getFirstImm(textField.getText());
 				txtNumber.setText("1");
-				if(img!=null){
-					label.setIcon(new ImageIcon(img));					
-					String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
-					if(testo!=null){
-						textPane.setText(testo);
-					}else
-						textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");					
-				}				
+				if(img!=null)
+					label.setIcon(new ImageIcon(img));	
+				
+				String testo=ListenerEventi.getTrascrizione(utente,textField.getText(),txtNumber.getText());
+				if(testo!=null){
+					textPane.setText(testo);
+				}else
+					textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");								
 			}
 		});
 		
@@ -259,15 +283,14 @@ public class UserGui implements FocusListener {
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n+1));
 					if(imm==null){
-						//new Eccezioni("Immagine non trovata.");
-					}else{
+						label.setIcon(null);
+					}else
 						label.setIcon(new ImageIcon(imm));
-						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
-						if(testo!=null){
-							textPane.setText(testo);
-						}else
-							textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
-					}
+					String testo=ListenerEventi.getTrascrizione(utente,textField.getText(),txtNumber.getText());
+					if(testo!=null)
+						textPane.setText(testo);
+					else
+						textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
 				}
 			}
 		});
@@ -287,15 +310,15 @@ public class UserGui implements FocusListener {
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n-1));
 					if(imm==null){
-						//new Eccezioni("Immagine non trovata.");
-					}else{
+						label.setIcon(null);
+					}else
 						label.setIcon(new ImageIcon(imm));
-						String testo=ListenerEventi.getTrascrizione(textField.getText(),txtNumber.getText());
-						if(testo!=null){
-							textPane.setText(testo);
-						}else
-							textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
-					}
+					String testo=ListenerEventi.getTrascrizione(utente,textField.getText(),txtNumber.getText());
+					if(testo!=null){
+						textPane.setText(testo);
+					}else
+						textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
+					
 				}
 			}
 		});		
@@ -321,11 +344,17 @@ public class UserGui implements FocusListener {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Close.
+	 */
 	public void close(){		
 		this.frame.dispose();
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		if(textField.hasFocus() && textField.getText().equals(titleS)){
@@ -333,6 +362,9 @@ public class UserGui implements FocusListener {
 		}		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub

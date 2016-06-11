@@ -8,11 +8,24 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Login.
+ */
 public class Login{
+		
+		/** The frame. */
 		public JFrame frame=new JFrame();
+		
+		/** The txt username. */
 		private JTextField txtUsername;
+		
+		/** The password field. */
 		private JPasswordField passwordField;	
 		
+		/**
+		 * Instantiates a new login.
+		 */
 		public Login() {
 			initialize();
 		}
@@ -89,6 +102,9 @@ public class Login{
 			this.frame.setVisible(true);
 		}
 		
+/**
+ * Close.
+ */
 public void close(){
 	this.frame.dispose();
 }

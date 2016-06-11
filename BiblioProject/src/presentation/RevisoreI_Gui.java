@@ -1,6 +1,3 @@
-/**
- * 
- */
 package presentation;
 
 import java.awt.Font;
@@ -14,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -25,20 +23,42 @@ import business.model.Utente;
 import listener.ListenerEventi;
 import net.miginfocom.swing.MigLayout;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author antony
+ * The Class RevisoreI_Gui.
  *
+ * @author antony
  */
 public class RevisoreI_Gui implements FocusListener{
+	
+	/** The rev i. */
 	RevisoreImmagine revI = null;
+	
+	/** The txt titolo. */
 	JTextField txtTitolo;
+	
+	/** The titolo. */
 	final String TITOLO="Titolo/isbn..";
 	
+	/** The width. */
+	final int WIDTH=559;
+	
+	/** The height. */
+	final int HEIGHT=477;
+	
+	/**
+	 * Instantiates a new revisore i_ gui.
+	 *
+	 * @param utente the utente
+	 */
 	public RevisoreI_Gui(Utente utente){
 		this.revI=(RevisoreImmagine)utente;
 		initialize();
 	}
 	
+	/**
+	 * Initialize.
+	 */
 	public void initialize(){
 		JFrame frame;
 		
@@ -116,6 +136,9 @@ public class RevisoreI_Gui implements FocusListener{
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * View imm.
+	 */
 	public void viewImm(){
 		JFrame frame;
 		JTextField txtNumber;
@@ -131,7 +154,7 @@ public class RevisoreI_Gui implements FocusListener{
 				
 		JButton button = new JButton();
 		button.setIcon(new ImageIcon("img/indietro.png"));
-		button.setBounds(483, 501, 39, 30);
+		button.setBounds(319, 501, 39, 30);
 		frame.getContentPane().add(button);
 		
 		JLabel label_1 = new JLabel();
@@ -148,7 +171,7 @@ public class RevisoreI_Gui implements FocusListener{
 		txtTitolo.addFocusListener(this);
 		
 		txtNumber = new JTextField();
-		txtNumber.setBounds(544, 501, 33, 30);
+		txtNumber.setBounds(381, 501, 33, 30);
 		txtNumber.setEditable(false);
 		txtNumber.setFont(new Font("Roboto Black", Font.PLAIN, 15));
 		frame.getContentPane().add(txtNumber);
@@ -158,11 +181,10 @@ public class RevisoreI_Gui implements FocusListener{
 		JButton button_2 = new JButton("Ricerca");
 		button_2.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 		button_2.setBounds(81, 282, 97, 25);
-		frame.getContentPane().add(button_2);
-		
+		frame.getContentPane().add(button_2);		
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Image img=ListenerEventi.getFirstImm(txtTitolo.getText(),559,477);
+				Image img=ListenerEventi.getFirstImm(txtTitolo.getText(),WIDTH,HEIGHT);
 				if(img!= null){
 					label.setIcon(new ImageIcon(img));	
 					txtNumber.setText("1");
@@ -174,12 +196,13 @@ public class RevisoreI_Gui implements FocusListener{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String num=txtNumber.getText();				
-				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'-',559,477);
+				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'-',WIDTH,HEIGHT);
+				int n=Integer.parseInt(num);
 				if(img==null){
-					//new Eccezioni("Immagine non trovata.");
+					label.setIcon(null);
+					txtNumber.setText(Integer.toString(n-1));
 				}else{
 					label.setIcon(new ImageIcon(img));
-					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n-1));
 				}
 			}
@@ -188,20 +211,34 @@ public class RevisoreI_Gui implements FocusListener{
 		//Immagine successiva
 		JButton button_1 = new JButton();
 		button_1.setIcon(new ImageIcon("img/avanti.png"));
-		button_1.setBounds(598, 501, 39, 30);
-		frame.getContentPane().add(button_1);
-		
+		button_1.setBounds(434, 501, 39, 30);
+		frame.getContentPane().add(button_1);		
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String num=txtNumber.getText();
-				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'+',559,477);
+				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'+',WIDTH,HEIGHT);
+				int n=Integer.parseInt(num);
 				if(img==null){
-					//new Eccezioni("Immagine non trovata.");
+					label.setIcon(null);
+					txtNumber.setText(Integer.toString(n+1));
 				}else{
 					label.setIcon(new ImageIcon(img));
-					int n=Integer.parseInt(num);
+					
 					txtNumber.setText(Integer.toString(n+1));
 				}
+			}
+		});
+		
+		// Approva immagine
+		JButton btnApprova = new JButton("Approva");
+		btnApprova.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnApprova.setBounds(600, 501, 140, 34);
+		frame.getContentPane().add(btnApprova);
+		btnApprova.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListenerEventi.approvaImm(revI,txtTitolo.getText(),txtNumber.getText());
+				//btnApprova.setEnabled(false);
+				JOptionPane.showMessageDialog(null, "Immagine approvata.");
 			}
 		});
 						
@@ -210,6 +247,7 @@ public class RevisoreI_Gui implements FocusListener{
 		backButton.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 		backButton.setBounds(12, 13, 97, 25);
 		frame.getContentPane().add(backButton);			
+		
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
@@ -220,6 +258,9 @@ public class RevisoreI_Gui implements FocusListener{
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Commenta.
+	 */
 	public void commenta(){
 		JFrame frame;
 		JTable table;
@@ -296,6 +337,9 @@ public class RevisoreI_Gui implements FocusListener{
 		frame.setVisible(true);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		if(txtTitolo.hasFocus() && txtTitolo.getText().equals(TITOLO)){
@@ -304,6 +348,9 @@ public class RevisoreI_Gui implements FocusListener{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub

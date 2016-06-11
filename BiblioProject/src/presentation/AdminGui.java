@@ -19,14 +19,28 @@ import net.miginfocom.swing.MigLayout;
 import business.model.*;
 import listener.ListenerEventi;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AdminGui.
+ */
 public class AdminGui {
+	
+	/** The frame2. */
 	JFrame frame,frame1,frame2;
+	
+	/** The admin. */
 	static Admin admin=new Admin();
 	
+/**
+ * Instantiates a new admin gui.
+ */
 public AdminGui(){
 	initialize();
 }
 
+/**
+ * Initialize.
+ */
 public void initialize(){
 	frame = new JFrame();
 	frame.setBounds(100, 100, 1005, 619);
@@ -104,6 +118,9 @@ public void initialize(){
 	this.frame.setVisible(true);
 }
 
+/**
+ * Adds the utente.
+ */
 public void addUtente(){
 	JFrame frame1;
 	JTextField nome;
@@ -113,7 +130,7 @@ public void addUtente(){
 	
 	frame1 = new JFrame();
 	frame1.setBounds(100, 100, 513, 625);
-	frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	frame1.getContentPane().setLayout(null);
 	
 	JLabel label = new JLabel("");
@@ -202,6 +219,9 @@ public void addUtente(){
 	frame1.setVisible(true);
 }
 
+/**
+ * Delete opera.
+ */
 public void deleteOpera(){
 	JFrame frame3;
 	JTextField titolo;
@@ -278,6 +298,9 @@ public void deleteOpera(){
 	frame3.setVisible(true);
 }
 
+/**
+ * Show users.
+ */
 public void showUsers(){
 	JFrame frame4 = new JFrame();
 	JTable table;
@@ -330,6 +353,9 @@ public void showUsers(){
 	frame4.setVisible(true);
 }
 
+/**
+ * Delete utente.
+ */
 public void deleteUtente(){
 	JTextField nome;
 	
@@ -392,6 +418,9 @@ public void deleteUtente(){
 	this.frame2.setVisible(true);
 }
 
+/**
+ * Close.
+ */
 public void close(){
 	this.frame.dispose();
 }

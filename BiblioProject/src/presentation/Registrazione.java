@@ -6,13 +6,31 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Registrazione.
+ */
 public class Registrazione {
+		
+		/** The frame. */
 		JFrame frame;
+		
+		/** The txt nome. */
 		JTextField txtNome;
+		
+		/** The txt cognome. */
 		JTextField txtCognome;
+		
+		/** The txt username. */
 		JTextField txtUsername;
+		
+		/** The password field. */
 		JPasswordField passwordField;
+		
+		/** The lbl cognome. */
 		JLabel lblCognome;
+		
+		/** The btn registrati. */
 		JButton btnRegistrati;
 
 		/**
@@ -115,6 +133,9 @@ public class Registrazione {
 			this.frame.setVisible(true);
 		}
 
+		/**
+		 * Close.
+		 */
 		public void close(){
 			this.frame.dispose();
 		}

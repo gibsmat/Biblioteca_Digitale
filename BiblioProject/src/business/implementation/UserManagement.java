@@ -12,12 +12,30 @@ import net.proteanit.sql.DbUtils;
 import business.Eccezioni;
 import javax.swing.JOptionPane;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserManagement.
+ */
 public class UserManagement{
+	
+	/** The c. */
 	Connection c=DbConnection.dbConnector();
 	
+	/**
+	 * Instantiates a new user management.
+	 */
 	public UserManagement(){	
 	}
 	
+	/**
+	 * Nuovo utente.
+	 *
+	 * @param id the id
+	 * @param nome the nome
+	 * @param cognome the cognome
+	 * @param psw the psw
+	 * @return true, if successful
+	 */
 	public boolean nuovoUtente(String id,String nome,String cognome,String psw){
 		if(check(id)){
 			try{
@@ -46,6 +64,16 @@ public class UserManagement{
 		}
 		}
 	
+	/**
+	 * Nuovo utente.
+	 *
+	 * @param id the id
+	 * @param nome the nome
+	 * @param cognome the cognome
+	 * @param psw the psw
+	 * @param t the t
+	 * @return true, if successful
+	 */
 	public boolean nuovoUtente(String id,String nome,String cognome,String psw,char t){
 		if(check(id)){
 			try{
@@ -73,6 +101,15 @@ public class UserManagement{
 		}
 	}
 	
+	/**
+	 * Nuovo trascrittore.
+	 *
+	 * @param id the id
+	 * @param nome the nome
+	 * @param cognome the cognome
+	 * @param psw the psw
+	 * @return true, if successful
+	 */
 	public boolean nuovoTrascrittore(String id,String nome,String cognome,String psw){
 		if(check(id)){
 			try{
@@ -99,6 +136,15 @@ public class UserManagement{
 		}
 	}
 	
+	/**
+	 * Nuovo acquisitore.
+	 *
+	 * @param id the id
+	 * @param nome the nome
+	 * @param cognome the cognome
+	 * @param psw the psw
+	 * @return true, if successful
+	 */
 	public boolean nuovoAcquisitore(String id,String nome,String cognome,String psw){
 		if(check(id)){
 			try{
@@ -123,6 +169,15 @@ public class UserManagement{
 		}
 	}
 	
+	/**
+	 * Nuovo revisore imm.
+	 *
+	 * @param id the id
+	 * @param nome the nome
+	 * @param cognome the cognome
+	 * @param psw the psw
+	 * @return true, if successful
+	 */
 	public boolean nuovoRevisoreImm(String id,String nome,String cognome,String psw){
 		if(check(id)){
 			try{
@@ -147,7 +202,16 @@ public class UserManagement{
 		}
 	}
 	
-	public boolean nuovoRevisoreT(String id,String nome,String cognome,String psw){
+	/**
+	 * Nuovo revisore t.
+	 *
+	 * @param id the id
+	 * @param nome the nome
+	 * @param cognome the cognome
+	 * @param psw the psw
+	 * @return true, if successful
+	 */
+	public boolean nuovoRevisoreT(String id,String psw,String nome,String cognome){
 		if(check(id)){
 			try{
 				String query="INSERT INTO RevisoreT(usernameTr,passwordTr,nomeTr,cognomeTr) VALUES (?,?,?,?)";
@@ -173,6 +237,13 @@ public class UserManagement{
 		}
 	}
 	
+	/**
+	 * Gets the utente.
+	 *
+	 * @param username the username
+	 * @param psw the psw
+	 * @return the utente
+	 */
 	public Utente getUtente(String username,JPasswordField psw){
 		String nome, cognome,dataI;
 		PreparedStatement pst;
@@ -303,6 +374,12 @@ public class UserManagement{
 
 	}
 	
+	/**
+	 * Gets the utente.
+	 *
+	 * @param username the username
+	 * @return the utente
+	 */
 	public UtenteBase getUtente(String username){
 		String nome,password;
 		String cognome,dataI;
@@ -351,6 +428,12 @@ public class UserManagement{
 
 	}
 	
+	/**
+	 * Gets the utenti.
+	 *
+	 * @param type the type
+	 * @return the utenti
+	 */
 	public TableModel getUtenti(String type){
 		Statement st;
 		ResultSet rs;
@@ -391,6 +474,16 @@ public class UserManagement{
 		}
 	}
 	
+	/**
+	 * Sets the utente.
+	 *
+	 * @param utente the utente
+	 * @param username the username
+	 * @param nome the nome
+	 * @param cognome the cognome
+	 * @param password the password
+	 * @return true, if successful
+	 */
 	public boolean setUtente(UtenteBase utente,String username,String nome,String cognome,String password){
 		if(utente instanceof UtenteAvanzato){
 			try{
@@ -432,6 +525,12 @@ public class UserManagement{
 		}
 	}
 	
+	/**
+	 * Check.
+	 *
+	 * @param username the username
+	 * @return true, if successful
+	 */
 	public boolean check(String username){
 		int i;
 		try{
@@ -457,6 +556,11 @@ public class UserManagement{
 		
 	}
 	
+	/**
+	 * Find users.
+	 *
+	 * @return the tree set
+	 */
 	public TreeSet<String> findUsers(){
 		TreeSet <String>utentiBase=new TreeSet<String>();
 		Statement st=null; Statement stA=null;
@@ -489,6 +593,11 @@ public class UserManagement{
 		} 
 	}
 	
+	/**
+	 * Find tr.
+	 *
+	 * @return the tree set
+	 */
 	public TreeSet<String> findTr(){
 		TreeSet <String>trascrittori=new TreeSet<String>();
 		Statement st=null;
@@ -510,6 +619,11 @@ public class UserManagement{
 		
 	}
 	
+	/**
+	 * Find ac.
+	 *
+	 * @return the tree set
+	 */
 	public TreeSet<String> findAc(){
 		TreeSet <String>acquisitori=new TreeSet<String>();
 		Statement st=null;
@@ -531,6 +645,11 @@ public class UserManagement{
 		
 	}
 	
+	/**
+	 * Find rev imm.
+	 *
+	 * @return the tree set
+	 */
 	public TreeSet<String> findRevImm(){
 		TreeSet <String>revisori=new TreeSet<String>();
 		Statement st=null;
@@ -551,6 +670,11 @@ public class UserManagement{
 		} 
 	}
 	
+	/**
+	 * Find rev tr.
+	 *
+	 * @return the tree set
+	 */
 	public TreeSet<String> findRevTr(){
 		TreeSet <String>revisori=new TreeSet<String>();
 		Statement st=null;
@@ -571,6 +695,12 @@ public class UserManagement{
 		} 
 	}
 	
+	/**
+	 * Delete utente.
+	 *
+	 * @param user the user
+	 * @return true, if successful
+	 */
 	public boolean deleteUtente(String user){
 		UtenteBase ut=getUtente(user);		
 		if(ut instanceof UtenteAvanzato){
@@ -601,6 +731,12 @@ public class UserManagement{
 		}
 	}
 	
+	/**
+	 * Delete trascrittore.
+	 *
+	 * @param tr the tr
+	 * @return true, if successful
+	 */
 	public boolean deleteTrascrittore(String tr){
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM Trascrittore where usernameT=?");
@@ -615,6 +751,12 @@ public class UserManagement{
 			}
 	}
 	
+	/**
+	 * Delete acquisitore.
+	 *
+	 * @param ac the ac
+	 * @return true, if successful
+	 */
 	public boolean deleteAcquisitore(String ac){
 		try{
 			PreparedStatement pstA=c.prepareStatement("DELETE FROM Acquisitore where usernameAc=?");
@@ -629,6 +771,12 @@ public class UserManagement{
 			}
 	}
 	
+	/**
+	 * Delete revisore i.
+	 *
+	 * @param rev the rev
+	 * @return true, if successful
+	 */
 	public boolean deleteRevisoreI(String rev){
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM RevisoreI where usernameI=?");
@@ -643,6 +791,12 @@ public class UserManagement{
 			}
 	}
 	
+	/**
+	 * Delete revisore t.
+	 *
+	 * @param rev the rev
+	 * @return true, if successful
+	 */
 	public boolean deleteRevisoreT(String rev){
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM RevisoreT where usernameTr=?");

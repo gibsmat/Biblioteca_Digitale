@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+
 import javax.swing.*;
 import javax.swing.table.TableModel;
 
@@ -14,13 +18,32 @@ import business.model.*;
 import listener.ListenerEventi;
 import business.implementation.*;
 
-public class Ricerca implements MouseListener {
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Ricerca.
+ */
+public class Ricerca implements FocusListener {
+	
+	/** The frame. */
 	JFrame frame;
+	
+	/** The Titolo. */
 	JTextField Titolo;
+	
+	/** The table. */
 	JTable table;
+	
+	/** The utente. */
 	UtenteBase utente=null;
+	
+	final static String RICERCA= "Ricerca opera....";
 
-	public Ricerca(UtenteBase utente) {
+	/**
+	 * Instantiates a new ricerca.
+	 *
+	 * @param utente the utente
+	 */
+	public Ricerca(UtenteBase utente){
 		this.utente=utente;
 		initialize();
 	}
@@ -32,7 +55,7 @@ public class Ricerca implements MouseListener {
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 931, 586);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel label = new JLabel("");
@@ -50,10 +73,10 @@ public class Ricerca implements MouseListener {
 		Titolo = new JTextField();
 		Titolo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		Titolo.setBounds(44, 251, 617, 22);
-		Titolo.setText("Ricerca opera....");
+		Titolo.setText(RICERCA);
 		frame.getContentPane().add(Titolo);
 		Titolo.setColumns(10);
-		Titolo.addMouseListener(this);
+		Titolo.addFocusListener(this);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(347, 146, 489, 2);
@@ -93,6 +116,7 @@ public class Ricerca implements MouseListener {
 			}
 		});
 		
+		//visualizza opera cercata
 		RicercaButtton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TableModel tm=ListenerEventi.getOperaModel(Titolo.getText());
@@ -116,39 +140,25 @@ public class Ricerca implements MouseListener {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Close.
+	 */
 	public void close(){		
 		this.frame.dispose();
 	}
 
-	
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		if(Titolo.getText().equals("Ricerca per titolo o isbn....")){
-			Titolo.setText("");	
+	public void focusGained(FocusEvent arg0) {
+		if(Titolo.hasFocus() && Titolo.getText().equals(RICERCA)){
+			Titolo.setText("");			
 		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
+	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}	
+	
 }

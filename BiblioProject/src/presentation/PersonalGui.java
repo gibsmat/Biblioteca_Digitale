@@ -18,18 +18,30 @@ import business.Eccezioni;
 import business.model.*;
 import listener.ListenerEventi;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author antony
+ * The Class PersonalGui.
  *
+ * @author antony
  */
 public class PersonalGui {	
+	
+	/** The utentebase. */
 	UtenteBase utentebase=null;
 	
+	/**
+	 * Instantiates a new personal gui.
+	 *
+	 * @param utente the utente
+	 */
 	public PersonalGui(UtenteBase utente){
 		this.utentebase=utente;
 		initialize();
 	}
 	
+	/**
+	 * Initialize.
+	 */
 	public void initialize(){
 		JFrame frame;
 		
@@ -123,6 +135,9 @@ public class PersonalGui {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Modifica.
+	 */
 	public void modifica(){
 		JFrame frame;
 		JTextField Username;

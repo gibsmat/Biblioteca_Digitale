@@ -19,28 +19,58 @@ import javax.swing.JSeparator;
 import net.miginfocom.swing.MigLayout;
 import business.model.*;
 import listener.ListenerEventi;
+// TODO: Auto-generated Javadoc
+
 /**
- * @author antony
+ * The Class AcquisitoreGui.
  *
+ * @author antony
  */
 public class AcquisitoreGui extends JFrame implements FocusListener{
+	
+	/** The acquisitore. */
 	Acquisitore acquisitore=null;
+	
+	/** The frame. */
 	JFrame frame;
+	
+	/** The frame d. */
 	JFrame frameD = new JFrame();
+	
+	/** The table. */
 	JTable table;
+	
+	/** The Page1. */
 	JTextField txtInserisciIlTitolo,Id,Page,id,Page1;
+	
+	/** The insert. */
 	final String insert="Inserisci il titolo o l'isbn dell'opera";
+	
+	/** The page_st. */
 	final String page_st = "Page";
+	
+	/** The x. */
 	JFileChooser x;
 
+	/**
+	 * Instantiates a new acquisitore gui.
+	 */
 	public AcquisitoreGui(){
 	}
 	
+	/**
+	 * Instantiates a new acquisitore gui.
+	 *
+	 * @param a the acquisitore
+	 */
 	public AcquisitoreGui(Utente a){
 		this.acquisitore=(Acquisitore)a;
 		initialize();
 	}
 	
+	/**
+	 * Initialize.
+	 */
 	public void initialize(){
 		frame = new JFrame();
 		frame.setBounds(100, 100, 823, 538);
@@ -121,6 +151,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		this.frame.setVisible(true);		
 	}
 	
+	/**
+	 * Adds the immagini.
+	 */
 	public void addImmagini(){
 		JFrame frame;
 		JTextField path;
@@ -231,6 +264,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		
 	}
 	
+	/**
+	 * View opere.
+	 */
 	public void viewOpere(){
 		JFrame frame2;
 		TableModel model=ListenerEventi.getOpere();
@@ -263,6 +299,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frame2.setVisible(true);		
 	}				
 
+	/**
+	 * New opera.
+	 */
 	public void newOpera(){
 		JFrame frame;
 		 JTextField Titolo;
@@ -359,6 +398,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 			frame.setVisible(true);
 	}
 
+	/**
+	 * Delete immagini.
+	 */
 	public void deleteImmagini(){
 		JTable table;
 		
@@ -436,6 +478,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frameD.setVisible(true);
 	}
 
+	/**
+	 * Commenta.
+	 */
 	public void commenta(){
 		JFrame frame;
 		JTable table;
@@ -512,6 +557,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frame.setVisible(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		if(frameD.isActive()){
@@ -533,6 +581,9 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusLost(FocusEvent arg0) {	
 	}

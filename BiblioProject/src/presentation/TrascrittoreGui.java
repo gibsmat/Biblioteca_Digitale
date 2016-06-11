@@ -19,29 +19,64 @@ import java.awt.image.BufferedImage;
 import business.model.*;
 import listener.ListenerEventi;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author antony
+ * The Class TrascrittoreGui.
  *
+ * @author antony
  */
+
 public class TrascrittoreGui implements FocusListener{
+	
+	/** The trascrittore. */
 	Trascrittore trascrittore;
+	
+	/** The frame d. */
 	JFrame frameD=new JFrame();
+	
+	/** The frame t. */
 	JFrame frameT=new JFrame();
+	
+	/** The txt title. */
 	JTextPane txtTitle=new JTextPane();
+	
+	/** The txtanno. */
 	JTextPane txtanno=new JTextPane();
+	
+	/** The txt number. */
 	JTextField id,Page,txtTitolo,txtNumber;
+	
+	/** The insert. */
 	final String insert="Titolo o isbn dell'opera da cui eliminare il testo";
+	
+	/** The page_s. */
 	final String page_s="Page";
+	
+	/** The title. */
 	final String title="Titolo/isbn";
+	
+	/** The titolo. */
 	final String titolo="...Titolo...";
+	
+	/** The anno. */
 	final String anno="...Anno...";
+	
+	/** The rows. */
 	final String rows=getRows(99);
 	
+	/**
+	 * Instantiates a new trascrittore gui.
+	 *
+	 * @param utente the utente
+	 */
 	public TrascrittoreGui(Utente utente){
 		this.trascrittore=(Trascrittore)utente;
 		initialize();
 	}
 	
+	/**
+	 * Initialize.
+	 */
 	public void initialize(){
 		JFrame frame;
 		
@@ -118,6 +153,9 @@ public class TrascrittoreGui implements FocusListener{
 		frame.setVisible(true);		
 	}
 	
+	/**
+	 * Trascrivi.
+	 */
 	public void trascrivi(){
 		JLabel label;
 		JButton button,button_1,btnSalva,btnRicerca;
@@ -144,6 +182,7 @@ public class TrascrittoreGui implements FocusListener{
 		
 		JTextPane txtCorpo = new JTextPane();
 		txtCorpo.setText("");
+		txtCorpo.setContentType("text/html");
 		scrollPane.setViewportView(txtCorpo);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -191,15 +230,41 @@ public class TrascrittoreGui implements FocusListener{
 		frameT.getContentPane().add(txtanno);
 		txtanno.addFocusListener(this);
 		
+		btnSalva = new JButton("Salva");
+		btnSalva.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+		btnSalva.setBounds(583, 496, 97, 28);
+		frameT.getContentPane().add(btnSalva);
+		
+		// bottone modifica trascrizione
+		JButton btnModifica = new JButton("Modifica");
+		btnModifica.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnModifica.setBounds(744, 496, 102, 30);
+		frameT.getContentPane().add(btnModifica);	
+		btnModifica.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ListenerEventi.setTrascrizione(txtTitle.getText(),txtNumber.getText(),txtCorpo.getText());
+				JOptionPane.showMessageDialog(null, "Trascrizione modificata!");
+			}
+		});
+		
 		//bottone ricerca
 		btnRicerca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Image img=ListenerEventi.getFirstImm(txtTitolo.getText());
+				Image img=ListenerEventi.getFirstImm(txtTitolo.getText(),333,520);
 				label.setIcon(new ImageIcon(img));	
 				txtNumber.setText("1");
 				Opera o=ListenerEventi.getOpera(txtTitolo.getText());
 				txtTitle.setText(o.getTitolo());
 				txtanno.setText(o.getAnno());
+				String testo=ListenerEventi.getTrascrizione(trascrittore,txtTitolo.getText(),txtNumber.getText());
+				if(testo!=null){
+					txtCorpo.setText(testo);
+					btnSalva.setEnabled(false);
+					btnModifica.setEnabled(true);
+				}else{
+					txtCorpo.setText("");
+					btnModifica.setEnabled(false);
+				}
 			}
 		});
 		
@@ -213,13 +278,22 @@ public class TrascrittoreGui implements FocusListener{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				String num=txtNumber.getText().toString();				
-				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'-');
+				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'-',333,520);
 				if(img==null){
-					//new Eccezioni("Immagine non trovata.");
+					label.setIcon(null);
 				}else{
 					label.setIcon(new ImageIcon(img));
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n-1));
+					String testo=ListenerEventi.getTrascrizione(trascrittore,txtTitolo.getText(),txtNumber.getText());
+					if(testo!=null){
+						txtCorpo.setText(testo);
+						btnSalva.setEnabled(false);
+						btnModifica.setEnabled(true);
+					}else{
+						txtCorpo.setText("");
+						btnModifica.setEnabled(false);
+					}
 				}
 			}
 		});
@@ -235,13 +309,22 @@ public class TrascrittoreGui implements FocusListener{
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String num=txtNumber.getText();
-				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'+');
+				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'+',333,520);
 				if(img==null){
-					//new Eccezioni("Immagine non trovata.");
+					label.setIcon(null);
 				}else{
 					label.setIcon(new ImageIcon(img));
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n+1));
+					String testo=ListenerEventi.getTrascrizione(trascrittore,txtTitolo.getText(),txtNumber.getText());
+					if(testo!=null){
+						txtCorpo.setText(testo);
+						btnSalva.setEnabled(false);
+						btnModifica.setEnabled(true);
+					}else{
+						txtCorpo.setText("");
+						btnModifica.setEnabled(false);
+					}
 				}
 			}
 		});	
@@ -258,11 +341,6 @@ public class TrascrittoreGui implements FocusListener{
 		button_back.setFont(new Font("Roboto Black", Font.PLAIN, 14));
 		button_back.setBounds(12, 13, 97, 25);
 		frameT.getContentPane().add(button_back);
-				
-		btnSalva = new JButton("Salva");
-		btnSalva.setFont(new Font("Roboto Black", Font.PLAIN, 14));
-		btnSalva.setBounds(637, 501, 97, 25);
-		frameT.getContentPane().add(btnSalva);
 		
 		// bottone salva
 		btnSalva.addActionListener(new ActionListener() {
@@ -277,6 +355,9 @@ public class TrascrittoreGui implements FocusListener{
 		frameT.setVisible(true);			
 	}
 	
+	/**
+	 * Delete.
+	 */
 	public void delete(){
 		JTable table;
 		
@@ -357,6 +438,9 @@ public class TrascrittoreGui implements FocusListener{
 		frameD.setVisible(true);
 	}
 		
+	/**
+	 * Commenta.
+	 */
 	public void commenta(){
 		JFrame frame;
 		JTable table;
@@ -434,6 +518,9 @@ public class TrascrittoreGui implements FocusListener{
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		if(frameD.isActive()){
@@ -444,18 +531,6 @@ public class TrascrittoreGui implements FocusListener{
 				this.Page.setText("");
 			}
 		}
-	/*	else if(frameT.isActive()){
-			if(txtTitolo.hasFocus() && txtTitolo.getText().toString().equals(title)){
-				this.txtTitolo.setText("");
-			}
-			else if(txtTitle.hasFocus() && txtTitle.getText().toString().equals(titolo)){
-				this.txtTitle.setText("");
-			}
-			else if(txtanno.hasFocus() && txtanno.getText().toString().equals(anno)){
-				this.txtanno.setText("");
-			}
-	 
-		}	*/
 		else{	
 			if(txtTitolo.hasFocus() && txtTitolo.getText().toString().equals(title))
 				this.txtTitolo.setText("");				
@@ -463,11 +538,20 @@ public class TrascrittoreGui implements FocusListener{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * Gets the rows.
+	 *
+	 * @param limit the limit
+	 * @return the rows
+	 */
 	public String getRows(int limit){
 		int i;
 		String rows="1";
