@@ -59,7 +59,7 @@ public class RevisoreI_Gui implements FocusListener{
 	/**
 	 * Initialize.
 	 */
-	public void initialize(){
+	private void initialize(){
 		JFrame frame;
 		
 		frame = new JFrame();
@@ -139,7 +139,7 @@ public class RevisoreI_Gui implements FocusListener{
 	/**
 	 * View imm.
 	 */
-	public void viewImm(){
+	private void viewImm(){
 		JFrame frame;
 		JTextField txtNumber;
 		
@@ -261,7 +261,7 @@ public class RevisoreI_Gui implements FocusListener{
 	/**
 	 * Commenta.
 	 */
-	public void commenta(){
+	private void commenta(){
 		JFrame frame;
 		JTable table;
 		JTextField Commenti;

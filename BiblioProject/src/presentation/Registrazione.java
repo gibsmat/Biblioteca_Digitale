@@ -136,7 +136,7 @@ public class Registrazione {
 		/**
 		 * Close.
 		 */
-		public void close(){
+		private void close(){
 			this.frame.dispose();
 		}
 }

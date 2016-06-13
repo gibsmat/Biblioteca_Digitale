@@ -10,7 +10,7 @@ public class Biblio{
 	/**
 	 * Avvio.
 	 */
-	public static void avvio(){
+	private static void avvio(){
 		new Login();		
 	}
 

@@ -41,7 +41,7 @@ public AdminGui(){
 /**
  * Initialize.
  */
-public void initialize(){
+private void initialize(){
 	frame = new JFrame();
 	frame.setBounds(100, 100, 1005, 619);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,7 +121,7 @@ public void initialize(){
 /**
  * Adds the utente.
  */
-public void addUtente(){
+private void addUtente(){
 	JFrame frame1;
 	JTextField nome;
 	JTextField Username;
@@ -222,7 +222,7 @@ public void addUtente(){
 /**
  * Delete opera.
  */
-public void deleteOpera(){
+private void deleteOpera(){
 	JFrame frame3;
 	JTextField titolo;
 	JTextField codice;
@@ -301,7 +301,7 @@ public void deleteOpera(){
 /**
  * Show users.
  */
-public void showUsers(){
+private void showUsers(){
 	JFrame frame4 = new JFrame();
 	JTable table;
 	
@@ -356,7 +356,7 @@ public void showUsers(){
 /**
  * Delete utente.
  */
-public void deleteUtente(){
+private void deleteUtente(){
 	JTextField nome;
 	
 	frame2 = new JFrame();
@@ -421,7 +421,7 @@ public void deleteUtente(){
 /**
  * Close.
  */
-public void close(){
+private void close(){
 	this.frame.dispose();
 }
 

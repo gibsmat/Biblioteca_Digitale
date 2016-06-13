@@ -51,7 +51,7 @@ public class Ricerca implements FocusListener {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	public void initialize() {
+	private void initialize() {
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 931, 586);
@@ -143,7 +143,7 @@ public class Ricerca implements FocusListener {
 	/**
 	 * Close.
 	 */
-	public void close(){		
+	private void close(){		
 		this.frame.dispose();
 	}
 

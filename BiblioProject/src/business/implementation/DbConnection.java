@@ -1,7 +1,8 @@
 package business.implementation;
 
 import java.sql.*;
-import javax.swing.*;
+
+import business.Eccezioni;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -34,7 +35,7 @@ public class DbConnection {
 			//JOptionPane.showMessageDialog(null, "Connection successfull");	
 			return conn;			
 		}catch(Exception e){
-			JOptionPane.showMessageDialog(null, e);
+			new Eccezioni("Errore connessione al DB.\n"+e);
 			return null;
 		}
 	}

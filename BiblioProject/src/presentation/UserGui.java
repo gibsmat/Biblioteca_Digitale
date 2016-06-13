@@ -100,12 +100,14 @@ public class UserGui implements FocusListener {
 			
 			//visualizza opera
 			JButton btnVisualizzaOpera = new JButton("Visualizza Opera");
+			
 			btnVisualizzaOpera.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					frame.dispose();
 					viewOpera();
 				}
 			});
+			
 			btnVisualizzaOpera.setFont(new Font("Roboto Black", Font.PLAIN, 16));
 			btnVisualizzaOpera.setBounds(350, 270, 199, 59);
 			frame.getContentPane().add(btnVisualizzaOpera);
@@ -209,7 +211,7 @@ public class UserGui implements FocusListener {
 	/**
 	 * View opera.
 	 */
-	public void viewOpera(){
+	private void viewOpera(){
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 897, 642);
@@ -347,7 +349,7 @@ public class UserGui implements FocusListener {
 	/**
 	 * Close.
 	 */
-	public void close(){		
+	private void close(){		
 		this.frame.dispose();
 	}
 	

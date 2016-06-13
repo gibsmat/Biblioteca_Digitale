@@ -143,9 +143,5 @@ public class UtenteBase implements Utente {
 	public String getDataI(){
 		return this.dataI;
 	}
-	
-/*	public void viewTitles(){
-		List<String> listaTitoli = new OperaManagement().getTitles();
-		/* aprire finestra con elenco titoli */
-//	} 
+
 }

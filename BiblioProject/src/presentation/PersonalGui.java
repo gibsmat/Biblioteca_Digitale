@@ -42,7 +42,7 @@ public class PersonalGui {
 	/**
 	 * Initialize.
 	 */
-	public void initialize(){
+	private void initialize(){
 		JFrame frame;
 		
 		frame = new JFrame();
@@ -138,7 +138,7 @@ public class PersonalGui {
 	/**
 	 * Modifica.
 	 */
-	public void modifica(){
+	private void modifica(){
 		JFrame frame;
 		JTextField Username;
 		JTextField Nome;

@@ -57,7 +57,7 @@ public class RevisoreT_Gui implements FocusListener {
 	/**
 	 * Initialize.
 	 */
-	public void initialize(){
+	private void initialize(){
 		JFrame frame;
 		
 		frame = new JFrame();
@@ -134,7 +134,7 @@ public class RevisoreT_Gui implements FocusListener {
 	/**
 	 * Commenta.
 	 */
-	public void commenta(){
+	private void commenta(){
 		JFrame frame;
 		JTable table;
 		JTextField Commenti;
@@ -213,7 +213,7 @@ public class RevisoreT_Gui implements FocusListener {
 	/**
 	 * View trascrizione.
 	 */
-	public void viewTrascrizione(){
+	private void viewTrascrizione(){
 		JFrame frame;
 		
 		frame = new JFrame();
@@ -286,18 +286,16 @@ public class RevisoreT_Gui implements FocusListener {
 				if(!(num.equals(""))){
 					Image imm=ListenerEventi.getImm(textField.getText(),num,'+',333,520);
 					int n=Integer.parseInt(num);
-					if(imm==null){
-						label.setIcon(null);
-						txtNumber.setText(Integer.toString(n+1));
-					}else{
+					txtNumber.setText(Integer.toString(n+1));
+					if(imm==null)
+						label.setIcon(null);						
+					else
 						label.setIcon(new ImageIcon(imm));
-						txtNumber.setText(Integer.toString(n+1));
-						String testo=ListenerEventi.getTrascrizione(revT,textField.getText(),txtNumber.getText());
-						if(testo!=null){
-							textPane.setText(testo);
-						}else
-							textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
-					}
+					String testo=ListenerEventi.getTrascrizione(revT,textField.getText(),txtNumber.getText());
+					if(testo!=null){
+						textPane.setText(testo);
+					}else
+						textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
 				}
 			}
 		});
@@ -315,18 +313,17 @@ public class RevisoreT_Gui implements FocusListener {
 				if(!(num.equals(""))){
 					Image imm=ListenerEventi.getImm(textField.getText(),num,'-',333,520);
 					int n=Integer.parseInt(num);
-					if(imm==null){
+					txtNumber.setText(Integer.toString(n-1));
+					if(imm==null)
 						label.setIcon(null);
-						txtNumber.setText(Integer.toString(n-1));
-					}else{
+					else
 						label.setIcon(new ImageIcon(imm));						
-						txtNumber.setText(Integer.toString(n-1));
-						String testo=ListenerEventi.getTrascrizione(revT,textField.getText(),txtNumber.getText());
-						if(testo!=null){
-							textPane.setText(testo);
-						}else
-							textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
-					}
+					String testo=ListenerEventi.getTrascrizione(revT,textField.getText(),txtNumber.getText());
+					if(testo!=null){
+						textPane.setText(testo);
+					}else
+						textPane.setText("<br><br> <h1> Trascrizione non presente </h1>");
+					
 				}
 			}
 		});		

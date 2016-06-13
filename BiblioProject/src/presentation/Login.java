@@ -105,7 +105,7 @@ public class Login{
 /**
  * Close.
  */
-public void close(){
+private void close(){
 	this.frame.dispose();
 }
 	}

@@ -1,13 +1,8 @@
 package business.model;
 
-import java.awt.*;
 import java.util.*;
 
 import javax.swing.ImageIcon;
-
-import java.sql.*;
-
-import business.implementation.OperaManagement;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -15,12 +10,11 @@ import business.implementation.OperaManagement;
  */
 public class Opera {
 	
-	/** The Editore. */
+	/** anno,titolo,autore,isbn and Editore **/
 	String anno,titolo,autore,isbn,Editore;
 	
 	/** The immagini. */
 	SortedMap <String,ImageIcon> immagini;
-	//file TEI
 	
 	/**
 	 * Instantiates a new opera.
@@ -127,26 +121,8 @@ public class Opera {
 	 * @param path the path
 	 * @param nomeI the nome i
 	 */
-	//aggiunta nuova immagine
 	public void addImmagine(String path,String nomeI){
 		this.immagini.put(nomeI, new ImageIcon(path));
 	}	
-	
-	/**
-	 * Pubblica.
-	 */
-	/* cancellazione immagine
-	public void deleteImmagine(String name,int page) {
-		for (Iterator<String> i=this.immagini.keySet().iterator(); i.hasNext();) {
-			if(i.equals(name)){
-				i.remove();
-			}
-			}
-		new OperaManagement().deleteImmagine(name,page);
-	}
-	*/
-	public void pubblica(){
-		/* pubblicazione dell'opera */
-	}
 
 }

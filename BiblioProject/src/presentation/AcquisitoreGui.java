@@ -71,7 +71,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	/**
 	 * Initialize.
 	 */
-	public void initialize(){
+	private void initialize(){
 		frame = new JFrame();
 		frame.setBounds(100, 100, 823, 538);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -154,7 +154,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	/**
 	 * Adds the immagini.
 	 */
-	public void addImmagini(){
+	private void addImmagini(){
 		JFrame frame;
 		JTextField path;
 		
@@ -302,7 +302,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	/**
 	 * New opera.
 	 */
-	public void newOpera(){
+	private void newOpera(){
 		JFrame frame;
 		 JTextField Titolo;
 		 JTextField Anno;
@@ -401,7 +401,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	/**
 	 * Delete immagini.
 	 */
-	public void deleteImmagini(){
+	private void deleteImmagini(){
 		JTable table;
 		
 		frameD=new JFrame();
@@ -481,7 +481,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 	/**
 	 * Commenta.
 	 */
-	public void commenta(){
+	private void commenta(){
 		JFrame frame;
 		JTable table;
 		JTextField Commenti;

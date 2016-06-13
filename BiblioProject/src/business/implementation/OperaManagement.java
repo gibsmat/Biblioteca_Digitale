@@ -5,7 +5,6 @@ import net.proteanit.sql.DbUtils;
 import business.Eccezioni;
 
 import java.sql.*;
-import java.util.*;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;

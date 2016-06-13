@@ -77,7 +77,7 @@ public class TrascrittoreGui implements FocusListener{
 	/**
 	 * Initialize.
 	 */
-	public void initialize(){
+	private void initialize(){
 		JFrame frame;
 		
 		frame = new JFrame();
@@ -156,7 +156,7 @@ public class TrascrittoreGui implements FocusListener{
 	/**
 	 * Trascrivi.
 	 */
-	public void trascrivi(){
+	private void trascrivi(){
 		JLabel label;
 		JButton button,button_1,btnSalva,btnRicerca;
 		JScrollPane scrollPane;
@@ -263,6 +263,7 @@ public class TrascrittoreGui implements FocusListener{
 					btnModifica.setEnabled(true);
 				}else{
 					txtCorpo.setText("");
+					btnSalva.setEnabled(true);
 					btnModifica.setEnabled(false);
 				}
 			}
@@ -292,6 +293,7 @@ public class TrascrittoreGui implements FocusListener{
 						btnModifica.setEnabled(true);
 					}else{
 						txtCorpo.setText("");
+						btnSalva.setEnabled(true);
 						btnModifica.setEnabled(false);
 					}
 				}
@@ -323,6 +325,7 @@ public class TrascrittoreGui implements FocusListener{
 						btnModifica.setEnabled(true);
 					}else{
 						txtCorpo.setText("");
+						btnSalva.setEnabled(true);
 						btnModifica.setEnabled(false);
 					}
 				}
@@ -358,7 +361,7 @@ public class TrascrittoreGui implements FocusListener{
 	/**
 	 * Delete.
 	 */
-	public void delete(){
+	private void delete(){
 		JTable table;
 		
 		frameD = new JFrame();
@@ -441,7 +444,7 @@ public class TrascrittoreGui implements FocusListener{
 	/**
 	 * Commenta.
 	 */
-	public void commenta(){
+	private void commenta(){
 		JFrame frame;
 		JTable table;
 		JTextField Commenti;

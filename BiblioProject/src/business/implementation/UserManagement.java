@@ -2,7 +2,6 @@ package business.implementation;
 
 import java.sql.*;
 import java.util.Calendar;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.swing.JPasswordField;
 import javax.swing.table.TableModel;
@@ -10,7 +9,6 @@ import javax.swing.table.TableModel;
 import business.model.*;
 import net.proteanit.sql.DbUtils;
 import business.Eccezioni;
-import javax.swing.JOptionPane;
 
 // TODO: Auto-generated Javadoc
 /**
