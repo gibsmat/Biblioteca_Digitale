@@ -14,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.image.BufferedImage;
 
 import business.model.*;
 import listener.ListenerEventi;
@@ -411,7 +410,7 @@ public class TrascrittoreGui implements FocusListener{
 		//bottone elimina trascrizione
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				ListenerEventi.deleteTrascrizione(trascrittore,id.getText(),Page.getText());
+				ListenerEventi.deleteTrascrizione(id.getText(),Page.getText());
 				frameD.dispose();
 				delete();
 			}

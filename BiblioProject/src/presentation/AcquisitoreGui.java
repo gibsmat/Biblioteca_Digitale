@@ -161,7 +161,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Roboto Black", Font.PLAIN, 18));
 		frame.setBounds(100, 100, 605, 499);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnBrowser = new JButton("Browser");
@@ -224,7 +224,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		// Carica immagine
 		btnCarica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(ListenerEventi.addImmagine(acquisitore,path.getText(),Id.getText(),Page.getText())){
+				if(ListenerEventi.addImmagine(path.getText(),Id.getText(),Page.getText())){
 					ListenerEventi.saveImage(x.getSelectedFile(),Id.getText());
 				}
 				frame.dispose();
@@ -387,7 +387,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 			button_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					frame.dispose();
-					ListenerEventi.addOpera(acquisitore,Titolo.getText(),Anno.getText(),Autore.getText(),Editore.getText(),ISBN.getText());
+					ListenerEventi.addOpera(Titolo.getText(),Anno.getText(),Autore.getText(),Editore.getText(),ISBN.getText());
 					newOpera();
 				}
 			});
@@ -406,7 +406,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		
 		frameD=new JFrame();
 		frameD.setBounds(100, 100, 640, 623);
-		frameD.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameD.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameD.getContentPane().setLayout(null);
 		
 		JLabel label = new JLabel("");
@@ -449,7 +449,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		// Rimuovi immagine
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListenerEventi.deleteImmagine(acquisitore,id.getText(),Page1.getText());
+				ListenerEventi.deleteImmagine(id.getText(),Page1.getText());
 				frameD.dispose();
 				deleteImmagini();	
 			}

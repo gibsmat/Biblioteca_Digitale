@@ -335,7 +335,7 @@ public class RevisoreT_Gui implements FocusListener {
 		frame.getContentPane().add(btnApprova);
 		btnApprova.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ListenerEventi.approvaTras(revT,textField.getText(),txtNumber.getText());
+				ListenerEventi.approvaTras(textField.getText(),txtNumber.getText());
 				//btnApprova.setEnabled(false);
 				JOptionPane.showMessageDialog(null, "Trascrizione approvata.");
 			}

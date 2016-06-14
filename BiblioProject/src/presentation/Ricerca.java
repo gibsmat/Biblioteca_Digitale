@@ -6,17 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
 
-import java.util.*;
 import business.model.*;
 import listener.ListenerEventi;
-import business.implementation.*;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -36,6 +31,7 @@ public class Ricerca implements FocusListener {
 	/** The utente. */
 	UtenteBase utente=null;
 	
+	/** The Constant RICERCA. */
 	final static String RICERCA= "Ricerca opera....";
 
 	/**
@@ -139,14 +135,10 @@ public class Ricerca implements FocusListener {
 							
 		frame.setVisible(true);
 	}
-	
-	/**
-	 * Close.
-	 */
-	private void close(){		
-		this.frame.dispose();
-	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		if(Titolo.hasFocus() && Titolo.getText().equals(RICERCA)){
@@ -155,6 +147,9 @@ public class Ricerca implements FocusListener {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub

@@ -124,14 +124,15 @@ public class OperaManagement {
 	/**
 	 * Delete immagine.
 	 *
-	 * @param opera the opera
-	 * @param page the page
+	 * @param isbn
+	 *            the isbn
+	 * @param page
+	 *            the page
 	 */
-	public void deleteImmagine(String opera,int page){	
-		Opera op=getOpera(opera);
+	public void deleteImmagine(String isbn,int page){	
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=? AND page=?");
-			pst.setString(1, op.getIsbn());
+			pst.setString(1, isbn);
 			pst.setInt(2, page);
 			pst.execute();
 			pst.close();
@@ -188,6 +189,7 @@ public class OperaManagement {
 				pst.setInt(2, page);
 				
 				ResultSet rs=pst.executeQuery();
+				
 				if(rs.next()){
 					String p=rs.getString("path");					
 					pst.close();
@@ -200,7 +202,8 @@ public class OperaManagement {
 					c.close();
 					return "";
 				}
-			}catch(Exception e){
+			}
+			catch(Exception e){
 				new Eccezioni("Immagine non trovata");
 				return null;
 			}
@@ -575,7 +578,7 @@ public class OperaManagement {
 	 * @param anno the anno
 	 * @param page the page
 	 */
-	public void addTrascrizione(Trascrittore t,String titolo,String anno,int page){
+	public void addTrascrizione(String t,String titolo,String anno,int page){
 		String path="trascrizioni/" +titolo+ "/" + titolo + page + ".html";
 
 		try{
@@ -585,7 +588,7 @@ public class OperaManagement {
 			pst.setInt(2,0);
 			pst.setString(3,titolo);
 			pst.setInt(4,page);
-			pst.setString(5,t.getUserId());
+			pst.setString(5,t);
 			
 			pst.execute();
 			pst.close();
@@ -603,11 +606,10 @@ public class OperaManagement {
 	 * @param opera the opera
 	 * @param page the page
 	 */
-	public void deleteTrascrizione(String opera,int page){
-		Opera op=getOpera(opera);				
+	public void deleteTrascrizione(String opera,int page){			
 		try{
 			PreparedStatement pst=c.prepareStatement("DELETE FROM Trascrizioni WHERE opera=? AND page=?");
-			pst.setString(1, op.getTitolo());
+			pst.setString(1, opera);
 			pst.setInt(2, page);
 			pst.execute();
 			pst.close();			

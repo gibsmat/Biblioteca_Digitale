@@ -1,10 +1,7 @@
 package business.model;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
-import javax.swing.table.TableModel;
 
-import business.implementation.*;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -129,31 +126,4 @@ public class RevisoreImmagine implements Utente {
 		return null;
 	}
 
-	/**
-	 * Accept im.
-	 *
-	 * @param path the path
-	 */
-	public void acceptIm(String path){
-		new OperaManagement().changeStatoImm(path,1);
-	}
-	
-	/**
-	 * Commenta.
-	 *
-	 * @param testo the testo
-	 */
-	public void commenta(String testo){
-		Commento commento=new Commento(this.userId,testo);
-		new OperaManagement().addCommentoI(commento);
-	}
-	
-	/**
-	 * View commenti.
-	 *
-	 * @return the table model
-	 */
-	public TableModel viewCommenti(){
-		return new OperaManagement().getCommentiI();
-	}
 }

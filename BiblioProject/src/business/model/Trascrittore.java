@@ -1,9 +1,6 @@
 package business.model;
 
 import javax.swing.JPasswordField;
-import javax.swing.table.TableModel;
-
-import business.implementation.OperaManagement;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -127,44 +124,5 @@ public class Trascrittore implements Utente {
 	public String getDataI(){
 		return null;
 	}
-	
-	/**
-	 * Adds the commento.
-	 *
-	 * @param text the text
-	 */
-	public void addCommento(String text){
-		Commento commento=new Commento(this.getUserId(),text);
-		new OperaManagement().addCommentoT(commento);
-	}
-	
-	/**
-	 * View commenti.
-	 *
-	 * @return the table model
-	 */
-	public TableModel viewCommenti(){
-		return new OperaManagement().getCommentiT();
-	}
 
-	/**
-	 * Adds the trascrizione.
-	 *
-	 * @param titolo the titolo
-	 * @param anno the anno
-	 * @param page the page
-	 */
-	public void addTrascrizione(String titolo,String anno,int page){
-		new OperaManagement().addTrascrizione(this,titolo,anno,page);
-	}
-	
-	/**
-	 * Delete trascrizione.
-	 *
-	 * @param opera the opera
-	 * @param page the page
-	 */
-	public void deleteTrascrizione(String opera,int page){
-		new OperaManagement().deleteTrascrizione(opera, page);
-	}
 }

@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  */
 public class Opera {
 	
-	/** anno,titolo,autore,isbn and Editore **/
+	/** anno,titolo,autore,isbn and Editore *. */
 	String anno,titolo,autore,isbn,Editore;
 	
 	/** The immagini. */
@@ -106,23 +106,14 @@ public class Opera {
 		this.isbn = isbn;
 	}
 
-	/**
-	 * Gets the immagini.
-	 *
-	 * @return the immagini
-	 */
+/*
 	public SortedMap<String,ImageIcon> getImmagini() {
 		return immagini;
 	}
 	
-	/**
-	 * Adds the immagine.
-	 *
-	 * @param path the path
-	 * @param nomeI the nome i
-	 */
+
 	public void addImmagine(String path,String nomeI){
 		this.immagini.put(nomeI, new ImageIcon(path));
 	}	
-
+*/
 }

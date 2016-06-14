@@ -211,7 +211,7 @@ private void addUtente(){
 	//bottone aggiungi
 	btnNewButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			ListenerEventi.addUtente(admin,Utenza.getSelectedItem().toString(),Username.getText(),Password.getText(),nome.getText(),cognome.getText());			
+			ListenerEventi.addUtente(Utenza.getSelectedItem().toString(),Username.getText(),Password.getText(),nome.getText(),cognome.getText());			
 			frame1.dispose();
 			ListenerEventi.changePage("Admin", null);
 		}
@@ -289,7 +289,7 @@ private void deleteOpera(){
 	
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			if(ListenerEventi.deleteOpera(admin,codice.getText())){
+			if(ListenerEventi.deleteOpera(codice.getText())){
 				frame3.dispose();
 			}
 		}
@@ -350,6 +350,19 @@ private void showUsers(){
 	lblSelezionaLaTabella.setFont(new Font("Roboto Black", Font.PLAIN, 30));
 	frame4.getContentPane().add(lblSelezionaLaTabella, "cell 1 0 2 1,alignx center,aligny bottom");
 	
+	//Bottone Back
+	JButton btnBack = new JButton("Back");
+	btnBack.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+	btnBack.setBounds(12, 30, 97, 25);
+	frame4.getContentPane().add(btnBack);
+	
+	btnBack.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			frame4.dispose();
+			ListenerEventi.changePage("Admin", null);
+		}	
+	});
+	
 	frame4.setVisible(true);
 }
 
@@ -375,7 +388,7 @@ private void deleteUtente(){
 	frame2.getContentPane().add(lblUsername);
 	
 	JComboBox<String> utenza = new JComboBox<String>();
-	utenza.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato ", "Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
+	utenza.setModel(new DefaultComboBoxModel<String>(new String[] {"Utente Base", "Utente Avanzato", "Trascrittore", "Acquisitore", "Revisore Immagini", "Revisore Trascrizioni"}));
 	utenza.setToolTipText("");
 	utenza.setFont(new Font("Roboto Black", Font.PLAIN, 15));
 	utenza.setBounds(228, 336, 211, 42);
@@ -396,25 +409,27 @@ private void deleteUtente(){
 	btnRimuovi.setBounds(173, 438, 148, 45);
 	frame2.getContentPane().add(btnRimuovi);
 	
+	//bottone rimuovi utente
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {	
-			ListenerEventi.deleteUtente(admin,utenza.getSelectedItem().toString(),nome.getText());
+			ListenerEventi.deleteUtente(utenza.getSelectedItem().toString(),nome.getText());
 			frame2.dispose();
 		}
 	});
 
+	//Bottone Back
+		JButton btnBack = new JButton("Back");
+		btnBack.setFont(new Font("Roboto Black", Font.PLAIN, 14));
+		btnBack.setBounds(12, 30, 97, 25);
+		frame2.getContentPane().add(btnBack);
+		
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame2.dispose();
+				showUsers();
+			}	
+		});
 	
-/*	JButton button = new JButton("Back");
-	button.setFont(new Font("Roboto Black", Font.PLAIN, 14));
-	button.setBounds(12, 25, 97, 25);
-	frame2.getContentPane().add(button);
-	button.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent arg0) {
-			frame2.dispose();
-			showUsers();			
-		}
-	});	*/
-
 	this.frame2.setVisible(true);
 }
 

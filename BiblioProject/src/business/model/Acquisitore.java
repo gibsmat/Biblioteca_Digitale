@@ -1,9 +1,6 @@
 package business.model;
 
 import javax.swing.JPasswordField;
-import javax.swing.table.TableModel;
-
-import business.implementation.OperaManagement;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -126,59 +123,6 @@ public class Acquisitore implements Utente {
 	@Override	
 	public String getDataI(){
 		return null;
-	}
-	
-	/**
-	 * Adds the opera.
-	 *
-	 * @param anno the anno
-	 * @param titolo the titolo
-	 * @param autore the autore
-	 * @param isbn the isbn
-	 * @param editore the editore
-	 */
-	public void addOpera(String anno,String titolo,String autore,String isbn,String editore){
-		new OperaManagement().insertOpera(anno,titolo,autore,isbn,editore);
-	}
-	
-	/**
-	 * Delete immagine.
-	 *
-	 * @param nome the nome
-	 * @param page the page
-	 */
-	public void deleteImmagine(String nome,int page){
-		new OperaManagement().deleteImmagine(nome,page);
-	}
-	
-	/**
-	 * Adds the immagine.
-	 *
-	 * @param path the path
-	 * @param opera the opera
-	 * @param page the page
-	 */
-	public void addImmagine(String path,String opera,Integer page){
-		new OperaManagement().addImmagine(opera,path,page);		
-	}
-	
-	/**
-	 * Adds the commento.
-	 *
-	 * @param text the text
-	 */
-	public void addCommento(String text){
-		Commento commento=new Commento(this.getUserId(),text);
-		new OperaManagement().addCommentoI(commento);
-	}
-	
-	/**
-	 * View commenti.
-	 *
-	 * @return the table model
-	 */
-	public TableModel viewCommenti(){
-		return new OperaManagement().getCommentiI();
 	}
 
 }

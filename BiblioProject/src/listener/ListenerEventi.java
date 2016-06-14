@@ -160,47 +160,82 @@ public class ListenerEventi {
 	/**
 	 * Adds the utente.
 	 *
-	 * @param admin the admin
-	 * @param type the type
-	 * @param Username the username
-	 * @param Password the password
-	 * @param nome the nome
-	 * @param cognome the cognome
+	 * @param type
+	 *            the type
+	 * @param username
+	 *            the username
+	 * @param psw
+	 *            the psw
+	 * @param nome
+	 *            the nome
+	 * @param cognome
+	 *            the cognome
 	 */
-	public static void addUtente(Admin admin,String type,String Username,String Password,String nome,String cognome){
-		switch (type) {
-			case "Trascrittore":
-				admin.addTrascrittore(Username, Password, nome, cognome);				
-				break;
-			case "Acquisitore":
-				admin.addAcquisitore(Username, Password, nome, cognome);
-				break;
-			case "Revisore Immagini" :
-				admin.addRevisoreImm(Username, Password, nome, cognome);
-				break;
-			case "Revisore Trascrizioni" :
-				admin.addRevisoreTr(Username, Password, nome, cognome);
-				break;
-			default:
-				new Eccezioni("Errore aggiunta utente");
-				break;
+	public static void addUtente(String type,String username,String psw,String nome,String cognome){
+		if(username.equals("") || psw.equals("")){
+			new Eccezioni("Inserire username e password!");
+		}
+		else{
+			switch (type) {
+				case "Trascrittore":
+					if(new UserManagement().nuovoTrascrittore(username, nome, cognome, psw)){
+						JOptionPane.showMessageDialog(null, "Trascrittore aggiunto correttamente.");
+					}else{
+						new Eccezioni("Errore nell'aggiunta dell'utente trascrittore.");
+					}			
+					break;
+					
+				case "Acquisitore":
+					if(new UserManagement().nuovoAcquisitore(username, nome, cognome, psw)){
+						JOptionPane.showMessageDialog(null, "Acquisitore aggiunto correttamente.");
+					}else{
+						new Eccezioni("Errore nell'aggiunta dell'utente acquisitore.");
+					}
+					break;
+					
+				case "Revisore Immagini" :
+					if(new UserManagement().nuovoRevisoreImm(username, nome, cognome, psw)){
+						JOptionPane.showMessageDialog(null, "revisore immagini aggiunto correttamente.");
+					}else{
+						new Eccezioni("Errore nell'aggiunta dell'utente revisore immagini.");
+					}
+					break;
+					
+				case "Revisore Trascrizioni" :
+					if(new UserManagement().nuovoRevisoreT(username, nome, cognome, psw)){
+						JOptionPane.showMessageDialog(null, "revisore trascrizioni aggiunto correttamente.");
+					}else{
+						new Eccezioni("Errore nell'aggiunta dell'utente revisore trascrizioni.");
+					}
+					break;
+					
+				default:
+					new Eccezioni("Errore aggiunta utente");
+					break;
+			}
 		}
 	}
 	
 	/**
 	 * Delete opera.
 	 *
-	 * @param admin the admin
-	 * @param cod the cod
+	 * @param cod
+	 *            the cod
 	 * @return true, if successful
 	 */
-	public static boolean deleteOpera(Admin admin,String cod){
+	public static boolean deleteOpera(String cod){
 		if(cod.equals("")){
 			new Eccezioni("Codice isbn non può essere vuoto!");
 			return false;
 		}else{
 			Opera op=getOpera(cod);
-			admin.clearOpera(cod);
+			
+			if(new OperaManagement().deleteOpera(cod)){
+				JOptionPane.showMessageDialog(null, "Opera eliminata correttamente.");
+			}else{
+				new Eccezioni("Errore nella cancellazione dell'opera. \nOpera non presente.");
+			}
+			
 			deleteDir(new File("img/"+op.getTitolo()));
 			deleteDir(new File("trascrizioni/"+op.getTitolo()));
 			changePage("Admin",null);
@@ -209,9 +244,10 @@ public class ListenerEventi {
 	}
 	
 	/**
-	 * Delete directory/
-	 * 
+	 * Delete directory/.
+	 *
 	 * @param file
+	 *            the file
 	 */
 	public static void deleteDir(File file){
 		File[]temp= file.listFiles();
@@ -226,34 +262,66 @@ public class ListenerEventi {
 	/**
 	 * Delete utente.
 	 *
-	 * @param admin the admin
-	 * @param type the type
-	 * @param nome the nome
+	 * @param type
+	 *            the type
+	 * @param nome
+	 *            the nome
 	 */
-	public static void deleteUtente(Admin admin,String type,String nome){
+	public static void deleteUtente(String type,String nome){
 		if(nome.equals("")){
 			new Eccezioni("Inserire l'username");
 		}
 		else{
 			switch (type) {
+			
 			case "Utente Base":
-				admin.clearUtente(nome);				
+				if(new UserManagement().deleteUtente(nome)){
+					JOptionPane.showMessageDialog(null, "Utente eliminato.");
+				}else{
+					new Eccezioni("Errore nella cancellazione dell'utente.");
+				}				
 				break;
+				
 			case "Utente Avanzato":
-				admin.clearUtente(nome);					
+				if(new UserManagement().deleteUtente(nome)){
+					JOptionPane.showMessageDialog(null, "Utente eliminato.");
+				}else{
+					new Eccezioni("Errore nella cancellazione dell'utente.");
+				}				
 				break;
+				
 			case "Trascrittore":
-				admin.clearTrascrittore(nome);			
+				if(new UserManagement().deleteTrascrittore(nome)){
+					JOptionPane.showMessageDialog(null, "Trascrittore eliminato.");
+				}else{
+					new Eccezioni("Errore nella cancellazione del trascrittore.");
+				}			
 				break;
+				
 			case "Acquisitore":
-				admin.clearAcquisitore(nome);
+				if(new UserManagement().deleteAcquisitore(nome)){
+					JOptionPane.showMessageDialog(null, "Acquisitore eliminato.");
+				}else{
+					new Eccezioni("Errore nella cancellazione dell'acquisitore.");
+				}
 				break;
+				
 			case "Revisore Immagini" :
-				admin.clearRevisoreImm(nome);
+				if(new UserManagement().deleteRevisoreI(nome)){
+					JOptionPane.showMessageDialog(null, "Revisore immagini eliminato.");
+				}else{
+					new Eccezioni("Errore nella cancellazione del revisore immagini.");
+				}
 				break;
+				
 			case "Revisore Trascrizioni" :
-				admin.clearRevisoreTr(nome);
+				if(new UserManagement().deleteRevisoreT(nome)){
+					JOptionPane.showMessageDialog(null, "Revisore trascrizioni eliminato.");
+				}else{
+					new Eccezioni("Errore nella cancellazione del revisore trascrizioni.");
+				}
 				break;
+				
 			default:
 				new Eccezioni("Errore nella cancellazione dell'utente");
 				break;
@@ -332,19 +400,23 @@ public class ListenerEventi {
 	/**
 	 * Adds the opera.
 	 *
-	 * @param acquisitore the acquisitore
-	 * @param titolo the titolo
-	 * @param anno the anno
-	 * @param autore the autore
-	 * @param editore the editore
-	 * @param isbn the isbn
+	 * @param titolo
+	 *            the titolo
+	 * @param anno
+	 *            the anno
+	 * @param autore
+	 *            the autore
+	 * @param editore
+	 *            the editore
+	 * @param isbn
+	 *            the isbn
 	 */
-	public static void addOpera(Acquisitore acquisitore,String titolo,String anno,String autore,String editore,String isbn){
+	public static void addOpera(String titolo,String anno,String autore,String editore,String isbn){
 		if(titolo.equals("") || isbn.equals("")){
 			new Eccezioni("I campi titolo e isbn sono obbligatori!");
 		}
 		else{
-			acquisitore.addOpera(anno,titolo, autore, isbn, editore);
+			new OperaManagement().insertOpera(anno,titolo,autore,isbn,editore);
 			try{
 				(new File("img/"+titolo)).mkdir();
 				(new File("trascrizioni/"+titolo)).mkdir();
@@ -396,23 +468,27 @@ public class ListenerEventi {
 	/**
 	 * Delete immagine.
 	 *
-	 * @param ac the ac
-	 * @param opera the opera
-	 * @param page the page
+	 * @param opera
+	 *            the opera
+	 * @param page
+	 *            the page
 	 */
-	public static void deleteImmagine(Acquisitore ac,String opera,String page){
+	public static void deleteImmagine(String opera,String page){
 		if(opera.equals("") || page.equals("") || opera.equals(INSERT) || page.equals(PAGE)){
 			new Eccezioni("Completare tutti i campi!");
 		}
 		else{
 			try{
 				Opera o=getOpera(opera);
+				
 				String path = getImm(o.getIsbn(),page);
 				File ImmFile = new File(path);
-				ImmFile.delete();				
-				int p=Integer.parseInt(page);
-				ac.deleteImmagine(opera,p);
-			}catch(Exception e){
+				ImmFile.delete();
+				
+				Integer p=Integer.parseInt(page);
+				new OperaManagement().deleteImmagine(o.getIsbn(),p.intValue());
+			}
+			catch(Exception e){
 				new Eccezioni("Page deve essere un numero intero!");
 			}
 		}
@@ -426,16 +502,16 @@ public class ListenerEventi {
 	 */
 	public static TableModel getCommenti(Utente utente){
 		if(utente instanceof Acquisitore){
-			return ((Acquisitore) utente).viewCommenti();
+			return new OperaManagement().getCommentiI();
 		}
 		else if(utente instanceof RevisoreImmagine){
-			return ((RevisoreImmagine)utente).viewCommenti();
+			return new OperaManagement().getCommentiI();
 		}
 		else if(utente instanceof Trascrittore){
-			return ((Trascrittore)utente).viewCommenti();
+			return new OperaManagement().getCommentiT();
 		}
 		else if(utente instanceof RevisoreTrascrizioni){
-			return ((RevisoreTrascrizioni)utente).viewCommenti();
+			return new OperaManagement().getCommentiT();
 		}
 		else
 			return null;
@@ -450,16 +526,20 @@ public class ListenerEventi {
 	public static void addCommento(Utente utente,String text){
 		if(!(text.equals(""))){
 			if(utente instanceof Acquisitore){
-				((Acquisitore) utente).addCommento(text);
+				Commento commento=new Commento(utente.getUserId(),text);
+				new OperaManagement().addCommentoI(commento);
 			}
 			else if(utente instanceof Trascrittore){
-				((Trascrittore)utente).addCommento(text);
+				Commento commento=new Commento(utente.getUserId(),text);
+				new OperaManagement().addCommentoT(commento);
 			}	
 			else if(utente instanceof RevisoreImmagine){
-				((RevisoreImmagine)utente).commenta(text);
+				Commento commento=new Commento(utente.getUserId(),text);
+				new OperaManagement().addCommentoI(commento);
 			}
 			else if(utente instanceof RevisoreTrascrizioni){
-				((RevisoreTrascrizioni)utente).commenta(text);
+				Commento commento=new Commento(utente.getUserId(),text);
+				new OperaManagement().addCommentoT(commento);
 			}
 		}
 		else
@@ -469,11 +549,12 @@ public class ListenerEventi {
 	/**
 	 * Delete trascrizione.
 	 *
-	 * @param tr the tr
-	 * @param opera the opera
-	 * @param page the page
+	 * @param opera
+	 *            the opera
+	 * @param page
+	 *            the page
 	 */
-	public static void deleteTrascrizione(Trascrittore tr,String opera,String page){
+	public static void deleteTrascrizione(String opera,String page){
 		if(opera.equals("") || page.equals("")){
 			new Eccezioni("Completare tutti i campi!");
 		}
@@ -482,9 +563,11 @@ public class ListenerEventi {
 				Opera o=getOpera(opera);
 				File tFile = new File("trascrizioni/"+o.getTitolo()+"/"+o.getTitolo()+page+".html");
 				tFile.delete();
+				
 				int p=Integer.parseInt(page);				
-				tr.deleteTrascrizione(opera,p);
-			}catch(Exception e){
+				new OperaManagement().deleteTrascrizione(o.getTitolo(), p);
+			}
+			catch(Exception e){
 				new Eccezioni("Page deve essere un numero intero!");
 			}
 		}
@@ -648,13 +731,15 @@ public class ListenerEventi {
 	/**
 	 * Adds the immagine.
 	 *
-	 * @param acquisitore the acquisitore
-	 * @param path the path
-	 * @param opera the opera
-	 * @param page1 the page1
+	 * @param path
+	 *            the path
+	 * @param opera
+	 *            the opera
+	 * @param page1
+	 *            the page1
 	 * @return true, if successful
 	 */
-	public static boolean addImmagine(Acquisitore acquisitore,String path,String opera,String page1){
+	public static boolean addImmagine(String path,String opera,String page1){
 		if(path.equals("") || opera.equals("") || opera.equals(INSERT) || page1.equals("") || page1.equals(PAGE)){
 			new Eccezioni("Completare tutti i campi");
 			return false;
@@ -662,9 +747,10 @@ public class ListenerEventi {
 		else{
 			try{
 				Integer page = Integer.parseInt(page1);	
-				acquisitore.addImmagine(path,opera,page);
+				new OperaManagement().addImmagine(opera,path,page.intValue());	
 				return true;
-			}catch(Exception e){
+			}
+			catch(Exception e){
 				new Eccezioni("Page deve essere un numero intero");
 				return false;
 			}				
@@ -688,34 +774,23 @@ public class ListenerEventi {
 			new Eccezioni("error",e);
 		}
 	}
-	
-	/**
-	 * Approva imm.
-	 *
-	 * @param rev the rev
-	 * @param opera the opera
-	 * @param page the page
-	 */
-	public void approvaImm(RevisoreTrascrizioni rev,String opera,String page){
-		Opera op=new OperaManagement().getOpera(opera,'c');
-		String isbn=op.getIsbn();
-		Integer p=Integer.parseInt(page);
-		String path=new OperaManagement().getPath(isbn, p.intValue(),'c');
-		rev.acceptIm(path);
 		
-	}
-	
 	/**
 	 * Adds the trascrizione.
 	 *
-	 * @param trasc the trasc
-	 * @param titolo the titolo
-	 * @param anno the anno
-	 * @param text the text
-	 * @param page1 the page1
+	 * @param t
+	 *            the t
+	 * @param titolo
+	 *            the titolo
+	 * @param anno
+	 *            the anno
+	 * @param text
+	 *            the text
+	 * @param page1
+	 *            the page1
 	 * @return true, if successful
 	 */
-	public static boolean addTrascrizione(Trascrittore trasc,String titolo,String anno,String text,String page1){
+	public static boolean addTrascrizione(Trascrittore t,String titolo,String anno,String text,String page1){
 		if(titolo.equals("") || anno.equals("") || text.equals("")){
 			new Eccezioni("Completare tutti i campi");
 			return false;
@@ -723,9 +798,10 @@ public class ListenerEventi {
 		else{
 			try{
 				Integer page = Integer.parseInt(page1);	
-				trasc.addTrascrizione(titolo,anno,page.intValue());
+				new OperaManagement().addTrascrizione(t.getUserId(),titolo,anno,page.intValue());
 				return true;
-			}catch(Exception e){
+			}
+			catch(Exception e){
 				new Eccezioni("Page deve essere un numero intero");
 				return false;
 			}				
@@ -754,6 +830,16 @@ public class ListenerEventi {
 		}
 	}
 	
+	/**
+	 * Sets the trascrizione.
+	 *
+	 * @param titolo
+	 *            the titolo
+	 * @param page
+	 *            the page
+	 * @param text
+	 *            the text
+	 */
 	public static void setTrascrizione(String titolo,String page,String text){
 		try{
 			File old = new File("trascrizioni/" +titolo+ "/" +titolo + page+ ".html");
@@ -843,17 +929,19 @@ public class ListenerEventi {
 	/**
 	 * Approva imm.
 	 *
-	 * @param rev the rev
-	 * @param opera the opera
-	 * @param pageN the page n
+	 * @param opera
+	 *            the opera
+	 * @param pageN
+	 *            the page n
 	 */
-	public static void approvaImm(RevisoreImmagine rev,String opera,String pageN){
-		Opera op=new OperaManagement().getOpera(opera,'c');
+	public static void approvaImm(String opera,String pageN){
+		Opera op=getOpera(opera);
 		try{
 			Integer page=Integer.parseInt(pageN);
 			String path=new OperaManagement().getPath(op.getIsbn(), page.intValue(), 'r');
-			rev.acceptIm(path);
-		}catch(Exception e){
+			new OperaManagement().changeStatoImm(path, 1);
+		}
+		catch(Exception e){
 			new Eccezioni("Page dev'essere un numero intero");
 		}		
 	}
@@ -861,17 +949,19 @@ public class ListenerEventi {
 	/**
 	 * Approva tras.
 	 *
-	 * @param rev the rev
-	 * @param opera the opera
-	 * @param pageN the page n
+	 * @param opera
+	 *            the opera
+	 * @param pageN
+	 *            the page n
 	 */
-	public static void approvaTras(RevisoreTrascrizioni rev,String opera,String pageN){
-		Opera op=new OperaManagement().getOpera(opera,'c');
+	public static void approvaTras(String opera,String pageN){
+		Opera op=getOpera(opera);
 		try{
 			Integer page=Integer.parseInt(pageN);
 			String path=new OperaManagement().getPathT(op.getTitolo(), page.intValue(), 'r');
-			rev.acceptT(path);
-		}catch(Exception e){
+			new OperaManagement().changeStatoT(path, 1);
+		}
+		catch(Exception e){
 			new Eccezioni("Page dev'essere un numero intero");
 		}	
 	}

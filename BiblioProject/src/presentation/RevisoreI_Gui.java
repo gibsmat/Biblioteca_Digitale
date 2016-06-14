@@ -21,7 +21,6 @@ import javax.swing.table.TableModel;
 import business.model.RevisoreImmagine;
 import business.model.Utente;
 import listener.ListenerEventi;
-import net.miginfocom.swing.MigLayout;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -236,8 +235,7 @@ public class RevisoreI_Gui implements FocusListener{
 		frame.getContentPane().add(btnApprova);
 		btnApprova.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListenerEventi.approvaImm(revI,txtTitolo.getText(),txtNumber.getText());
-				//btnApprova.setEnabled(false);
+				ListenerEventi.approvaImm(txtTitolo.getText(),txtNumber.getText());
 				JOptionPane.showMessageDialog(null, "Immagine approvata.");
 			}
 		});

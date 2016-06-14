@@ -203,10 +203,14 @@ public class UserManagement{
 	/**
 	 * Nuovo revisore t.
 	 *
-	 * @param id the id
-	 * @param nome the nome
-	 * @param cognome the cognome
-	 * @param psw the psw
+	 * @param id
+	 *            the id
+	 * @param psw
+	 *            the psw
+	 * @param nome
+	 *            the nome
+	 * @param cognome
+	 *            the cognome
 	 * @return true, if successful
 	 */
 	public boolean nuovoRevisoreT(String id,String psw,String nome,String cognome){
@@ -700,21 +704,24 @@ public class UserManagement{
 	 * @return true, if successful
 	 */
 	public boolean deleteUtente(String user){
-		UtenteBase ut=getUtente(user);		
+		UtenteBase ut=getUtente(user);	
+		
 		if(ut instanceof UtenteAvanzato){
 			try{
-			String queryA="DELETE FROM UtenteAvanzato where usernameA=?";
-			PreparedStatement pstA=c.prepareStatement(queryA);
-			pstA.setString(1,user);
-			pstA.execute();
-			pstA.close();
-			c.close();
-			return true;			
-			}catch(Exception e){
+				String queryA="DELETE FROM UtenteAvanzato where usernameA=?";
+				PreparedStatement pstA=c.prepareStatement(queryA);
+				pstA.setString(1,user);
+				pstA.execute();
+				pstA.close();
+				c.close();
+				return true;			
+			}
+			catch(Exception e){
 				new Eccezioni(e);
 				return false;
 			}
-		}else{
+		}
+		else{
 			try{
 				PreparedStatement pst=c.prepareStatement("DELETE FROM UTENTEBASE where username=?");
 				pst.setString(1,user);				
@@ -722,7 +729,8 @@ public class UserManagement{
 				pst.close();
 				c.close();
 				return true;
-				}catch(Exception e){
+			}
+			catch(Exception e){
 					new Eccezioni(e);
 					return false;
 				}
