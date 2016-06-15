@@ -14,7 +14,7 @@ public class Opera {
 	String anno,titolo,autore,isbn,Editore;
 	
 	/** The immagini. */
-	SortedMap <String,ImageIcon> immagini;
+	TreeMap <Integer,String> immagini;
 	
 	/**
 	 * Instantiates a new opera.
@@ -31,7 +31,32 @@ public class Opera {
 		this.autore=autore;
 		this.isbn=isbn;
 		this.Editore=editore;
-		this.immagini=new TreeMap<String,ImageIcon>();
+		this.immagini=new TreeMap <Integer,String>();
+	}
+	
+	/**
+	 * Instantiates a new opera.
+	 *
+	 * @param anno
+	 *            the anno
+	 * @param titolo
+	 *            the titolo
+	 * @param autore
+	 *            the autore
+	 * @param isbn
+	 *            the isbn
+	 * @param editore
+	 *            the editore
+	 * @param imm
+	 *            the imm
+	 */
+	public Opera(String anno,String titolo, String autore,String isbn,String editore, TreeMap <Integer,String> imm){
+		this.anno=anno;
+		this.titolo=titolo;
+		this.autore=autore;
+		this.isbn=isbn;
+		this.Editore=editore;
+		this.immagini=imm;
 	}
 	
 	/**
@@ -106,14 +131,12 @@ public class Opera {
 		this.isbn = isbn;
 	}
 
-/*
-	public SortedMap<String,ImageIcon> getImmagini() {
+	/**
+	 * Gets the immagini.
+	 *
+	 * @return the immagini
+	 */
+	public TreeMap <Integer,String> getImmagini(){
 		return immagini;
 	}
-	
-
-	public void addImmagine(String path,String nomeI){
-		this.immagini.put(nomeI, new ImageIcon(path));
-	}	
-*/
 }

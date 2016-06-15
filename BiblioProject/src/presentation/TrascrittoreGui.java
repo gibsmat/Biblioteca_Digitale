@@ -1,6 +1,3 @@
-/**
- * 
- */
 package presentation;
 
 import javax.swing.*;
@@ -252,9 +249,11 @@ public class TrascrittoreGui implements FocusListener{
 				Image img=ListenerEventi.getFirstImm(txtTitolo.getText(),333,520);
 				label.setIcon(new ImageIcon(img));	
 				txtNumber.setText("1");
+				
 				Opera o=ListenerEventi.getOpera(txtTitolo.getText());
 				txtTitle.setText(o.getTitolo());
 				txtanno.setText(o.getAnno());
+				
 				String testo=ListenerEventi.getTrascrizione(trascrittore,txtTitolo.getText(),txtNumber.getText());
 				if(testo!=null){
 					txtCorpo.setText(testo);
@@ -279,18 +278,19 @@ public class TrascrittoreGui implements FocusListener{
 			public void actionPerformed(ActionEvent arg0) {				
 				String num=txtNumber.getText().toString();				
 				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'-',333,520);
-				if(img==null){
-					label.setIcon(null);
-				}else{
+				
+				if(img!=null){
 					label.setIcon(new ImageIcon(img));
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n-1));
-					String testo=ListenerEventi.getTrascrizione(trascrittore,txtTitolo.getText(),txtNumber.getText());
+					
+					String testo=ListenerEventi.getTrascrizione(trascrittore,txtTitolo.getText(),txtNumber.getText());					
 					if(testo!=null){
 						txtCorpo.setText(testo);
 						btnSalva.setEnabled(false);
 						btnModifica.setEnabled(true);
-					}else{
+					}
+					else{
 						txtCorpo.setText("");
 						btnSalva.setEnabled(true);
 						btnModifica.setEnabled(false);
@@ -307,22 +307,22 @@ public class TrascrittoreGui implements FocusListener{
 		
 		// Immagine successiva
 		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
+			public void actionPerformed(ActionEvent arg0) {				
 				String num=txtNumber.getText();
 				Image img=ListenerEventi.getImm(txtTitolo.getText(),num,'+',333,520);
-				if(img==null){
-					label.setIcon(null);
-				}else{
+				
+				if(img!=null){
 					label.setIcon(new ImageIcon(img));
 					int n=Integer.parseInt(num);
 					txtNumber.setText(Integer.toString(n+1));
+					
 					String testo=ListenerEventi.getTrascrizione(trascrittore,txtTitolo.getText(),txtNumber.getText());
 					if(testo!=null){
 						txtCorpo.setText(testo);
 						btnSalva.setEnabled(false);
 						btnModifica.setEnabled(true);
-					}else{
+					}
+					else{
 						txtCorpo.setText("");
 						btnSalva.setEnabled(true);
 						btnModifica.setEnabled(false);

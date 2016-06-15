@@ -289,8 +289,11 @@ private void deleteOpera(){
 	
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
-			if(ListenerEventi.deleteOpera(codice.getText())){
+			if(ListenerEventi.deleteOpera(codice.getText()))
 				frame3.dispose();
+			else{
+				frame3.dispose();
+				deleteOpera();
 			}
 		}
 	});
@@ -324,6 +327,7 @@ private void showUsers(){
 	comboBox.setToolTipText("");
 	frame4.getContentPane().add(comboBox, "cell 2 1,growx,aligny center");
 	
+	//visualizza utenti
 	JButton btnVisualizza = new JButton("Visualizza");
 	btnVisualizza.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
@@ -335,6 +339,7 @@ private void showUsers(){
 	btnVisualizza.setFont(new Font("Roboto Black", Font.PLAIN, 24));
 	frame4.getContentPane().add(btnVisualizza, "cell 0 3 2 1,alignx center,growy");
 	
+	//rimuovi utente
 	JButton btnRimuovi = new JButton("Rimuovi");
 	btnRimuovi.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {

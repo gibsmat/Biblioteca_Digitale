@@ -6,6 +6,7 @@ package listener;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -227,19 +228,26 @@ public class ListenerEventi {
 		if(cod.equals("")){
 			new Eccezioni("Codice isbn non può essere vuoto!");
 			return false;
-		}else{
+		}
+		else{
 			Opera op=getOpera(cod);
-			
-			if(new OperaManagement().deleteOpera(cod)){
-				JOptionPane.showMessageDialog(null, "Opera eliminata correttamente.");
-			}else{
-				new Eccezioni("Errore nella cancellazione dell'opera. \nOpera non presente.");
+			if(op!=null){
+				if(new OperaManagement().deleteOpera(cod)){
+					JOptionPane.showMessageDialog(null, "Opera eliminata correttamente.");
+					deleteDir(new File("img/"+op.getTitolo()));
+					deleteDir(new File("trascrizioni/"+op.getTitolo()));
+					changePage("Admin",null);
+					return true;
+				}
+				else{
+					new Eccezioni("Errore nella cancellazione dell'opera.");
+					return false;
+				}
 			}
-			
-			deleteDir(new File("img/"+op.getTitolo()));
-			deleteDir(new File("trascrizioni/"+op.getTitolo()));
-			changePage("Admin",null);
-			return true;
+			else{	
+				new Eccezioni("Opera non presente.");
+				return false;
+			}
 		}
 	}
 	
@@ -480,13 +488,14 @@ public class ListenerEventi {
 		else{
 			try{
 				Opera o=getOpera(opera);
-				
-				String path = getImm(o.getIsbn(),page);
-				File ImmFile = new File(path);
-				ImmFile.delete();
-				
 				Integer p=Integer.parseInt(page);
-				new OperaManagement().deleteImmagine(o.getIsbn(),p.intValue());
+				
+				String path = o.getImmagini().get(p);
+
+				File ImmFile = new File(path);
+				ImmFile.delete();				
+				
+				new OperaManagement().deleteImmagine(o.getIsbn(),p.intValue());	
 			}
 			catch(Exception e){
 				new Eccezioni("Page deve essere un numero intero!");
@@ -583,13 +592,14 @@ public class ListenerEventi {
 	public static Image getFirstImm(String opera){
 		Opera op=new OperaManagement().getOpera(opera,'c');
 		if(op!=null){
-			String path=new OperaManagement().getPath(op.getIsbn(), 1,'c');
-			if(path.equals("")){
+			TreeMap <Integer,String> immagini=op.getImmagini();
+
+			if(immagini.get(new Integer(1)).equals("")){
 				new Eccezioni("L'immagine non è stata ancora approvata.");
 				return null;
 			}
 			try{
-				BufferedImage srcIm = ImageIO.read(new File(path));
+				BufferedImage srcIm = ImageIO.read(new File(immagini.get(new Integer(1))));
 				Image scaledIm = srcIm.getScaledInstance(WIDTH, HEIGHT, BufferedImage.SCALE_DEFAULT);		
 				return scaledIm;
 			}
@@ -615,7 +625,8 @@ public class ListenerEventi {
 	public static Image getFirstImm(String opera,int width,int height){
 		Opera op=new OperaManagement().getOpera(opera,'c');
 		if(op!=null){
-			String path=new OperaManagement().getPath(op.getIsbn(), 1,'r');
+			TreeMap <Integer,String> immagini=op.getImmagini();
+			String path=immagini.get(new Integer(1));
 			if(path.equals("")){
 				new Eccezioni("L'immagine non è stata ancora approvata.");
 				return null;
@@ -645,21 +656,26 @@ public class ListenerEventi {
 	 * @return the imm
 	 */
 	public static Image getImm(String opera, String number,char s){
-		String isbn = new OperaManagement().getOpera(opera,'c').getIsbn();
-		String path;
-		int n=Integer.parseInt(number);
+		Opera op= getOpera(opera);
+		String path=null;
+		Integer n=Integer.parseInt(number);
+		
 		if(s=='-'){
 			if(n > 1){
-				path= new OperaManagement().getPath(isbn, n-1, 'c');
+				path= op.getImmagini().get(n-1);
 			}else{
 				new Eccezioni("Immagine inesistente.");
 				return null;
 			}
 		}
 		else{
-			path= new OperaManagement().getPath(isbn, n+1, 'c');
+			if(n < 0){
+				new Eccezioni("Immagine inesistente.");
+				return null;
+			}
+			path= op.getImmagini().get(n+1);
 		}
-		if(path.equals("")){
+		if(path==null){
 			new Eccezioni("L'immagine non è stata ancora approvata.");
 			return null;
 		}
@@ -687,20 +703,23 @@ public class ListenerEventi {
 	 * @return the imm
 	 */
 	public static Image getImm(String opera, String number,char s,int width,int height){
-		String isbn = new OperaManagement().getOpera(opera,'c').getIsbn();
-		String path;
-		int n=Integer.parseInt(number);
+		Opera op= getOpera(opera);
+		String path=null;
+		Integer n=Integer.parseInt(number);
+		
 		if(s=='-'){
-			if(n > 1){
-				path= new OperaManagement().getPath(isbn, n-1, 'r');
-			}else{
+			if(n > 1)
+				path= op.getImmagini().get(n-1);
+			else{
+				new Eccezioni("Immagine inesistente.");
 				return null;
-			}
+			}				
 		}
 		else{
-			path= new OperaManagement().getPath(isbn, n+1, 'r');
+			path= op.getImmagini().get(n+1);
 		}
-		if(path.equals("")){
+		if(path==null){
+			new Eccezioni("Immagine inesistente.");
 			return null;
 		}
 		else{
@@ -714,18 +733,6 @@ public class ListenerEventi {
 				return null;
 			}
 		}
-	}
-	
-	/**
-	 * Gets the imm.
-	 *
-	 * @param isbn the isbn
-	 * @param number the number
-	 * @return the imm
-	 */
-	public static String getImm(String isbn, String number){
-		Integer n=Integer.parseInt(number);
-		return new OperaManagement().getPath(isbn, n.intValue(), 'c');										
 	}
 
 	/**

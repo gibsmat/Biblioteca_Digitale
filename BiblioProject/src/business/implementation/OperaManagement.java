@@ -5,6 +5,7 @@ import net.proteanit.sql.DbUtils;
 import business.Eccezioni;
 
 import java.sql.*;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
@@ -15,7 +16,7 @@ import javax.swing.table.TableModel;
  */
 public class OperaManagement {
 	
-	/** The c. */
+	/** The connection. */
 	Connection c=DbConnection.dbConnector();
 	
 	/**
@@ -66,28 +67,34 @@ public class OperaManagement {
 		Opera op=getOpera(isbn);
 		if(op!=null){
 			try{
-			PreparedStatement pst=c.prepareStatement("DELETE FROM Opera WHERE isbn=?");
-			pst.setString(1, isbn);
-			pst.execute();
-			pst.close();
-			
-			pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=?");
-			pst.setString(1, isbn);
-			pst.execute();
-			pst.close();
-			
-			pst=c.prepareStatement("DELETE FROM Trascrizioni WHERE opera=?");
-			pst.setString(1,op.getTitolo());
-			pst.execute();
-			pst.close();
-			c.close();
-			return true;
+				PreparedStatement pst=c.prepareStatement("DELETE FROM Opera WHERE isbn=?");
+				pst.setString(1, isbn);
+				pst.execute();
+				pst.close();
+				
+				pst=c.prepareStatement("DELETE FROM Immagini WHERE opera=?");
+				pst.setString(1, isbn);
+				pst.execute();
+				pst.close();
+				
+				pst=c.prepareStatement("DELETE FROM Trascrizioni WHERE opera=?");
+				pst.setString(1,op.getTitolo());
+				pst.execute();
+				pst.close();
+				c.close();
+				return true;
 			
 			}catch(Exception e){
 				new Eccezioni(e);
 				return false;
 			}
-		}else{
+		}
+		else{
+			try{
+				c.close();
+			}catch(Exception e){
+				new Eccezioni(e);
+			}
 			return false;
 		}
 	}
@@ -165,6 +172,34 @@ public class OperaManagement {
 			}else{
 				return "";
 			}
+			
+		}catch(SQLException e){
+			new Eccezioni(e);
+			return null;
+		}		
+	}
+	
+	/**
+	 * Gets the path.
+	 *
+	 * @param opera
+	 *            the opera
+	 * @return the path
+	 */
+	public TreeMap <Integer,String> getPath(String opera){
+		TreeMap <Integer,String> temp=new TreeMap <Integer,String>();
+		try{
+			String query="SELECT path,page FROM Immagini where opera=?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, opera);
+			
+			ResultSet rs=pst.executeQuery();
+			while(rs.next()){
+				temp.put(rs.getInt("page"), rs.getString("path"));
+			}
+			pst.close();
+			rs.close();
+			return temp;
 			
 		}catch(SQLException e){
 			new Eccezioni(e);
@@ -474,8 +509,7 @@ public class OperaManagement {
 	 * @return the opera
 	 */
 	public Opera getOpera(String op){
-		String anno,titolo,autore,isbn,editore;
-		
+		String anno="",titolo="",autore="",isbn="",editore="";
 		try{
 			String query="SELECT * FROM Opera where isbn=? OR titolo=? OR editore=? OR autore=? OR anno=?";
 			PreparedStatement pst = c.prepareStatement(query);
@@ -491,12 +525,11 @@ public class OperaManagement {
 				titolo=rs.getString("titolo");
 				autore=rs.getString("autore");
 				isbn=rs.getString("isbn");
-				editore=rs.getString("editore");
-				rs.close();
-				return new Opera(anno,titolo,autore,isbn,editore);
+				editore=rs.getString("editore");				
 			}
-			rs.close();
-			return null;			
+			rs.close();			
+			return new Opera(anno,titolo,autore,isbn,editore,getPath(isbn));
+		
 		}catch(SQLException e){
 			new Eccezioni("Db error",e);
 			return null;
@@ -511,7 +544,7 @@ public class OperaManagement {
 	 * @return the opera
 	 */
 	public Opera getOpera(String op,char close){
-		String anno,titolo,autore,isbn,editore;
+		String anno="",titolo="",autore="",isbn="",editore="";
 		
 		try{
 			String query="SELECT * FROM Opera where isbn=? OR titolo=? OR anno=? OR editore=? or autore=?";
@@ -529,14 +562,13 @@ public class OperaManagement {
 				autore=rs.getString("autore");
 				isbn=rs.getString("isbn");
 				editore=rs.getString("editore");
-				Opera opera=new Opera(anno,titolo,autore,isbn,editore);
-				c.close();
-				return opera;
 			}
 			rs.close();
+			Opera o=new Opera(anno,titolo,autore,isbn,editore,getPath(isbn));
 			c.close();
-			return null;			
-		}catch(SQLException e){
+			return o;		
+		}
+		catch(SQLException e){
 			new Eccezioni("Db error",e);
 			return null;
 		}

@@ -91,6 +91,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		separator.setBounds(166, 236, 542, 2);
 		frame.getContentPane().add(separator);
 		
+		//aggiungi immagini
 		JButton btnAggiungiImmagine = new JButton("Aggiungi immagine");
 		btnAggiungiImmagine.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,6 +103,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		btnAggiungiImmagine.setBounds(142, 315, 176, 59);
 		frame.getContentPane().add(btnAggiungiImmagine);
 		
+		//commenti
 		JButton btnAggiungiCommento = new JButton("Aggiungi commento");
 		btnAggiungiCommento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -113,6 +115,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		btnAggiungiCommento.setBounds(499, 315, 176, 59);
 		frame.getContentPane().add(btnAggiungiCommento);
 		
+		//nuova opera
 		JButton btnAggiungiOpera = new JButton("Aggiungi Opera");
 		btnAggiungiOpera.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -124,6 +127,7 @@ public class AcquisitoreGui extends JFrame implements FocusListener{
 		btnAggiungiOpera.setBounds(142, 419, 176, 59);
 		frame.getContentPane().add(btnAggiungiOpera);
 		
+		//elimina immagine
 		JButton btnEliminaImagine = new JButton("Elimina Immagine");
 		btnEliminaImagine.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

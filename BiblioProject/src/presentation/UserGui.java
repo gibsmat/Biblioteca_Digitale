@@ -280,14 +280,16 @@ public class UserGui implements FocusListener {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String num=txtNumber.getText();
+				
 				if(!(num.equals(""))){
-					Image imm=ListenerEventi.getImm(textField.getText(),num,'+');
-					int n=Integer.parseInt(num);
-					txtNumber.setText(Integer.toString(n+1));
-					if(imm==null){
-						label.setIcon(null);
-					}else
+					Image imm=ListenerEventi.getImm(textField.getText(),num,'+');					
+
+					if(imm!=null){
+						Integer n=Integer.parseInt(num);
+						txtNumber.setText(Integer.toString(n+1));
 						label.setIcon(new ImageIcon(imm));
+					}
+					
 					String testo=ListenerEventi.getTrascrizione(utente,textField.getText(),txtNumber.getText());
 					if(testo!=null)
 						textPane.setText(testo);
@@ -306,15 +308,17 @@ public class UserGui implements FocusListener {
 		//immagine precedente
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String num=txtNumber.getText().toString();
+				String num=txtNumber.getText();
+				
 				if(!(num.equals(""))){
-					Image imm=ListenerEventi.getImm(textField.getText(),num,'-');
-					int n=Integer.parseInt(num);
-					txtNumber.setText(Integer.toString(n-1));
-					if(imm==null){
-						label.setIcon(null);
-					}else
+					Image imm=ListenerEventi.getImm(textField.getText(),num,'-');					
+					
+					if(imm!=null){
+						Integer n=Integer.parseInt(num);
+						txtNumber.setText(Integer.toString(n-1));
 						label.setIcon(new ImageIcon(imm));
+					}
+					
 					String testo=ListenerEventi.getTrascrizione(utente,textField.getText(),txtNumber.getText());
 					if(testo!=null){
 						textPane.setText(testo);
