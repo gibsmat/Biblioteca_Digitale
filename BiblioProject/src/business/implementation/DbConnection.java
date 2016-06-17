@@ -11,15 +11,15 @@ import business.Eccezioni;
 public class DbConnection {
 	
 	/** The Constant db. */
-	private static final String db ="jdbc:sqlite:biblioDb.db";
+	private static final String DB ="jdbc:sqlite:biblioDb.db";
 	
 	/** The conn. */
-	private static Connection conn;
+	private static Connection conn=null;
 
 	/**
 	 * Instantiates a new db connection.
 	 */
-	public DbConnection(){
+	private DbConnection(){
 	}
 	
 	/**
@@ -27,12 +27,11 @@ public class DbConnection {
 	 *
 	 * @return the connection
 	 */
-	public static Connection dbConnector()
-	{
+	public static Connection dbConnector(){
+		
 		try{
 			Class.forName("org.sqlite.JDBC");
-			conn=DriverManager.getConnection(db);			
-			//JOptionPane.showMessageDialog(null, "Connection successfull");	
+			conn=DriverManager.getConnection(DB);			
 			return conn;			
 		}catch(Exception e){
 			new Eccezioni("Errore connessione al DB.\n"+e);
