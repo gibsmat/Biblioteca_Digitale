@@ -25,3 +25,6 @@ Rebisore Immaggini:revisoreI password
 Revisore Trascrizioni: revisoreT password
 
 Amministratore: ADMIN ADMIN
+
+
+BUON DIVERTIMENTO !!!!! :)
