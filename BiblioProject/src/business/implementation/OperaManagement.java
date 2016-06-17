@@ -155,33 +155,6 @@ public class OperaManagement {
 	/**
 	 * Gets the path.
 	 *
-	 * @param opera the opera
-	 * @param page the page
-	 * @return the path
-	 */
-	public String getPath(String opera,int page){
-		try{
-			String query="SELECT path FROM Immagini where opera=? AND page=?";
-			PreparedStatement pst = c.prepareStatement(query);
-			pst.setString(1, opera);
-			pst.setInt(2, page);
-			
-			ResultSet rs=pst.executeQuery();
-			if(rs.next()){
-				return rs.getString("path");
-			}else{
-				return "";
-			}
-			
-		}catch(SQLException e){
-			new Eccezioni(e);
-			return null;
-		}		
-	}
-	
-	/**
-	 * Gets the path.
-	 *
 	 * @param opera
 	 *            the opera
 	 * @return the path
@@ -205,69 +178,6 @@ public class OperaManagement {
 			new Eccezioni(e);
 			return null;
 		}		
-	}
-	
-	/**
-	 * Gets the path.
-	 *
-	 * @param opera the opera
-	 * @param page the page
-	 * @param close the close
-	 * @return the path
-	 */
-	public String getPath(String opera,int page,char close){
-		if(close=='r'){
-			try{
-				String query="SELECT path FROM Immagini where opera=? AND page=?";
-				PreparedStatement pst = c.prepareStatement(query);
-				pst.setString(1, opera);
-				pst.setInt(2, page);
-				
-				ResultSet rs=pst.executeQuery();
-				
-				if(rs.next()){
-					String p=rs.getString("path");					
-					pst.close();
-					rs.close();
-					c.close();
-					return p;
-				}else{
-					pst.close();
-					rs.close();
-					c.close();
-					return "";
-				}
-			}
-			catch(Exception e){
-				new Eccezioni("Immagine non trovata");
-				return null;
-			}
-		}
-		else{
-			try{
-				String query="SELECT path FROM Immagini where opera=? AND page=? AND stato=1";
-				PreparedStatement pst = c.prepareStatement(query);
-				pst.setString(1, opera);
-				pst.setInt(2, page);
-				
-				ResultSet rs=pst.executeQuery();
-				if(rs.next()){
-					String p=rs.getString("path");
-					pst.close();
-					rs.close();
-					c.close();
-					return p;
-				}else{
-					pst.close();					
-					rs.close();
-					c.close();
-					return "";
-				}
-			}catch(Exception e){
-				new Eccezioni("Immagine non trovata");
-				return null;
-			}	
-		}
 	}
 	
 	/**

@@ -945,7 +945,7 @@ public class ListenerEventi {
 		Opera op=getOpera(opera);
 		try{
 			Integer page=Integer.parseInt(pageN);
-			String path=new OperaManagement().getPath(op.getIsbn(), page.intValue(), 'r');
+			String path=op.getImmagini().get(page); 
 			new OperaManagement().changeStatoImm(path, 1);
 		}
 		catch(Exception e){
